@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ikea.mapper.user.UserMapper">
+
+    <resultMap id="BaseResultMap" type="User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="address" property="address"/>
+        <result column="mobile" property="mobile"/>
+        <result column="role" property="role"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <sql id="columns">
+        ${alias}id as ${prefix}id
+        , ${alias}username as ${prefix}username
+        , ${alias}password as ${prefix}password
+        , ${alias}`name` as `${prefix}name`
+        , ${alias}email as ${prefix}email
+        , ${alias}address as ${prefix}address
+        , ${alias}mobile as ${prefix}mobile
+        , ${alias}`role` as `${prefix}role`
+        , ${alias}createDate as ${prefix}createDate
+        , ${alias}updateDate as ${prefix}updateDate
+    </sql>
+
+    <insert id="create" parameterType="User">
+        INSERT INTO
+        user (id, username, password, name, email, address, mobile, role)
+        VALUES (#{id}, #{username}, #{password}, #{name}, #{email}, #{address}, #{mobile}, #{role})
+    </insert>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="User">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value=""/>
+            <property name="prefix" value=""/>
+        </include>
+        FROM user
+        <where>
+            <if test="id != null and id != ''">
+                AND id = #{id}
+            </if>
+            <if test="username != null and username != ''">
+                AND username = #{username}
+            </if>
+        </where>
+    </select>
+
+    <update id="modify" parameterType="User">
+        UPDATE user
+        SET update_date = CURRENT_TIMESTAMP
+        <if test="username != null and username != ''">
+            , username = #{username}
+        </if>
+        <if test="password != null and password != ''">
+            , password = #{password}
+        </if>
+        <if test="name != null and name != ''">
+            , name = #{name}
+        </if>
+        <if test="email != null and email != ''">
+            , email = #{email}
+        </if>
+        <if test="address != null and address != ''">
+            , address = #{address}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            , mobile = #{mobile}
+        </if>
+        <if test="role != null and role != ''">
+            , role = #{role}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="remove" parameterType="User">
+        DELETE FROM user WHERE id = #{id}
+    </delete>
+
+</mapper>
