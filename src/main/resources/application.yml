@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ikea
+    username: root
+    password: 1234
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  servlet:
+    multipart:
+      location: C:\dev\project\ikea\src\main\resources\static\img
+      max-file-size: 200MB
+      max-request-size: 100MB
+mybatis:
+  type-aliases-package: com.ikea.entity
+  mapper-locations: classpath:mapper/**/*.xml
