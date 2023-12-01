@@ -10,6 +10,14 @@
         <result column="update_date" property="updateDate"/>
     </resultMap>
 
+    <resultMap id="RelatedResultMap" type="MainCategory" extends="BaseResultMap">
+        <collection property="subCategoryList"
+                    javaType="List"
+                    ofType="SubCategory"
+                    columnPrefix="sc_"
+                    resultMap="com.ikea.mapper.category.SubCategoryMapper.BaseResultMap"/>
+    </resultMap>
+
     <sql id="columns">
         ${alias}id AS ${prefix}id
         , ${alias}code AS ${prefix}code
@@ -24,13 +32,21 @@
         VALUES (#{id}, #{code}, #{name})
     </insert>
 
-    <select id="findAll" parameterType="MainCategory" resultMap="BaseResultMap">
+    <select id="findAll" parameterType="MainCategory" resultMap="RelatedResultMap">
         SELECT
         <include refid="columns">
-            <property name="alias" value=""/>
+            <property name="alias" value="mc."/>
             <property name="prefix" value=""/>
         </include>
-        FROM main_category
+        ,
+        <include refid="com.ikea.mapper.category.SubCategoryMapper.columns">
+            <property name="alias" value="sc."/>
+            <property name="prefix" value="sc_"/>
+        </include>
+        FROM main_category AS mc
+        LEFT JOIN sub_category AS sc
+        ON mc.id = sc.main_category_id
+        ORDER BY mc.code, sc.code
     </select>
 
     <update id="modify" parameterType="MainCategory">
