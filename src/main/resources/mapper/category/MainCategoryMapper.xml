@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ikea.mapper.category.MainCategoryMapper">
+
+    <resultMap id="BaseResultMap" type="MainCategory">
+        <id column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <sql id="columns">
+        ${alias}id AS ${prefix}id
+        , ${alias}code AS ${prefix}code
+        , ${alias}`name` AS `${prefix}name`
+        , ${alias}create_date AS ${prefix}create_date
+        , ${alias}update_date AS ${prefix}update_date
+    </sql>
+
+    <insert id="create" parameterType="MainCategory">
+        INSERT INTO
+        main_category (id, code, name)
+        VALUES (#{id}, #{code}, #{name})
+    </insert>
+
+    <select id="findAll" parameterType="MainCategory" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value=""/>
+            <property name="prefix" value=""/>
+        </include>
+        FROM main_category
+    </select>
+
+    <update id="modify" parameterType="MainCategory">
+        UPDATE main_category
+        SET update_date = CURRENT_TIMESTAMP
+        <if test="code != null and code != ''">
+            , code = #{code}
+        </if>
+        <if test="name != null and name != ''">
+            , name = #{name}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="remove" parameterType="MainCategory">
+        DELETE FROM main_category WHERE id = #{id}
+    </delete>
+
+</mapper>
