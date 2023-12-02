@@ -1,7 +1,8 @@
-package com.ikea.security;
+package com.ikea.security.service;
 
 import com.ikea.entity.user.User;
 import com.ikea.mapper.user.UserMapper;
+import com.ikea.security.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

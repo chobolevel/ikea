@@ -1,4 +1,4 @@
-package com.ikea.security;
+package com.ikea.security.user;
 
 import com.ikea.entity.user.User;
 import lombok.AllArgsConstructor;
