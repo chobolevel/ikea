@@ -1,6 +1,6 @@
 package com.ikea.entity.category;
 
-import com.ikea.entity.BaseEntity;
+import com.ikea.entity.base.BaseEntity;
 import lombok.*;
 
 import java.util.List;
