@@ -1,11 +1,11 @@
-package com.ikea.entity;
+package com.ikea.entity.base;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BaseEntity {
+public class BasePagingEntity {
 
   private String createDate;
   private String updateDate;
