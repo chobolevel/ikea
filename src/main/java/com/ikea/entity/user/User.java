@@ -1,7 +1,7 @@
 package com.ikea.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ikea.entity.BaseEntity;
+import com.ikea.entity.base.BaseEntity;
 import com.ikea.enums.UserRoleType;
 import lombok.*;
 
