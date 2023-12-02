@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ikea.mapper.product.ProductMapper">
+
+    <resultMap id="BaseResultMap" type="Product">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="desc" property="desc"/>
+        <result column="main_category_code" property="mainCategoryCode"/>
+        <result column="sub_category_code" property="subCategoryCode"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <resultMap id="RelatedResultMap" type="Product" extends="BaseResultMap">
+        <association property="mainCategory"
+                     javaType="MainCategory"
+                     columnPrefix="mc_"
+                     resultMap="com.ikea.mapper.category.MainCategoryMapper.BaseResultMap"/>
+        <association property="subCategory"
+                     javaType="SubCategory"
+                     columnPrefix="sc_"
+                     resultMap="com.ikea.mapper.category.SubCategoryMapper.BaseResultMap"/>
+        <collection property="productOptionList"
+                    javaType="List"
+                    ofType="ProductOption"
+                    columnPrefix="po_"
+                    resultMap="com.ikea.mapper.product.ProductOptionMapper.BaseResultMap"/>
+    </resultMap>
+
+    <sql id="columns">
+        ${alias}id as ${prefix}id
+       , ${alias}`name` AS `${prefix}name`
+       , ${alias}`desc` AS `${prefix}desc`
+       , ${alias}main_category_code AS ${prefix}main_category_code
+       , ${alias}sub_category_code AS ${prefix}sub_category_code
+       , ${alias}create_date AS ${prefix}create_date
+       , ${alias}update_date AS ${prefix}update_date
+    </sql>
+
+    <insert id="create" parameterType="Product">
+        INSERT INTO
+        product (id, name, `desc`, main_category_code, sub_category_code)
+        VALUES (#{id}, #{name}, #{desc}, #{mainCategoryCode}, #{subCategoryCode})
+    </insert>
+
+    <select id="findAll" resultMap="RelatedResultMap" parameterType="Product">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value="p."/>
+            <property name="prefix" value=""/>
+        </include>
+        ,
+        <include refid="com.ikea.mapper.category.MainCategoryMapper.columns">
+            <property name="alias" value="mc."/>
+            <property name="prefix" value="mc_"/>
+        </include>
+        ,
+        <include refid="com.ikea.mapper.category.SubCategoryMapper.columns">
+            <property name="alias" value="sc."/>
+            <property name="prefix" value="sc_"/>
+        </include>
+        ,
+        <include refid="com.ikea.mapper.product.ProductOptionMapper.columns">
+            <property name="alias" value="po."/>
+            <property name="prefix" value="po_"/>
+        </include>
+        FROM product AS p
+        LEFT JOIN main_category AS mc
+        ON p.main_category_code = mc.code
+        LEFT JOIN sub_category AS sc
+        ON p.sub_category_code = sc.code
+        LEFT JOIN product_option AS po
+        ON p.id = po.product_id
+        LIMIT #{pageNum}, #{limit}
+    </select>
+
+    <select id="findOne" resultMap="RelatedResultMap" parameterType="Product">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value=""/>
+            <property name="prefix" value=""/>
+        </include>
+        ,
+        <include refid="com.ikea.mapper.category.MainCategoryMapper.columns">
+            <property name="alias" value="mc."/>
+            <property name="prefix" value="mc_"/>
+        </include>
+        ,
+        <include refid="com.ikea.mapper.category.SubCategoryMapper.columns">
+            <property name="alias" value="sc."/>
+            <property name="prefix" value="sc_"/>
+        </include>
+        FROM product AS p
+        LEFT JOIN main_category AS mc
+        ON p.main_category_code = mc.code
+        LEFT JOIN sub_category AS sc
+        ON p.sub_category_code = sc.code
+        WHERE id = #{id}
+    </select>
+
+    <update id="modify" parameterType="Product">
+        UPDATE product
+        SET update_date = CURRENT_TIMESTAMP
+        <if test="name != null and name != ''">
+            , name = #{name}
+        </if>
+        <if test="desc != null and desc != ''">
+            , desc = #{desc}
+        </if>
+        <if test="mainCategoryCode != null and mainCategoryCode != ''">
+            , main_category_code = #{mainCategoryCode}
+        </if>
+        <if test="subCategoryCode !+ null and subCategoryCode = !''">
+            , sub_category_code = #{subCategoryCode}
+        </if>
+        <if test="price != null">
+            , price = #{price}
+        </if>
+        <if test="stock != null">
+            , stock = #{stock}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="remove" parameterType="Product">
+        DELETE FROM product WHERE id = #{id}
+    </delete>
+
+</mapper>
