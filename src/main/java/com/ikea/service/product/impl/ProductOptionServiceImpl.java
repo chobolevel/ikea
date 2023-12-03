@@ -1,14 +1,21 @@
 package com.ikea.service.product.impl;
 
+import com.ikea.entity.attachment.Attachment;
 import com.ikea.entity.product.ProductOption;
 import com.ikea.enums.ApiExceptionType;
 import com.ikea.exception.ApiException;
+import com.ikea.mapper.attachment.AttachmentMapper;
 import com.ikea.mapper.product.ProductOptionMapper;
 import com.ikea.service.product.ProductOptionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -16,10 +23,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductOptionServiceImpl implements ProductOptionService {
 
+  private final AttachmentMapper attachmentMapper;
+
   private final ProductOptionMapper productOptionMapper;
+  @Value("${spring.servlet.multipart.location}")
+  private String basePath;
 
   @Override
-  public void create(ProductOption productOption) throws ApiException {
+  public void create(ProductOption productOption, List<MultipartFile> uploadFiles) throws ApiException, IOException {
     if(productOption.getProductId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "productId", "String");
     } else if(productOption.getColor().isEmpty()) {
@@ -29,7 +40,16 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     } else if(productOption.getPrice() == 0) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "price", "int");
     }
-    productOption.setId(UUID.randomUUID().toString());
+    String productOptionId = UUID.randomUUID().toString();
+    productOption.setId(productOptionId);
+    // TODO 첨부 파일 저장 로직(테스트 필요)
+    List<Attachment> attachmentList = uploadFiles.stream().map((file) -> new Attachment(UUID.randomUUID().toString(), productOptionId, file.getOriginalFilename())).toList();
+    File folder = new File(String.format("%s\\%d", basePath, productOptionId));
+    folder.mkdir();
+    for(MultipartFile file : uploadFiles) {
+      file.transferTo(new File(String.format("%s\\%s", productOptionId, file.getOriginalFilename())));
+    }
+    attachmentMapper.creates(attachmentList);
     productOptionMapper.create(productOption);
   }
 
