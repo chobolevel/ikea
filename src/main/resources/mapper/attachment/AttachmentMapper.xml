@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ikea.mapper.attachment.AttachmentMapper">
+
+    <resultMap id="BaseResultMap" type="Attachment">
+        <id column="id" property="id"/>
+        <result column="product_option_id" property="productOptionId"/>
+        <result column="name" property="name"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <sql id="columns">
+        ${alias}id AS ${prefix}id
+        , ${alias}product_option_id AS ${prefix}product_option_id
+        , ${alias}`name` AS `${prefix}name`
+        , ${alias}create_date AS ${prefix}create_date
+        , ${alias}update_date AS ${prefix}update_date
+    </sql>
+
+    <insert id="creates" parameterType="List">
+        INSERT INTO
+        attachment (id, product_option_id, name)
+        VALUES
+        <foreach collection="attachmentLit" item="attachment" separator=", ">
+            (#{attachment.id}, #{attachment.productOptionId}, #{name})
+        </foreach>
+    </insert>
+
+    <update id="modify" parameterType="Attachment">
+        UPDATE attachment
+        SET update_date = CURRENT_TIMESTAMP
+        <if test="productOptionId != null and productOptionId != ''">
+            , product_option_id = #{productOptionId}
+        </if>
+        <if test="name != null and name != ''">
+            , name = #{name}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="remove" parameterType="Attachment">
+        DELETE FROM attachment WHERE id = #{id}
+    </delete>
+
+</mapper>
