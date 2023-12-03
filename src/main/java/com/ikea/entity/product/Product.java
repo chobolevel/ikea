@@ -23,5 +23,6 @@ public class Product extends BasePagingEntity {
   private MainCategory mainCategory;
   private SubCategory subCategory;
   private List<ProductOption> productOptionList;
+  private List<ProductReview> productReviewList;
 
 }

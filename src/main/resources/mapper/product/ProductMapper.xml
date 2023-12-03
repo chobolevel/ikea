@@ -26,6 +26,11 @@
                     ofType="ProductOption"
                     columnPrefix="po_"
                     resultMap="com.ikea.mapper.product.ProductOptionMapper.BaseResultMap"/>
+        <collection property="productReviewList"
+                    javaType="List"
+                    ofType="ProductReview"
+                    columnPrefix="pr_"
+                    resultMap="com.ikea.mapper.product.ProductReviewMapper.BaseResultMap"/>
     </resultMap>
 
     <sql id="columns">
@@ -65,20 +70,27 @@
             <property name="alias" value="po."/>
             <property name="prefix" value="po_"/>
         </include>
+        ,
+        <include refid="com.ikea.mapper.product.ProductReviewMapper.columns">
+            <property name="alias" value="pr."/>
+            <property name="prefix" value="pr_"/>
+        </include>
         FROM product AS p
         LEFT JOIN main_category AS mc
         ON p.main_category_code = mc.code
         LEFT JOIN sub_category AS sc
-        ON p.sub_category_code = sc.code
+        ON p.sub_category_code = sc.code AND mc.id = sc.main_category_id
         LEFT JOIN product_option AS po
         ON p.id = po.product_id
-        LIMIT #{pageNum}, #{limit}
+        LEFT JOIN product_review AS pr
+        ON p.id = pr.product_id
+        LIMIT #{offset}, #{limit}
     </select>
 
     <select id="findOne" resultMap="RelatedResultMap" parameterType="Product">
         SELECT
         <include refid="columns">
-            <property name="alias" value=""/>
+            <property name="alias" value="p."/>
             <property name="prefix" value=""/>
         </include>
         ,
@@ -91,12 +103,26 @@
             <property name="alias" value="sc."/>
             <property name="prefix" value="sc_"/>
         </include>
+        ,
+        <include refid="com.ikea.mapper.product.ProductOptionMapper.columns">
+            <property name="alias" value="po."/>
+            <property name="prefix" value="po_"/>
+        </include>
+        ,
+        <include refid="com.ikea.mapper.product.ProductReviewMapper.columns">
+            <property name="alias" value="pr."/>
+            <property name="prefix" value="pr_"/>
+        </include>
         FROM product AS p
         LEFT JOIN main_category AS mc
         ON p.main_category_code = mc.code
         LEFT JOIN sub_category AS sc
         ON p.sub_category_code = sc.code
-        WHERE id = #{id}
+        LEFT JOIN product_option AS po
+        ON p.id = po.product_id
+        LEFT JOIN product_review AS pr
+        ON p.id = pr.product_id
+        WHERE p.id = #{id}
     </select>
 
     <update id="modify" parameterType="Product">
