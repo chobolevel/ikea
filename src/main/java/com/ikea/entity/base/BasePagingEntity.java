@@ -10,6 +10,7 @@ public class BasePagingEntity {
   private String createDate;
   private String updateDate;
   private int pageNum;
+  private int offset;
   private int limit;
 
 }
