@@ -1,0 +1,33 @@
+<header th:fragment="headerFragment">
+  <div class="header-inner">
+    <div class="main-logo-area">
+      <a href="/">
+        <img alt="메인 로고" th:src="@{/img/ikea/main-logo.svg}">
+      </a>
+    </div>
+    <div class="main-search-area">
+      <div class="search-area-inner">
+        <input name="keyword" placeholder="검색어 입력" type="text"/>
+        <span class="search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+      </div>
+    </div>
+    <div class="user-menu-area">
+      <ul>
+        <li>
+          <i class="fa-regular fa-user"></i>
+        </li>
+        <li>
+          <i class="fa-regular fa-heart"></i>
+        </li>
+        <li>
+          <i class="fa-regular fa-cart-shopping"></i>
+        </li>
+        <li>
+          <i class="fa-solid fa-bars"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
