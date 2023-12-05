@@ -8,6 +8,12 @@
   <link rel="stylesheet" th:href="@{/css/style.css}"/>
   <script>
     $(document).ready(() => {
+      const $leftBox = $('.left-box')
+      const $rightBox = $('.right-box')
+      const $leftBoxOpenBtn = $('.left-box-open-btn')
+      const $leftBoxCloseBtn = $('.left-box-close-btn')
+      const $rightBoxOpenBtn = $('.right-box-open-btn')
+      const $rightBoxCloseBtn = $('.right-box-close-btn')
       const $mainCategoryUl = $('.main-category-list')
       const $subCategoryUl = $('.sub-category-list')
 
@@ -17,23 +23,44 @@
         contentType: 'application/json',
         success: (list) => {
           list.forEach((category) => {
-            const $li = $(`<li>${category.name}</li>`)
-            $li.on('click', (e) => {
+            const $mainCategoryLink = $(`<a href="/">${category.name}</a>`)
+            const $mainCategoryList = $(`<li></li>`)
+            $mainCategoryList.append($mainCategoryLink)
+            $mainCategoryLink.on('click', (e) => {
+              e.preventDefault()
+              $mainCategoryUl.children().removeClass('selected')
+              $mainCategoryList.addClass('selected')
               $subCategoryUl.children().remove()
               category.subCategoryList.forEach((category) => {
-                const $li = $(`<li>${category.name}</li>`)
-                $li.on('click', (e) => {
+                const $subCategoryLink = $(`<a href="/">${category.name}</a>`)
+                const $subCategoryList = $(`<li></li>`)
+                $subCategoryList.append($subCategoryLink)
+                $subCategoryLink.on('click', (e) => {
+                  e.preventDefault()
                   // 해당 카테고리 물건 검색 페이지로 이동
                 })
-                $subCategoryUl.append($li)
+                $subCategoryUl.append($subCategoryList)
               })
             })
-            $mainCategoryUl.append($li)
+            $mainCategoryUl.append($mainCategoryList)
           })
         },
         error: (error) => {
           console.log(error)
         }
+      })
+
+      $leftBoxOpenBtn.on('click', (e) => {
+        $leftBox.removeClass('hidden')
+      })
+      $leftBoxCloseBtn.on('click', (e) => {
+        $leftBox.addClass('hidden')
+      })
+      $rightBoxOpenBtn.on('click', (e) => {
+        $rightBox.removeClass('hidden')
+      })
+      $rightBoxCloseBtn.on('click', (e) => {
+        $rightBox.addClass('hidden')
       })
     })
   </script>
@@ -43,16 +70,16 @@
   <div class="announcement-area">
     <ul>
       <li>
-        <i class="fa-solid fa-phone"></i>
-        <a href="/">쉽고 편한 전화 주문, 헤이오더</a>
-      </li>
-      <li>
         <i class="fa-solid fa-store"></i>
         <a href="/">베스트 셀러</a>
       </li>
       <li>
         <i class="fa-solid fa-truck"></i>
         <a href="/">배송 서비스</a>
+      </li>
+      <li>
+        <i class="fa-solid fa-phone"></i>
+        <a href="/">쉽고 편한 전화 주문, 헤이오더</a>
       </li>
     </ul>
   </div>
