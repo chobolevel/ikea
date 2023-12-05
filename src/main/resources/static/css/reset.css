@@ -2,6 +2,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+@import url(https://db.onlinewebfonts.com/c/2b9a54453c1a3cbc651c0788ade94e4a?family=Noto+IKEA+Latin+Regular);
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -32,6 +33,7 @@ footer, header, hgroup, menu, nav, section {
 
 body {
     line-height: 1;
+    overflow-x: hidden;
 }
 
 ol, ul {
@@ -57,6 +59,7 @@ table {
 html {
     box-sizing: border-box;
     font-size: 62.5%;
+    font-family: 'Noto IKEA', 'Noto Sans KR', 'Noto Sans', 'Roboto', 'Open Sans', system-ui, sans-serif !important;
 }
 
 *,
