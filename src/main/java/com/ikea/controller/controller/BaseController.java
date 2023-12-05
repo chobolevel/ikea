@@ -1,4 +1,4 @@
-package com.ikea.controller;
+package com.ikea.controller.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

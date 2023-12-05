@@ -1,4 +1,4 @@
-package com.ikea.controller;
+package com.ikea.controller.api;
 
 import com.ikea.common.BaseResponse;
 import com.ikea.entity.product.ProductOption;
