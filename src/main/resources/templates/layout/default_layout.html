@@ -44,11 +44,11 @@
     <ul>
       <li>
         <i class="fa-solid fa-phone"></i>
-        <a href="">쉽고 편한 전화 주문, 헤이오더</a>
+        <a href="/">쉽고 편한 전화 주문, 헤이오더</a>
       </li>
       <li>
         <i class="fa-solid fa-store"></i>
-        <a href="">베스트 셀러</a>
+        <a href="/">베스트 셀러</a>
       </li>
       <li>
         <i class="fa-solid fa-truck"></i>
@@ -59,7 +59,9 @@
 
   <th:block th:replace="fragments/header :: headerFragment"></th:block>
 
-  <th:block th:replace="fragments/nav :: navFragment"></th:block>
+  <th:block th:replace="fragments/leftbox :: leftboxFragment"></th:block>
+
+  <th:block th:replace="fragments/rightbox :: rightboxFragment"></th:block>
 
   <section class="container" layout:fragment="container"></section>
 
