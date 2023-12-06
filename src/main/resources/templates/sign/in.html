@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/sign-layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 로그인</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="left-area">
+    <button class="go-back-btn">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <div class="left-area-header">
+      <img alt="메인 로고" th:src="@{/img/ikea/blue-logo.svg}"/>
+    </div>
+    <div class="left-area-section">
+      <h2>로그인</h2>
+      <p>로그인을 하고 다양한 가구를 만나보세요.</p>
+      <p>* 배송 전 주소를 반드시 확인해주세요.</p>
+    </div>
+    <div class="left-area-footer">
+      <p>&copy; IKEA</p>
+    </div>
+  </div>
+  <div class="right-area">
+    <div class="form-area">
+      <form class="sign-in-form" method="POST">
+        <div class="input-area">
+          <label for="username">아이디</label>
+          <input id="username" name="username" type="text">
+        </div>
+        <div class="input-area">
+          <label for="password">비밀번호</label>
+          <input id="password" name="password" type="password">
+        </div>
+        <div class="input-area">
+          <input id="remember" name="remember" type="checkbox">
+          <label for="remember">로그인 상태 유지</label>
+        </div>
+        <div class="blue-btn-area">
+          <button class="sign-in-btn">로그인</button>
+        </div>
+        <div class="white-btn-area">
+          <button class="sign-up-btn">회원가입</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search)
+  const $goBackBtn = $('.go-back-btn')
+  const $signInForm = $('.sign-in-form')
+  const $usernameInput = $('input[name=username]')
+  const $passwordInput = $('input[name=password]')
+  const $signInBtn = $('.sign-in-btn')
+  const $signUpBtn = $('.sign-up-btn')
+
+  if(urlParams.get('error') === 'true') {
+    alert(urlParams.get('exception'))
+  }
+
+  $signInBtn.on('click', (e) => {
+    e.preventDefault()
+    if($usernameInput.val().length <= 0) {
+      alert('아이디가 입력되지 않았습니다.')
+      $usernameInput.focus()
+    } else if($passwordInput.val().length <= 0) {
+      alert('비밀번호가 입력되지 않았습니다.')
+      $passwordInput.focus()
+    } else {
+      $signInForm.submit()
+    }
+  })
+  $goBackBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/'
+  })
+  $signUpBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/sign/up'
+  })
+</script>
