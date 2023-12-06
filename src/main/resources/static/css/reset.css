@@ -67,3 +67,7 @@ html {
 *:after {
     box-sizing: inherit;
 }
+
+label.error {
+    color: red;
+}
