@@ -16,12 +16,6 @@ public class UserRestController {
 
   private final UserService userService;
 
-  @PostMapping("")
-  public ResponseEntity<?> createUser(@RequestBody User user) throws ApiException {
-    userService.create(user);
-    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.CREATED), HttpStatus.CREATED);
-  }
-
   @PutMapping("{id}")
   public ResponseEntity<?> modifyUser(@PathVariable("id") String id, @RequestBody User user) throws ApiException {
     user.setId(id);
