@@ -24,8 +24,8 @@
         , ${alias}address as ${prefix}address
         , ${alias}mobile as ${prefix}mobile
         , ${alias}`role` as `${prefix}role`
-        , ${alias}createDate as ${prefix}createDate
-        , ${alias}updateDate as ${prefix}updateDate
+        , ${alias}create_date as ${prefix}create_date
+        , ${alias}update_date as ${prefix}update_date
     </sql>
 
     <insert id="create" parameterType="User">
