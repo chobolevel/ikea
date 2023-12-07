@@ -104,7 +104,8 @@
         required: true
       },
       mobile: {
-        required: true
+        required: true,
+        number: true
       }
     },
     messages: {
@@ -129,7 +130,8 @@
         required :'주소가 입력되지 않았습니다.'
       },
       mobile: {
-        required: '전화번호가 입력되지 않았습니다.'
+        required: '전화번호가 입력되지 않았습니다.',
+        number: '숫자만 입력 가능합니다.'
       }
     },
     submitHandler: () => {
