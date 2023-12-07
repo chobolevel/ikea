@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 프로필</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="profile-area">
+    <div class="select-area">
+      <input checked id="personal" name="area" type="radio" value="personal">
+      <label for="personal">개인 정보</label>
+      <input id="login" name="area" type="radio" value="login">
+      <label for="login">로그인</label>
+    </div>
+    <div class="info-area">
+      <div class="personal-info selected">
+        <div class="info-inner">
+          <div class="info-title">
+            <h2>개인 정보</h2>
+            <button>
+              <i class="fa-solid fa-pen"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="login-info">
+        <div class="info-inner">
+          <div class="info-title">
+            <h2>로그인 정보</h2>
+            <button>
+              <i class="fa-solid fa-pen"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $infoArea = $('.info-area')
+  const $personalInfo = $('.personal-info')
+  const $loginInfo = $('.login-info')
+  const $areaInput = $('input[name=area]')
+
+  $.ajax({
+    url: 'http://localhost:8080/api/user/me',
+    type: 'GET',
+    contentType: 'application/json',
+    success: (user) => {
+      $personalInfo.children().append(`
+        <div>
+          <p>이름</p>
+          <p>${user.name}</p>
+        </div>
+        <div>
+          <p>이메일</p>
+          <p>${user.email}</p>
+        </div>
+        <div>
+          <p>주소</p>
+          <p>${user.address}</p>
+        </div>
+        <div>
+          <p>전화번호</p>
+          <p>${user.mobile}</p>
+        </div>
+      `)
+      $loginInfo.children().append(`
+        <div>
+          <p>아이디</p>
+          <p>${user.username}</p>
+        </div>
+        <div>
+          <p>비밀번호</p>
+          <p>********</p>
+        </div>
+      `)
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+
+  $areaInput.on('input', (e) => {
+    const area = e.target.value
+    $infoArea.children().removeClass('selected')
+    switch (area) {
+      case 'personal':
+        $personalInfo.addClass('selected')
+        break
+      case 'login':
+        $loginInfo.addClass('selected')
+        break
+    }
+  })
+</script>

@@ -422,6 +422,7 @@ footer .footer-inner .legal-area .legal-links ul li a {
     margin: 0 auto;
 }
 
+/*main-advertise style*/
 .container .main-advertise-area {
     width: inherit;
     margin: 2rem 0;
@@ -475,5 +476,90 @@ footer .footer-inner .legal-area .legal-links ul li a {
     background-color: #fff;
     color: rgb(0, 124, 193);
 }
+
+/*profile area style*/
+.profile-area {
+    width: inherit;
+    padding: 3.2rem;
+}
+
+/*profile select area style*/
+.profile-area .select-area {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+}
+
+.profile-area .select-area input[type=radio] {
+    display: none;
+}
+
+.profile-area .select-area label {
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 1rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.profile-area .select-area input[type=radio]:checked + label {
+    border-bottom: 0.2rem solid rgb(0, 128, 193);
+}
+
+/*profile info area style*/
+.profile-area .info-area {
+
+}
+
+.profile-area .info-area > div {
+    display: none;
+    border: 0.1rem solid #ddd;
+    border-radius: 0.1rem;
+    padding: 2.4rem;
+}
+
+.profile-area .info-area > div.selected {
+    display: block;
+}
+
+.profile-area .info-area div div.info-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.profile-area .info-area div div.info-inner div.info-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-area .info-area div div.info-inner div.info-title h2 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.profile-area .info-area div div.info-inner div.info-title button {
+    width: 3rem;
+    height: 3rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.profile-area .info-area div div.info-inner div:not(.info-title) p:first-child {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: gray;
+}
+
+.profile-area .info-area div div.info-inner div:not(.info-title) p:nth-child(2) {
+    font-size: 1.4rem;
+    color: #000;
+}
+
 
 
