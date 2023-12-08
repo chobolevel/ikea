@@ -17,8 +17,8 @@ public class SubCategoryRestController {
   private final SubCategoryService subCategoryService;
 
   @GetMapping("list")
-  public ResponseEntity<?> getSubCategoryList() throws ApiException {
-    return new ResponseEntity<>(subCategoryService.findAll(SubCategory.builder().build()), HttpStatus.OK);
+  public ResponseEntity<?> getSubCategoryList(SubCategory subCategory) throws ApiException {
+    return new ResponseEntity<>(subCategoryService.findAll(subCategory), HttpStatus.OK);
   }
 
   @PostMapping("")
