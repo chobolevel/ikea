@@ -56,6 +56,30 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public void changePassword(User user) throws ApiException {
+    if(user.getId().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
+    } else if(user.getCurPassword().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "curPassword", "String");
+    } else if(user.getPassword().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "password", "String");
+    }
+    User findUser = userMapper.findOne(User.builder().id(user.getId()).build());
+    if(findUser == null) {
+      throw new ApiException(ApiExceptionType.FAIL_TO_FETCH, "User");
+    }
+    String findUserCurPassword = findUser.getPassword();
+    boolean isPwMatch = passwordEncoder.matches(user.getCurPassword(), findUserCurPassword);
+    if(!isPwMatch) {
+      throw new ApiException(ApiExceptionType.DOES_NOT_MATCH_CUR_PASSWORD);
+    }
+    userMapper.modify(User.builder()
+        .id(user.getId())
+        .password(passwordEncoder.encode(user.getPassword()))
+        .build());
+  }
+
+  @Override
   public void remove(User user) throws ApiException {
     if(user.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "id");

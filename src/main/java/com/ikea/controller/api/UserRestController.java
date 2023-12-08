@@ -32,6 +32,12 @@ public class UserRestController {
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
 
+  @PutMapping("change-password")
+  public ResponseEntity<?> changePassword(@RequestBody User user) throws ApiException {
+    userService.changePassword(user);
+    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
+  }
+
   @DeleteMapping("{id}")
   public ResponseEntity<?> removeUser(@PathVariable("id") String id) throws ApiException {
     userService.remove(User.builder().id(id).build());

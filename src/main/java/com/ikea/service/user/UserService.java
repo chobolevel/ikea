@@ -11,6 +11,8 @@ public interface UserService {
 
   void modify(User user) throws ApiException;
 
+  void changePassword(User user) throws ApiException;
+
   void remove(User user) throws ApiException;
 
 }

@@ -22,4 +22,8 @@ public class User extends BaseEntity {
   private String mobile;
   private UserRoleType role;
 
+  // for changePassword field
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private String curPassword;
+
 }
