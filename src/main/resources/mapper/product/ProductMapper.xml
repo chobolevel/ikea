@@ -84,6 +84,14 @@
         ON p.id = po.product_id
         LEFT JOIN product_review AS pr
         ON p.id = pr.product_id
+        <where>
+            <if test="mainCategoryCode != null and mainCategoryCode != ''">
+                AND p.main_category_code = #{mainCategoryCode}
+            </if>
+            <if test="subCategoryCode != null and sucCategoryCode != ''">
+                AND p.sub_category_code = #{subCategoryCode}
+            </if>
+        </where>
         LIMIT #{offset}, #{limit}
     </select>
 
