@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -23,7 +24,7 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
       errorMessage = "회원정보가 올바르지 않습니다.";
     }
 
-    setDefaultFailureUrl("/sign/in?error=true&exception=" + URLEncoder.encode(errorMessage));
+    setDefaultFailureUrl("/sign/in?errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
 
     // successHandler와 달리 부모 요청하는 이유는 인증 실패와 관련된 추가 동작을 진행하기 위함
     super.onAuthenticationFailure(request, response, exception);

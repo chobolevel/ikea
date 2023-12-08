@@ -62,8 +62,8 @@
   const $signInBtn = $('.sign-in-btn')
   const $signUpBtn = $('.sign-up-btn')
 
-  if(urlParams.get('error') === 'true') {
-    alert(urlParams.get('exception'))
+  if(urlParams.get('errorMessage')) {
+    alert(urlParams.get('errorMessage'))
   }
 
   $signInBtn.on('click', (e) => {
