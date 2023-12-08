@@ -20,7 +20,7 @@
         <div class="info-inner">
           <div class="info-title">
             <h2>개인 정보</h2>
-            <button>
+            <button class="personal-info-edit-btn">
               <i class="fa-solid fa-pen"></i>
             </button>
           </div>
@@ -30,11 +30,23 @@
         <div class="info-inner">
           <div class="info-title">
             <h2>로그인 정보</h2>
-            <button>
+            <button class="login-info-edit-btn">
               <i class="fa-solid fa-pen"></i>
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <div aria-hidden="true" class="edit-profile-popup">
+    <div class="popup-inner">
+      <h2 class="popup-title"></h2>
+      <div class="popup-input-area">
+
+      </div>
+      <div class="popup-btn-area">
+        <button class="popup-cancel-btn">취소</button>
+        <button class="popup-save-btn">저장</button>
       </div>
     </div>
   </div>
@@ -48,12 +60,22 @@
   const $personalInfo = $('.personal-info')
   const $loginInfo = $('.login-info')
   const $areaInput = $('input[name=area]')
+  const $personalInfoEditBtn = $('.personal-info-edit-btn')
+  const $loginInfoEditBtn = $('.login-info-edit-btn')
+  const $editProfilePopup = $('.edit-profile-popup')
+  const $popupTitle = $('.popup-title')
+  const $popupInputArea = $('.popup-input-area')
+  const $popupCancelBtn = $('.popup-cancel-btn')
+  const $popupSaveBtn = $('.popup-save-btn')
+
+  let myUser
 
   $.ajax({
     url: 'http://localhost:8080/api/user/me',
     type: 'GET',
     contentType: 'application/json',
     success: (user) => {
+      myUser = user
       $personalInfo.children().append(`
         <div>
           <p>이름</p>
@@ -99,5 +121,103 @@
         $loginInfo.addClass('selected')
         break
     }
+  })
+  $personalInfoEditBtn.on('click', (e) => {
+    $popupTitle.text('개인 정보 수정')
+    $popupInputArea.append(`
+      <div>
+        <label for="name">이름</label>
+        <input type="text" name="name" id="name" value="${myUser.name}">
+      </div>
+      <div>
+        <label for="email">이메일</label>
+        <input type="text" name="email" id="email" value="${myUser.email}">
+      </div>
+      <div>
+         <label for="address">주소</label>
+         <input type="text" name="address" id="address" value="${myUser.address}">
+      </div>
+      <div>
+        <label for="mobile">전화번호(하이픈(-) 없이 입력해주세요.)</label>
+        <input type="text" name="mobile" id="mobile" value="${myUser.mobile}">
+      </div>
+    `)
+    $popupSaveBtn.off('click')
+    $popupSaveBtn.on('click', (e) => {
+      e.preventDefault()
+      const $nameInput = $('input[name=name]')
+      const $emailInput = $('input[name=email]')
+      const $addressInput = $('input[name=address]')
+      const $mobileInput = $('input[name=mobile]')
+
+      $.ajax({
+        url: `http://localhost:8080/api/user/${myUser.id}`,
+        type: 'PUT',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          name: $nameInput.val(),
+          email: $emailInput.val(),
+          address: $addressInput.val(),
+          mobile: $mobileInput.val()
+        }),
+        success: () => {
+          alert('개인 정보 수정 완료')
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    })
+    $editProfilePopup.css('display', 'block')
+  })
+  $loginInfoEditBtn.on('click', (e) => {
+    $popupTitle.text('로그인 정보 수정')
+    $popupInputArea.append(`
+      <div>
+        <label for="curPassword">현재 비밀번호</label>
+        <input type="password" name="curPassword" id="curPassword">
+      </div>
+      <div>
+        <label for="password">변경할 비밀번호</label>
+        <input type="password" name="password" id="password">
+      </div>
+      <div>
+        <label for="checkPassword">확인 비밀번호</label>
+        <input type="password" name="checkPassword" id="checkPassword">
+      </div>
+    `)
+    $popupSaveBtn.off('click')
+    $popupSaveBtn.on('click', (e) => {
+      e.preventDefault()
+      const $curPasswordInput = $('input[name=curPassword]')
+      const $passwordInput = $('input[name=password]')
+      const $checkPasswordInput = $('input[name=checkPassword]')
+
+      $.ajax({
+        url: 'http://localhost:8080/api/user/change-password',
+        type: 'PUT',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          id: myUser.id,
+          curPassword: $curPasswordInput.val(),
+          password: $passwordInput.val()
+        }),
+        success: () => {
+          alert('비밀번호 변경 완료')
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    })
+    $editProfilePopup.css('display', 'block')
+  })
+  $popupCancelBtn.on('click', (e) => {
+    e.preventDefault()
+    $popupTitle.text()
+    $popupInputArea.children().remove()
+    $editProfilePopup.css('display', 'none')
   })
 </script>
