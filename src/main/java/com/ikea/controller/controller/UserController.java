@@ -13,4 +13,14 @@ public class UserController {
     return "/user/profile";
   }
 
+  @GetMapping("find-username")
+  public String findUsername() {
+    return "/user/find-username";
+  }
+
+  @GetMapping("find-password")
+  public String findPassword() {
+    return "/user/find-password";
+  }
+
 }

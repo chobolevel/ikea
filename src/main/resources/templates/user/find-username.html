@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/sign-layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 아이디 찾기</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="left-area">
+    <button class="go-back-btn">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <div class="left-area-header">
+      <img alt="메인 로고" th:src="@{/img/ikea/blue-logo.svg}"/>
+    </div>
+    <div class="left-area-section">
+      <h2>아이디 찾기</h2>
+      <p>회원가입에 사용된 이메일로 메일을 전송해드립니다.</p>
+      <p>* 반드시 회원가입에 사용된 이메일을 입력해주세요.</p>
+    </div>
+    <div class="left-area-footer">
+      <p>&copy; IKEA</p>
+    </div>
+  </div>
+  <div class="right-area">
+    <div class="form-area">
+      <form class="find-username-form" method="POST">
+        <div class="input-area">
+          <label for="email">이메일</label>
+          <input id="email" name="email" type="text">
+        </div>
+        <div class="blue-btn-area">
+          <button class="find-username-btn">아이디 찾기</button>
+        </div>
+        <div class="white-btn-area">
+          <button class="sign-in-btn">로그인</button>
+          <button class="sign-up-btn">회원가입</button>
+          <button class="find-password-btn">비밀번호 찾기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $findUsernameForm = $('.find-username-form')
+  const $emailInput = $('input[name=email]')
+  const $findUsernameBtn = $('.find-username-btn')
+  const $signInBtn = $('.sign-in-btn')
+  const $signUpBtn = $('.sign-up-btn')
+  const $findPasswordBtn = $('.find-password-btn')
+
+  $findUsernameForm.validate({
+    rules: {
+      email: {
+        required: true,
+        email: true
+      }
+    },
+    messages: {
+      email: {
+        required: '이메일이 입력되지 않았습니다.',
+        email: '이메일 형식이 올바르지 않습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: 'http://localhost:8080/api/user/find-username',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          email: $emailInput.val()
+        }),
+        success: () => {
+          alert('해당 이메일로 메일을 발솧하였습니다.')
+          location.href = '/sign/in'
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    }
+  })
+  $findUsernameBtn.on('click', (e) => {
+    e.preventDefault()
+    $findUsernameForm.submit()
+  })
+  $signInBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/sign/in'
+  })
+  $signUpBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/sign/up'
+  })
+  $findPasswordBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/user/find-password'
+  })
+</script>
