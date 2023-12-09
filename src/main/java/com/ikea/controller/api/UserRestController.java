@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -23,6 +25,12 @@ public class UserRestController {
     String id = userDetails.getUser().getId();
     User findUser = userService.findOne(User.builder().id(id).build());
     return new ResponseEntity<>(findUser, HttpStatus.OK);
+  }
+
+  @PostMapping("find-username")
+  public ResponseEntity<?> findUsername(@RequestBody User user) throws ApiException, MessagingException {
+    userService.findUsername(user);
+    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
 
   @PutMapping("{id}")

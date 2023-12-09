@@ -3,6 +3,8 @@ package com.ikea.service.user;
 import com.ikea.entity.user.User;
 import com.ikea.exception.ApiException;
 
+import javax.mail.MessagingException;
+
 public interface UserService {
 
   void create(User user) throws ApiException;
@@ -14,5 +16,7 @@ public interface UserService {
   void changePassword(User user) throws ApiException;
 
   void remove(User user) throws ApiException;
+
+  void findUsername(User user) throws ApiException, MessagingException;
 
 }

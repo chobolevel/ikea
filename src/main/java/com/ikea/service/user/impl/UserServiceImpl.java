@@ -1,16 +1,20 @@
 package com.ikea.service.user.impl;
 
+import com.ikea.entity.base.MailEntity;
 import com.ikea.entity.user.User;
 import com.ikea.enums.ApiExceptionType;
 import com.ikea.enums.UserRoleType;
 import com.ikea.exception.ApiException;
 import com.ikea.mapper.user.UserMapper;
 import com.ikea.service.user.UserService;
+import com.ikea.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.util.UUID;
 
 @Service
@@ -20,6 +24,7 @@ public class UserServiceImpl implements UserService {
 
   private final UserMapper userMapper;
   private final BCryptPasswordEncoder passwordEncoder;
+  private final JavaMailSender mailSender;
 
   @Override
   public void create(User user) throws ApiException {
@@ -85,6 +90,18 @@ public class UserServiceImpl implements UserService {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "id");
     }
     userMapper.remove(user);
+  }
+
+  @Override
+  public void findUsername(User user) throws ApiException, MessagingException {
+    if(user.getEmail().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "email", "String");
+    }
+    User findUser = userMapper.findOne(user);
+    if(findUser == null) {
+      throw new ApiException(ApiExceptionType.FAIL_TO_FETCH, "User");
+    }
+    CommonUtil.sendUsername(mailSender, MailEntity.builder().to(findUser.getEmail()).username(findUser.getUsername()).build());
   }
 
 }

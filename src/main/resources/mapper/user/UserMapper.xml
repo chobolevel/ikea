@@ -48,6 +48,9 @@
             <if test="username != null and username != ''">
                 AND username = #{username}
             </if>
+            <if test="email != null and email != ''">
+                AND email = #{email}
+            </if>
         </where>
     </select>
 
