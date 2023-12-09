@@ -63,6 +63,8 @@
   const $passwordInput = $('input[name=password]')
   const $signInBtn = $('.sign-in-btn')
   const $signUpBtn = $('.sign-up-btn')
+  const $findUsernameBtn = $('.find-username-btn')
+  const $findPasswordBtn = $('.find-password-btn')
 
   if(urlParams.get('errorMessage')) {
     alert(urlParams.get('errorMessage'))
@@ -87,5 +89,13 @@
   $signUpBtn.on('click', (e) => {
     e.preventDefault()
     location.href = '/sign/up'
+  })
+  $findUsernameBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/user/find-username'
+  })
+  $findPasswordBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/user/find-password'
   })
 </script>
