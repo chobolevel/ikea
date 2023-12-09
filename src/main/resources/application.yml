@@ -13,6 +13,21 @@ spring:
       location: C:\dev\project\ikea\src\main\resources\static\img
       max-file-size: 200MB
       max-request-size: 100MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail:
+        smtp:
+          # 사용자 인증 시도 여부(default = false)
+          auth: true
+          # Socket read timeout 5000ms(default = 무한)
+          timeout: 5000
+          # startTLS 활성화 여부(default = false)
+          starttls:
+            enable: true
 mybatis:
   type-aliases-package: com.ikea.entity
   mapper-locations: classpath:mapper/**/*.xml
