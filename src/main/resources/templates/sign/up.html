@@ -60,6 +60,8 @@
         </div>
         <div class="white-btn-area">
           <button class="sign-in-btn">로그인</button>
+          <button class="find-username-btn">아이디 찾기</button>
+          <button class="find-password-btn">비밀번호 찾기</button>
         </div>
       </form>
     </div>
@@ -80,6 +82,8 @@
   const $mobileInput = $('input[name=mobile]')
   const $signUpBtn = $('.sign-up-btn')
   const $signInBtn = $('.sign-in-btn')
+  const $findUsernameBtn = $('.find-username-btn')
+  const $findPasswordBtn = $('.find-password-btn')
 
   $signUpForm.validate({
     rules: {
@@ -169,5 +173,13 @@
   $signInBtn.on('click', (e) => {
     e.preventDefault()
     location.href = '/sign/in'
+  })
+  $findUsernameBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/user/find-username'
+  })
+  $findPasswordBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/user/find-password'
   })
 </script>

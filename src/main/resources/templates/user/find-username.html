@@ -48,6 +48,7 @@
 </html>
 
 <script>
+  const $goBackBtn = $('.go-back-btn')
   const $findUsernameForm = $('.find-username-form')
   const $emailInput = $('input[name=email]')
   const $findUsernameBtn = $('.find-username-btn')
@@ -86,6 +87,10 @@
         }
       })
     }
+  })
+  $goBackBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/'
   })
   $findUsernameBtn.on('click', (e) => {
     e.preventDefault()
