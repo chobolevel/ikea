@@ -33,6 +33,12 @@ public class UserRestController {
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
 
+  @PostMapping("find-password")
+  public ResponseEntity<?> findPassword(@RequestBody User user) throws ApiException, MessagingException {
+    userService.findPassword(user);
+    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
+  }
+
   @PutMapping("{id}")
   public ResponseEntity<?> modifyUser(@PathVariable("id") String id, @RequestBody User user) throws ApiException {
     user.setId(id);

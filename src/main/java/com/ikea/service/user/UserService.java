@@ -19,4 +19,6 @@ public interface UserService {
 
   void findUsername(User user) throws ApiException, MessagingException;
 
+  void findPassword(User user) throws ApiException, MessagingException;
+
 }

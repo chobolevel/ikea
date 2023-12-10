@@ -7,7 +7,7 @@ import com.ikea.enums.UserRoleType;
 import com.ikea.exception.ApiException;
 import com.ikea.mapper.user.UserMapper;
 import com.ikea.service.user.UserService;
-import com.ikea.util.CommonUtil;
+import com.ikea.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -101,7 +101,23 @@ public class UserServiceImpl implements UserService {
     if(findUser == null) {
       throw new ApiException(ApiExceptionType.FAIL_TO_FETCH, "User");
     }
-    CommonUtil.sendUsername(mailSender, MailEntity.builder().to(findUser.getEmail()).username(findUser.getUsername()).build());
+    MailUtil.sendUsername(mailSender, MailEntity.builder().to(findUser.getEmail()).username(findUser.getUsername()).build());
+  }
+
+  @Override
+  public void findPassword(User user) throws ApiException, MessagingException {
+    if(user.getUsername().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "username", "String");
+    } else if(user.getEmail().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "email", "String");
+    }
+    User findUser = userMapper.findOne(user);
+    if(findUser == null) {
+      throw new ApiException(ApiExceptionType.FAIL_TO_FETCH, "User");
+    }
+    String newPassword = UUID.randomUUID().toString();
+    userMapper.modify(User.builder().id(findUser.getId()).password(passwordEncoder.encode(newPassword)).build());
+    MailUtil.sendPassword(mailSender, MailEntity.builder().to(findUser.getEmail()).password(newPassword).build());
   }
 
 }
