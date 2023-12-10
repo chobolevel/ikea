@@ -88,7 +88,7 @@
             <if test="mainCategoryCode != null and mainCategoryCode != ''">
                 AND p.main_category_code = #{mainCategoryCode}
             </if>
-            <if test="subCategoryCode != null and sucCategoryCode != ''">
+            <if test="subCategoryCode != null and subCategoryCode != ''">
                 AND p.sub_category_code = #{subCategoryCode}
             </if>
         </where>
