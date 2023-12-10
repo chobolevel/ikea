@@ -23,8 +23,8 @@
         type: 'GET',
         contentType: 'application/json',
         success: (list) => {
-          list.forEach((category) => {
-            const $mainCategoryLink = $(`<a href="/">${category.name}</a>`)
+          list.forEach((mainCategory) => {
+            const $mainCategoryLink = $(`<a href="/">${mainCategory.name}</a>`)
             const $mainCategoryList = $(`<li></li>`)
             $mainCategoryList.append($mainCategoryLink)
             $mainCategoryLink.on('click', (e) => {
@@ -32,14 +32,10 @@
               $mainCategoryUl.children().removeClass('selected')
               $mainCategoryList.addClass('selected')
               $subCategoryUl.children().remove()
-              category.subCategoryList.forEach((category) => {
-                const $subCategoryLink = $(`<a href="/">${category.name}</a>`)
+              mainCategory.subCategoryList.forEach((subCategory) => {
+                const $subCategoryLink = $(`<a href="/product/list?mainCategoryCode=${mainCategory.code}&subCategoryCode=${subCategory.code}">${subCategory.name}</a>`)
                 const $subCategoryList = $(`<li></li>`)
                 $subCategoryList.append($subCategoryLink)
-                $subCategoryLink.on('click', (e) => {
-                  e.preventDefault()
-                  // 해당 카테고리 물건 검색 페이지로 이동
-                })
                 $subCategoryUl.append($subCategoryList)
               })
             })
