@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 상품 등록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="form-area">
+    <div class="form-title">
+      <h2>상품 등록</h2>
+    </div>
+    <form class="product-register-form">
+      <div class="input-area">
+        <label for="name">상품 이름</label>
+        <input id="name" name="name" type="text">
+      </div>
+      <div class="input-area">
+        <label for="desc">상품 상세</label>
+        <textarea id="desc" name="desc"></textarea>
+      </div>
+      <div class="input-area">
+        <label for="mainCategoryCode">대분류</label>
+        <select id="mainCategoryCode" name="mainCategoryCode">
+          <option>대분류를 선택해주세요.</option>
+        </select>
+      </div>
+      <div class="input-area">
+        <label for="subCategoryCode">소분류</label>
+        <select id="subCategoryCode" name="subCategoryCode">
+          <option>소분류를 선택해주세요.</option>
+        </select>
+      </div>
+      <div class="btn-area">
+        <button class="cancel-btn">취소</button>
+        <button class="save-btn">등록</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $productRegisterForm = $('.product-register-form')
+  const $nameInput = $('input[name=name]')
+  const $descTextArea = $('textarea[name=desc]')
+  const $mainCategorySelect = $('select[name=mainCategoryCode]')
+  const $subCategorySelect = $('select[name=subCategoryCode]')
+  const $cancelBtn = $('.cancel-btn')
+  const $saveBtn = $('.save-btn')
+
+  let categoryList
+
+  $.ajax({
+    url: 'http://localhost:8080/api/main-category/list',
+    type: 'GET',
+    contentType: 'application/json',
+    success: (mainCategoryList) => {
+      categoryList = mainCategoryList
+      mainCategoryList.forEach((mainCategory) => {
+        const $option = $(`<option value="${mainCategory.code}">${mainCategory.name}</option>`)
+        $mainCategorySelect.append($option)
+      })
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+
+  $productRegisterForm.validate({
+    rules: {
+      name: {
+        required: true
+      },
+      desc: {
+        required: true
+      },
+      mainCategoryCode: {
+        required: true
+      },
+      subCategoryCode: {
+        required: true
+      }
+    },
+    messages: {
+      name: {
+        required: '상품 이름이 입력되지 않았습니다.'
+      },
+      desc: {
+        required: '상품 상세가 입력되지 않았습니다.'
+      },
+      mainCategoryCode: {
+        required: '대분류가 선택되지 않았습니다.'
+      },
+      subCategoryCode: {
+        required: '소분류가 선택되지 않았습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: 'http://localhost:8080/api/product',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          name: $nameInput.val(),
+          desc: $descTextArea.val(),
+          mainCategoryCode: $mainCategorySelect.val(),
+          subCategoryCode: $subCategorySelect.val()
+        }),
+        success: () => {
+          alert('상품 등록이 완료되었습니다.')
+          location.href = '/product/list'
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    }
+  })
+
+  $mainCategorySelect.on('change', (e) => {
+    e.preventDefault()
+    const mainCategory = categoryList.find((c) => c.code === $mainCategorySelect.val())
+    $subCategorySelect.children().remove()
+    $subCategorySelect.append('<option>소분류를 선택해주세요.</option>')
+    mainCategory.subCategoryList.forEach((subCategory) => {
+      const $option = $(`<option value="${subCategory.code}">${subCategory.name}</option>`)
+      $subCategorySelect.append($option)
+    })
+  })
+  $cancelBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/'
+  })
+  $saveBtn.on('click', (e) => {
+    e.preventDefault()
+    $productRegisterForm.submit()
+  })
+</script>

@@ -647,3 +647,81 @@ footer .footer-inner .legal-area .legal-links ul li a {
     background-color: #000;
     color: #fff;
 }
+
+/*all of form style*/
+.form-area {
+    width: 100%;
+    padding: 3.2rem;
+}
+
+.form-area .form-title {
+    width: 100%;
+}
+
+.form-area .form-title h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: rgb(0, 124, 193);
+}
+
+.form-area form {
+    width: 100%;
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 2rem;
+}
+
+.form-area form .input-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 1rem;
+}
+
+.form-area form .input-area label {
+    font-size: 1.2rem;
+}
+
+.form-area form .input-area input {
+    width: 70%;
+    height: 4rem;
+}
+.form-area form .input-area textarea {
+    width: 70%;
+    height: 7rem;
+}
+
+.form-area form .input-area select {
+    width: 50%;
+    height: 4rem;
+}
+
+.form-area form .btn-area {
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 1rem;
+}
+
+.form-area form .btn-area button {
+    width: 10rem;
+    height: 4rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 1rem;
+    cursor: pointer;
+    border: 0.1rem solid #000;
+}
+
+.form-area form .btn-area button.save-btn {
+    background-color: #000;
+    color: #fff;
+}
