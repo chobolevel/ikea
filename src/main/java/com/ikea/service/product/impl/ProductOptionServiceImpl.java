@@ -46,10 +46,18 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     // List for attachmentMapper creates
     List<Attachment> attachmentList = uploadFiles.stream().map((file) -> new Attachment(UUID.randomUUID().toString(), productOptionId, file.getOriginalFilename())).toList();
     File mainFolder = new File(String.format("%s\\%s", basePath, productId));
-    boolean isMainFolderCreate = mainFolder.mkdir();
+    boolean isMainFolderExists = mainFolder.exists();
+    boolean isMainFolderCreate = false;
+    if(!isMainFolderExists) {
+       isMainFolderCreate = mainFolder.mkdir();
+    }
     File subFolder = new File(String.format("%s\\%s\\%s", basePath, productId, productOptionId));
-    boolean isSubFolderCreate = subFolder.mkdir();
-    boolean isFolderCreate = isMainFolderCreate && isSubFolderCreate;
+    boolean isSubFolderExists = subFolder.exists();
+    boolean isSubFolderCreate = false;
+    if(!isSubFolderExists) {
+      isSubFolderCreate = subFolder.mkdir();
+    }
+    boolean isFolderCreate = (isMainFolderCreate || isMainFolderExists) && (isSubFolderCreate || isSubFolderExists);
     if(isFolderCreate) {
       for(MultipartFile file : uploadFiles) {
         file.transferTo(new File(String.format("%s\\%s\\%s", productId, productOptionId, file.getOriginalFilename())));
