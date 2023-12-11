@@ -25,7 +25,7 @@
                     javaType="List"
                     ofType="ProductOption"
                     columnPrefix="po_"
-                    resultMap="com.ikea.mapper.product.ProductOptionMapper.BaseResultMap"/>
+                    resultMap="com.ikea.mapper.product.ProductOptionMapper.RelatedResultMap"/>
         <collection property="productReviewList"
                     javaType="List"
                     ofType="ProductReview"
@@ -71,6 +71,11 @@
             <property name="prefix" value="po_"/>
         </include>
         ,
+        <include refid="com.ikea.mapper.attachment.AttachmentMapper.columns">
+            <property name="alias" value="a."/>
+            <property name="prefix" value="po_a_"/>
+        </include>
+        ,
         <include refid="com.ikea.mapper.product.ProductReviewMapper.columns">
             <property name="alias" value="pr."/>
             <property name="prefix" value="pr_"/>
@@ -82,6 +87,8 @@
         ON p.sub_category_code = sc.code AND mc.id = sc.main_category_id
         LEFT JOIN product_option AS po
         ON p.id = po.product_id
+        LEFT JOIN attachment AS a
+        ON po.id = a.product_option_id
         LEFT JOIN product_review AS pr
         ON p.id = pr.product_id
         <where>
@@ -117,6 +124,11 @@
             <property name="prefix" value="po_"/>
         </include>
         ,
+        <include refid="com.ikea.mapper.attachment.AttachmentMapper.columns">
+            <property name="alias" value="a."/>
+            <property name="prefix" value="po_a_"/>
+        </include>
+        ,
         <include refid="com.ikea.mapper.product.ProductReviewMapper.columns">
             <property name="alias" value="pr."/>
             <property name="prefix" value="pr_"/>
@@ -128,6 +140,8 @@
         ON p.sub_category_code = sc.code
         LEFT JOIN product_option AS po
         ON p.id = po.product_id
+        LEFT JOIN attachment AS a
+        ON po.id = a.product_option_id
         LEFT JOIN product_review AS pr
         ON p.id = pr.product_id
         WHERE p.id = #{id}

@@ -15,6 +15,14 @@
         <result column="update_date" property="updateDate"/>
     </resultMap>
 
+    <resultMap id="RelatedResultMap" type="ProductOption" extends="BaseResultMap">
+        <collection property="attachmentList"
+                    javaType="List"
+                    ofType="Attachment"
+                    columnPrefix="a_"
+                    resultMap="com.ikea.mapper.attachment.AttachmentMapper.BaseResultMap"/>
+    </resultMap>
+
     <sql id="columns">
         ${alias}id AS ${prefix}id
         , ${alias}product_id AS ${prefix}product_id

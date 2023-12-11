@@ -1,7 +1,10 @@
 package com.ikea.entity.product;
 
+import com.ikea.entity.attachment.Attachment;
 import com.ikea.entity.base.BaseEntity;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +21,7 @@ public class ProductOption extends BaseEntity {
   private int height;
   private int stock;
   private int price;
+
+  private List<Attachment> attachmentList;
 
 }
