@@ -22,8 +22,8 @@
         INSERT INTO
         attachment (id, product_option_id, name)
         VALUES
-        <foreach collection="attachmentLit" item="attachment" separator=", ">
-            (#{attachment.id}, #{attachment.productOptionId}, #{name})
+        <foreach collection="attachmentList" item="attachment" separator=", ">
+            (#{attachment.id}, #{attachment.productOptionId}, #{attachment.name})
         </foreach>
     </insert>
 
