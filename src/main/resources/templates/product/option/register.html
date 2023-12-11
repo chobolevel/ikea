@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 상품 옵션 등록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="form-area">
+    <div class="form-title">
+      <h2>상품 옵션 등록</h2>
+    </div>
+    <form class="product-option-register-form">
+      <div class="input-area">
+        <label for="color">상품 색상</label>
+        <input id="color" name="color" type="text">
+      </div>
+      <div class="input-area">
+        <label for="width">상품 가로 길이(cm)</label>
+        <input id="width" name="width" type="text">
+      </div>
+      <div class="input-area">
+        <label for="depth">상품 세로 길이(cm)</label>
+        <input id="depth" name="depth" type="text">
+      </div>
+      <div class="input-area">
+        <label for="height">상품 높이(cm)</label>
+        <input id="height" name="height" type="text">
+      </div>
+      <div class="input-area">
+        <label for="stock">상품 재고 수량</label>
+        <input id="stock" name="stock" type="text">
+      </div>
+      <div class="input-area">
+        <label for="price">상품 가격</label>
+        <input id="price" name="price" type="text">
+      </div>
+      <div class="upload-area">
+        <label for="uploadFiles">상품 사진</label>
+        <input accept="image/png" id="uploadFiles" multiple="multiple" name="uploadFiles"
+               type="file">
+        <ul class="uploaded-files-list"></ul>
+      </div>
+      <div class="btn-area">
+        <button class="cancel-btn">취소</button>
+        <button class="save-btn">등록</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+  const productId = [[${productId}]]
+  const $productOptionRegisterForm = $('.product-option-register-form')
+  const $colorInput = $('input[name=color]')
+  const $widthInput = $('input[name=width]')
+  const $depthInput = $('input[name=depth]')
+  const $heightInput = $('input[name=height]')
+  const $stockInput = $('input[name=stock]')
+  const $priceInput = $('input[name=price]')
+  const $uploadFilesInput = $('input[name=uploadFiles]')
+  const $uploadedFilesList = $('.uploaded-files-list')
+
+  $productOptionRegisterForm.validate({
+    rules: {
+      color: {
+        required: true
+      },
+      width: {
+        required: true,
+        number: true
+      },
+      depth: {
+        required: true,
+        number: true
+      },
+      height: {
+        required: true,
+        number: true
+      },
+      stock: {
+        required: true,
+        number: true
+      },
+      price: {
+        required: true,
+        number: true
+      }
+    },
+    messages: {
+      color: {
+        required: '상품 색상이 입력되지 않았습니다.'
+      },
+      width: {
+        required: '상품 가로 길이가 입력되지 않았습니다.',
+        number: '상품 길이는 숫자만 입력 가능합니다.'
+      },
+      depth: {
+        required: '상품 세로 길이가 입력되지 않았습니다.',
+        number: '상품 길이는 숫자만 입력 가능합니다.'
+      },
+      height: {
+        required: '상품 높이가 입력되지 않았습니다.',
+        number: '상품 높이는 숫자만 입력 가능합니다.'
+      },
+      stock: {
+        required: '상품 재고 수량이 입력되지 않았습니다.',
+        number: '상품 재고 수량은 숫자만 입력 가능합니다.'
+      },
+      price: {
+        required: '상품 가격이 입력되지 않았습니다.',
+        number: '상품 가격은 숫자만 입력 가능합니다.'
+      }
+    },
+    submitHandler: () => {
+      const formData = new FormData()
+      const data = {
+        productId,
+        color: $colorInput.val(),
+        width: $widthInput.val(),
+        depth: $depthInput.val(),
+        height: $heightInput.val(),
+        stock: $stockInput.val(),
+        price: $priceInput.val()
+      }
+      formData.append('productOption', new Blob([JSON.stringify(data)], {type: 'application/json'}))
+      Array.from($uploadFilesInput[0].files).forEach((file) => {
+        formData.append('uploadFiles', file)
+      })
+      $.ajax({
+        url: 'http://localhost:8080/api/product-option',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        cache: false,
+        encType: 'multipart/form-data',
+        dataType: 'json',
+        data: formData,
+        success: () => {
+          alert('상품 옵션 정보 저장')
+          location.href = '/product/list'
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    }
+  })
+
+  $uploadFilesInput.on('change', (e) => {
+    e.preventDefault()
+    const uploadFilesArr = Array.from($uploadFilesInput[0].files)
+    if(uploadFilesArr.find((file) => file.type !== 'image/png')) {
+      alert('.png 확장자가 아닌 파일이 첨부되었습니다.\n해당 파일을 제외 후 다시 첨부해 주시기 바랍니다.')
+      $uploadFilesInput.val('')
+    } else {
+      $uploadedFilesList.children().remove()
+      uploadFilesArr.forEach((file) => {
+        const $li = $(`<li>${file.name}</li>`)
+        $uploadedFilesList.append($li)
+      })
+    }
+  })
+</script>

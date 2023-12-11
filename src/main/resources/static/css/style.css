@@ -654,6 +654,7 @@ footer .footer-inner .legal-area .legal-links ul li a {
     padding: 3.2rem;
 }
 
+/*all of form title*/
 .form-area .form-title {
     width: 100%;
 }
@@ -674,6 +675,7 @@ footer .footer-inner .legal-area .legal-links ul li a {
     gap: 2rem;
 }
 
+/*all of form input-area style*/
 .form-area form .input-area {
     width: 100%;
     display: flex;
@@ -701,6 +703,36 @@ footer .footer-inner .legal-area .legal-links ul li a {
     height: 4rem;
 }
 
+/*all of form upload-area style*/
+.form-area form .upload-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 1rem;
+}
+
+.form-area form .upload-area label {
+    font-size: 1.2rem;
+}
+
+.form-area form .upload-area .uploaded-files-list {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 1rem;
+}
+
+.form-area form .upload-area .uploaded-files-list li {
+    margin-left: 1rem;
+    font-size: 1.4rem;
+}
+
+/*all of form btn-area style*/
 .form-area form .btn-area {
     width: 100%;
     height: 5rem;
