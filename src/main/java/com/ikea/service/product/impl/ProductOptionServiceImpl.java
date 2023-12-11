@@ -40,17 +40,25 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     } else if(productOption.getPrice() == 0) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "price", "int");
     }
+    String productId = productOption.getProductId();
     String productOptionId = UUID.randomUUID().toString();
     productOption.setId(productOptionId);
-    // TODO 첨부 파일 저장 로직(테스트 필요)
+    // List for attachmentMapper creates
     List<Attachment> attachmentList = uploadFiles.stream().map((file) -> new Attachment(UUID.randomUUID().toString(), productOptionId, file.getOriginalFilename())).toList();
-    File folder = new File(String.format("%s\\%d", basePath, productOptionId));
-    folder.mkdir();
-    for(MultipartFile file : uploadFiles) {
-      file.transferTo(new File(String.format("%s\\%s", productOptionId, file.getOriginalFilename())));
+    File mainFolder = new File(String.format("%s\\%s", basePath, productId));
+    boolean isMainFolderCreate = mainFolder.mkdir();
+    File subFolder = new File(String.format("%s\\%s\\%s", basePath, productId, productOptionId));
+    boolean isSubFolderCreate = subFolder.mkdir();
+    boolean isFolderCreate = isMainFolderCreate && isSubFolderCreate;
+    if(isFolderCreate) {
+      for(MultipartFile file : uploadFiles) {
+        file.transferTo(new File(String.format("%s\\%s\\%s", productId, productOptionId, file.getOriginalFilename())));
+      }
+      productOptionMapper.create(productOption);
+      attachmentMapper.creates(attachmentList);
+    } else {
+        throw new ApiException(ApiExceptionType.FAIL_TO_CREATE_DIRECTORY);
     }
-    attachmentMapper.creates(attachmentList);
-    productOptionMapper.create(productOption);
   }
 
   @Override
