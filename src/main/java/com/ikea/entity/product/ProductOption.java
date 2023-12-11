@@ -13,9 +13,9 @@ public class ProductOption extends BaseEntity {
   private String id;
   private String productId;
   private String color;
-  private String width;
-  private String depth;
-  private String height;
+  private int width;
+  private int depth;
+  private int height;
   private int stock;
   private int price;
 
