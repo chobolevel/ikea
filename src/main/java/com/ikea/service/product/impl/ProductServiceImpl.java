@@ -39,7 +39,8 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public List<Product> findAll(Product product) throws ApiException {
     product.setOffset((product.getPageNum() - 1) * 10);
-    return productMapper.findAll(product);
+    List<Product> productList = productMapper.findAll(product);
+    return productList.stream().skip(product.getOffset()).limit(product.getLimit()).toList();
   }
 
   @Override

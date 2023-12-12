@@ -99,7 +99,6 @@
                 AND p.sub_category_code = #{subCategoryCode}
             </if>
         </where>
-        LIMIT #{offset}, #{limit}
     </select>
 
     <select id="findOne" resultMap="RelatedResultMap" parameterType="Product">

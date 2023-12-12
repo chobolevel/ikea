@@ -11,7 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProductController {
 
   @GetMapping("list")
-  public String productList() {
+  public String productList(@RequestParam(value = "mainCategoryCode", required = false) String mainCategoryCode,
+                            @RequestParam(value = "subCategoryCode", required = false) String subCategoryCode,
+                            @RequestParam(value = "keyword", required = false) String keyword,
+                            Model model) {
+    model.addAttribute("mainCategoryCode", mainCategoryCode);
+    model.addAttribute("subCategoryCode", subCategoryCode);
+    model.addAttribute("keyword", keyword);
     return "/product/list";
   }
 
