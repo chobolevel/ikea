@@ -3,7 +3,7 @@
       layout:decorate="~{layout/default_layout.html}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-  <title>IKEA - 홈</title>
+  <title>IKEA - 상품 목록</title>
 </head>
 <body>
 
@@ -18,13 +18,47 @@
 </html>
 
 <script th:inline="javascript">
-  let pageNum = 1
-  let limit = 10
   const mainCategoryCode = [[${mainCategoryCode}]]
   const subCategoryCode = [[${subCategoryCode}]]
   const keyword = [[${keyword}]]
   const $productListArea = $('.product-list-area')
   const $loadBtn = $('.load-btn')
+
+  const paramObj = {
+    pageNum: 1,
+    limit: 10,
+    mainCategoryCode,
+    subCategoryCode,
+    keyword
+  }
+
+  $.ajax({
+    url: `http://localhost:8080/api/product/list?${$.param(paramObj)}`,
+    type: 'GET',
+    contentType: 'application/json',
+    success: (productList) => {
+      appendProductList(productList)
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+
+  $loadBtn.on('click', (e) => {
+    e.preventDefault()
+    paramObj.pageNum += 1
+    $.ajax({
+      url: `http://localhost:8080/api/product/list?${$.param(paramObj)}`,
+      type: 'GET',
+      contentType: 'application/json',
+      success: (productList) => {
+        appendProductList(productList)
+      },
+      error: (request) => {
+        console.log(request)
+      }
+    })
+  })
 
   const appendProductList = (productList) => {
     productList.forEach((product) => {
@@ -43,34 +77,11 @@
               <p class="product-review">⭐${reviewTotalCnt <= 0 ? 0 : Math.round(reviewTotalRating / reviewTotalCnt)}(${reviewTotalCnt})</p>
             </div>
         `)
+      $div.on('click', (e) => {
+        e.preventDefault()
+        location.href = `/product/${product.id}`
+      })
       $productListArea.append($div)
     })
   }
-
-  $.ajax({
-    url: 'http://localhost:8080/api/product/list?pageNum=1&limit=10',
-    type: 'GET',
-    contentType: 'application/json',
-    success: (productList) => {
-      appendProductList(productList)
-    },
-    error: (request) => {
-      console.log(request)
-    }
-  })
-
-  $loadBtn.on('click', (e) => {
-    e.preventDefault()
-    $.ajax({
-      url: `http://localhost:8080/api/product/list?pageNum=${++pageNum}&limit=${limit += 10}`,
-      type: 'GET',
-      contentType: 'application/json',
-      success: (productList) => {
-        appendProductList(productList)
-      },
-      error: (request) => {
-        console.log(request)
-      }
-    })
-  })
 </script>
