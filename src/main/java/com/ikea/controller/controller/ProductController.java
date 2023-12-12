@@ -3,6 +3,7 @@ package com.ikea.controller.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,15 +22,15 @@ public class ProductController {
     return "/product/list";
   }
 
+  @GetMapping("{id}")
+  public String productDetail(@PathVariable("id") String productId, Model model) {
+    model.addAttribute("productId", productId);
+    return "/product/detail";
+  }
+
   @GetMapping("register")
   public String registerProduct() {
     return "/product/register";
-  }
-
-  @GetMapping("/option/register")
-  public String registerProductOption(@RequestParam("productId") String productId, Model model) {
-    model.addAttribute("productId", productId);
-    return "/product/option/register";
   }
 
 }
