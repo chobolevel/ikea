@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 상품 상세</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="product-detail-area">
+    <div class="product-detail-inner">
+      <div class="product-left-module">
+        <div class="product-img-area">
+          <img alt="상품 사진" class="product-img">
+        </div>
+        <p class="product-desc"></p>
+        <p>리뷰 영역 만들기</p>
+      </div>
+      <div class="product-buy-module">
+        <h2 class="product-name"></h2>
+        <p class="product-size"></p>
+        <p class="product-price"></p>
+        <p class="product-reviews"></p>
+        <p class="selected-color"></p>
+        <div class="product-color-area"></div>
+        <div class="product-order-area">
+          <div class="product-quantity-area">
+            <button class="quantity-sub-btn">
+              <i class="fa-solid fa-minus"></i>
+            </button>
+            <input disabled max=99 min=1 name="quantity" type="text" value=1>
+            <button class="quantity-add-btn">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+          <button class="product-order-btn">
+            구매하기
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+  const productId = [[${productId}]]
+  const $productImg = $('.product-img')
+  const $productDesc = $('.product-desc')
+  const $productName = $('.product-name')
+  const $productSize = $('.product-size')
+  const $productPrice = $('.product-price')
+  const $productReviews = $('.product-reviews')
+  const $selectedColor = $('.selected-color')
+  const $productColorArea = $('.product-color-area')
+  const $quantitySubBtn = $('.quantity-sub-btn')
+  const $quantityAddBtn = $('.quantity-add-btn')
+  const $quantityInput = $('input[name=quantity]')
+  const $productOrderBtn = $('.product-order-btn')
+
+  $.ajax({
+    url: `http://localhost:8080/api/product/${productId}`,
+    type: 'GET',
+    contentType: 'application/json',
+    success: (product) => {
+      const firstOption = product.productOptionList[0]
+      const firstAtt = firstOption.attachmentList[0]
+      const reviewTotalRating = product.productReviewList.map((p) => p.rating).reduce((acc, cur) => acc + cur, 0)
+      const reviewTotalCnt = product.productReviewList.length
+      $productImg.attr('src', `/img/${product.id}/${firstAtt.productOptionId}/${firstAtt.name}`)
+      $productDesc.text(product.desc)
+      $productName.text(product.name)
+      $productSize.text(`${firstOption.width}x${firstOption.depth}x${firstOption.height}(cm)`)
+      $productPrice.text(`￦${firstOption.price}`)
+      $productReviews.text(`⭐${reviewTotalCnt <= 0 ? 0 : Math.round(reviewTotalRating / reviewTotalCnt)}(${reviewTotalCnt})`)
+      $selectedColor.text(`선택된 색상 ${firstOption.color}`)
+      product.productOptionList.forEach((option, idx) => {
+        $productColorArea.append(`
+          <div class="product-color">
+            <input type="radio" name="color" id="${option.color}" value="${option.color}" ${idx === 0 ? 'checked' : null}>
+            <label for="${option.color}">
+              <img src="/img/${product.id}/${option.id}/${option.attachmentList[0].name}" alt="${option.attachmentList[0].name}">
+            </label>
+          </div>
+        `)
+      })
+      $('input[name=color]').on('change', (e) => {
+        e.preventDefault()
+        $selectedColor.text(`선택된 색상 ${e.target.value}`)
+      })
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+
+  $quantitySubBtn.on('click', (e) => {
+    e.preventDefault()
+    const curQuantity = Number($quantityInput.val())
+    if(curQuantity > 1) {
+      $quantityInput.val(curQuantity - 1)
+    }
+  })
+  $quantityAddBtn.on('click', (e) => {
+    e.preventDefault()
+    const curQuantity = Number($quantityInput.val())
+    if(curQuantity < 99) {
+      $quantityInput.val(curQuantity + 1)
+    }
+  })
+  $productOrderBtn.on('click', (e) => {
+    e.preventDefault()
+  })
+</script>
