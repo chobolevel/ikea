@@ -1,43 +1,46 @@
 <html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <div aria-hidden="true" class="right-box hidden" th:fragment="rightboxFragment" >
-    <header>
-      <button class="right-box-close-btn">
-        <i class="fa-solid fa-arrow-right"></i>
-      </button>
-      <p class="right-box-title" sec:authorize="isAnonymous()">Hej</p>
-      <p class="right-box-title" sec:authorize="isAuthenticated()">
-        Hej <span sec:authentication="principal.user.name"></span>
-      </p>
-    </header>
-    <nav>
-      <ul>
-        <li sec:authorize="isAnonymous()">
-          <a href="/sign/in">
-            <p>로그인</p>
-            <i class="fa-solid fa-angles-right"></i>
-          </a>
-        </li>
-        <li sec:authorize="isAnonymous()">
-          <a href="/sign/up">
-            <p>회원가입</p>
-            <i class="fa-solid fa-angles-right"></i>
-          </a>
-        </li>
-        <li sec:authorize="isAuthenticated()">
-          <a href="/user/profile">
-            <p>프로필</p>
-            <i class="fa-solid fa-angles-right"></i>
-          </a>
-        </li>
-        <li sec:authorize="isAuthenticated()">
-          <a href="/logout">
-            <p>로그아웃</p>
-            <i class="fa-solid fa-angles-right"></i>
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <section>
-    </section>
+  <div aria-hidden="true" class="right-box hidden" th:fragment="rightboxFragment">
+    <div class="box-left-inner"></div>
+    <div class="box-right-inner">
+      <header>
+        <button class="right-box-close-btn">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <p class="right-box-title" sec:authorize="isAnonymous()">Hej</p>
+        <p class="right-box-title" sec:authorize="isAuthenticated()">
+          Hej <span sec:authentication="principal.user.name"></span>
+        </p>
+      </header>
+      <nav>
+        <ul>
+          <li sec:authorize="isAnonymous()">
+            <a href="/sign/in">
+              <p>로그인</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </li>
+          <li sec:authorize="isAnonymous()">
+            <a href="/sign/up">
+              <p>회원가입</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </li>
+          <li sec:authorize="isAuthenticated()">
+            <a href="/user/profile">
+              <p>프로필</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </li>
+          <li sec:authorize="isAuthenticated()">
+            <a href="/logout">
+              <p>로그아웃</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+      </section>
+    </div>
   </div>
 </html>

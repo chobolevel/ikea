@@ -1,16 +1,19 @@
-<div aria-hidden="true" class="left-box hidden" th:fragment="leftboxFragment">
-  <header>
-    <p class="left-box-title">카테고리</p>
-    <button class="left-box-close-btn">
-      <i class="fa-solid fa-arrow-left"></i>
-    </button>
-  </header>
-  <section>
-    <ul class="main-category-list">
-      <li>
-        <a href="/product/list">모든 제품</a>
-      </li>
-    </ul>
-    <ul class="sub-category-list"></ul>
-  </section>
+<div aria-hidden="true" class="left-box" th:fragment="leftboxFragment">
+  <div class="box-left-inner">
+    <header>
+      <p class="left-box-title">카테고리</p>
+      <button class="left-box-close-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+    </header>
+    <section>
+      <ul class="main-category-list">
+        <li>
+          <a href="/product/list">모든 제품</a>
+        </li>
+      </ul>
+      <ul class="sub-category-list"></ul>
+    </section>
+  </div>
+  <div class="box-right-inner"></div>
 </div>

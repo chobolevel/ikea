@@ -157,18 +157,22 @@ header .header-inner .user-menu-area ul li a:hover, header .header-inner .user-m
 
 /*left-box style*/
 .left-box {
-    width: 48rem;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     position: absolute;
-    left: 0;
     top: 0;
-    background-color: #fff;
-    transition: all 0.3s ease-in-out;
-    overflow: scroll;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    z-index: 10;
+    visibility: hidden;
 }
 
-.left-box.hidden {
-    left: -48rem;
+.left-box .box-left-inner {
+    width: 48rem;
+    height: 100%;
+    background-color: #fff;
+    overflow-y: scroll;
 }
 
 /*left-box header style*/
@@ -239,25 +243,44 @@ header .header-inner .user-menu-area ul li a:hover, header .header-inner .user-m
     text-decoration: underline;
 }
 
-/*right-box style*/
-.right-box {
-    width: 50rem;
+.left-box .box-right-inner {
+    width: calc(100vw - 48rem);
     height: 100%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    background-color: #fff;
-    transition: all 0.3s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    touch-action: none;
 }
 
-.right-box.hidden {
-    right: -50rem;
+/*right-box style*/
+.right-box {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    z-index: 10;
+    visibility: hidden;
+}
+
+.right-box .box-left-inner {
+    width: calc(100vw - 50rem);
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.right-box .box-right-inner {
+    width: 50rem;
+    height: 100%;
+    background-color: #fff;
 }
 
 /*right-box header style*/
 .right-box header {
     width: 100%;
     height: 18rem;
+    margin-top: 5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
