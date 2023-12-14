@@ -12,6 +12,8 @@ public interface SubCategoryMapper {
 
   List<SubCategory> findAll(SubCategory subCategory);
 
+  SubCategory findOne(SubCategory subCategory);
+
   void modify(SubCategory subCategory);
 
   void remove(SubCategory subCategory);

@@ -41,6 +41,27 @@
         ORDER BY code
     </select>
 
+    <select id="findOne" parameterType="SubCategory" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value=""/>
+            <property name="prefix" value=""/>
+        </include>
+        FROM sub_category
+        <where>
+            <if test="mainCategoryId != null and mainCategoryId != ''">
+                AND main_category_id = #{mainCategoryId}
+            </if>
+            <if test="code != null and code != ''">
+                AND code = #{code}
+            </if>
+            <if test="name != null and name != ''">
+                AND `name` = #{name}
+            </if>
+        </where>
+        ORDER BY code
+    </select>
+
     <update id="modify" parameterType="SubCategory">
         UPDATE sub_category
         SET update_date = CURRENT_TIMESTAMP

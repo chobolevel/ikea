@@ -28,6 +28,14 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     } else if(subCategory.getName().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "name", "String");
     }
+    SubCategory findSubCategory = subCategoryMapper.findOne(SubCategory
+        .builder()
+        .mainCategoryId(subCategory.getMainCategoryId())
+        .code(subCategory.getCode())
+        .build());
+    if(findSubCategory != null) {
+      throw new ApiException(ApiExceptionType.ALREADY_EXISTS, "SubCategory", "code");
+    }
     subCategory.setId(UUID.randomUUID().toString());
     subCategoryMapper.create(subCategory);
   }
