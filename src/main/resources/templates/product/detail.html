@@ -8,13 +8,25 @@
 <body>
 
 <section layout:fragment="container">
+
   <div class="product-detail-area">
     <div class="product-detail-inner">
       <div class="product-left-module">
         <div class="product-img-area">
           <img alt="상품 사진" class="product-img">
         </div>
-        <p class="product-desc"></p>
+        <div class="product-more-info-area">
+          <ul>
+            <li class="product-desc-item">
+              <p>제품 설명</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </li>
+            <li class="product-review-item">
+              <p>상품평</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="product-buy-module">
         <h2 class="product-name"></h2>
@@ -22,7 +34,7 @@
         <p class="product-price"></p>
         <p class="product-reviews"></p>
         <p class="selected-color"></p>
-        <div class="product-color-area"></div>
+        <div class="product-option-area"></div>
         <div class="product-order-area">
           <div class="product-quantity-area">
             <button class="quantity-sub-btn">
@@ -40,6 +52,22 @@
       </div>
     </div>
   </div>
+
+  <div class="product-desc-box">
+    <div class="box-left-inner"></div>
+    <div class="box-right-inner">
+      <header>
+        <h2 class="header-title">제품 설명</h2>
+        <button class="close-btn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+      <section>
+        <div class="product-desc-area"></div>
+      </section>
+    </div>
+  </div>
+
   <div class="product-review-box">
     <div class="box-left-inner"></div>
     <div class="box-right-inner">
@@ -57,67 +85,76 @@
         </ul>
       </nav>
       <section>
-        <div class="product-review-item">
-          <div class="review-header">
-            <p>⭐ 4.5</p>
-            <p>rodaka123</p>
-          </div>
-          <div class="review-section">
-            알고 샀지만 책을 받쳐주는 게 뒷편에 없어서 살짝 불편하네요~ 조립은 쉽게 잘 했습니다
-          </div>
-        </div>
+        <div class="product-review-list"></div>
       </section>
     </div>
   </div>
+
 </section>
 
 </body>
 </html>
 
 <script th:inline="javascript">
+  const $body = $('body')
   const productId = [[${productId}]]
   const $productImg = $('.product-img')
-  const $productDesc = $('.product-desc')
+  const $productDescItem = $('.product-desc-item')
+  const $productReviewItem = $('.product-review-item')
   const $productName = $('.product-name')
   const $productSize = $('.product-size')
   const $productPrice = $('.product-price')
   const $productReviews = $('.product-reviews')
   const $selectedColor = $('.selected-color')
-  const $productColorArea = $('.product-color-area')
+  const $productOptionArea = $('.product-option-area')
   const $quantitySubBtn = $('.quantity-sub-btn')
   const $quantityAddBtn = $('.quantity-add-btn')
   const $quantityInput = $('input[name=quantity]')
   const $productOrderBtn = $('.product-order-btn')
+  const $productDescBox = $('.product-desc-box')
+  const $productDescBoxLeftInner = $productDescBox.children('.box-left-inner')
+  const $productDescBoxCloseBtn = $('.product-desc-box .box-right-inner header .close-btn')
+  const $productDescArea = $('.product-desc-area')
+  const $productReviewBox = $('.product-review-box')
+  const $productReviewBoxLeftInner = $productReviewBox.children('.box-left-inner')
+  const $productReviewBoxCloseBtn = $('.product-review-box .box-right-inner header .close-btn')
+  const $productReviewList = $('.product-review-list')
+
+  let productOptionList
 
   $.ajax({
     url: `http://localhost:8080/api/product/${productId}`,
     type: 'GET',
     contentType: 'application/json',
     success: (product) => {
+      productOptionList = product.productOptionList
       const firstOption = product.productOptionList[0]
       const firstAtt = firstOption.attachmentList[0]
       const reviewTotalRating = product.productReviewList.map((p) => p.rating).reduce((acc, cur) => acc + cur, 0)
       const reviewTotalCnt = product.productReviewList.length
       $productImg.attr('src', `/img/${product.id}/${firstAtt.productOptionId}/${firstAtt.name}`)
-      $productDesc.text(product.desc)
       $productName.text(product.name)
+      $productDescArea.text(product.desc)
       $productSize.text(`${firstOption.width}x${firstOption.depth}x${firstOption.height}(cm)`)
       $productPrice.text(`￦${firstOption.price}`)
       $productReviews.text(`⭐${reviewTotalCnt <= 0 ? 0 : Math.round(reviewTotalRating / reviewTotalCnt)}(${reviewTotalCnt})`)
       $selectedColor.text(`선택된 색상 ${firstOption.color}`)
       product.productOptionList.forEach((option, idx) => {
-        $productColorArea.append(`
-          <div class="product-color">
-            <input type="radio" name="color" id="${option.color}" value="${option.color}" ${idx === 0 ? 'checked' : null}>
-            <label for="${option.color}">
+        $productOptionArea.append(`
+          <div class="product-option">
+            <input type="radio" name="id" id="${option.id}" value="${option.id}" ${idx === 0 ? 'checked' : null}>
+            <label for="${option.id}">
               <img src="/img/${product.id}/${option.id}/${option.attachmentList[0].name}" alt="${option.attachmentList[0].name}">
             </label>
           </div>
         `)
       })
-      $('input[name=color]').on('change', (e) => {
+      $('input[name=id]').on('change', (e) => {
         e.preventDefault()
-        $selectedColor.text(`선택된 색상 ${e.target.value}`)
+        const selectedOption = productOptionList.find((option) => option.id === e.target.value)
+        $productImg.attr('src', `/img/${selectedOption.productId}/${selectedOption.id}/${selectedOption.attachmentList[0].name}`)
+        $selectedColor.text(`선택된 색상 ${selectedOption.color}`)
+        $productPrice.text(`￦${selectedOption.price}`)
       })
     },
     error: (request) => {
@@ -125,6 +162,52 @@
     }
   })
 
+  $.ajax({
+    url: `http://localhost:8080/api/product-review/list?productId=${productId}`,
+    type: 'GET',
+    contentType: 'application/json',
+    success: (reviewList) => {
+      reviewList.forEach((review) => {
+        $productReviewList.append(`
+        <div class="product-review-item">
+          <div class="review-header">
+            <p>⭐ ${review.rating}</p>
+            <p>${review.userId}</p>
+          </div>
+          <div class="review-section">${review.content}</div>
+        </div>
+      `)
+      })
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+
+  $productDescItem.on('click', (e) => {
+    $productDescBox.css('visibility', 'visible')
+    $body.css('overflow-y', 'hidden')
+  })
+  $productDescBoxLeftInner.on('click', (e) => {
+    $productDescBox.css('visibility', 'hidden')
+    $body.css('overflow-y', 'scroll')
+  })
+  $productDescBoxCloseBtn.on('click', (e) => {
+    $productDescBox.css('visibility', 'hidden')
+    $body.css('overflow-y', 'scroll')
+  })
+  $productReviewItem.on('click', (e) => {
+    $productReviewBox.css('visibility', 'visible')
+    $body.css('overflow-y', 'hidden')
+  })
+  $productReviewBoxLeftInner.on('click', (e) => {
+    $productReviewBox.css('visibility', 'hidden')
+    $body.css('overflow-y', 'scroll')
+  })
+  $productReviewBoxCloseBtn.on('click', (e) => {
+    $productReviewBox.css('visibility', 'hidden')
+    $body.css('overflow-y', 'scroll')
+  })
   $quantitySubBtn.on('click', (e) => {
     e.preventDefault()
     const curQuantity = Number($quantityInput.val())
