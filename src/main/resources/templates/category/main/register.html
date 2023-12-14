@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 대분류 등록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="form-area">
+    <div class="form-title">
+      <h2>대분류 등록</h2>
+    </div>
+    <form class="main-category-register-form">
+      <div class="input-area">
+        <label for="code">대분류 코드(예: A)</label>
+        <input id="code" name="code" type="text">
+      </div>
+      <div class="input-area">
+        <label for="name">대분류 이름(예:수납/정리)</label>
+        <input id="name" name="name" type="text">
+      </div>
+      <div class="btn-area">
+        <button class="cancel-btn">취소</button>
+        <button class="save-btn">등록</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $mainCategoryRegisterForm = $('.main-category-register-form')
+  const $codeInput = $('input[name=code]')
+  const $nameInput = $('input[name=name]')
+  const $cancelBtn = $('.cancel-btn')
+  const $saveBtn = $('.save-btn')
+
+  $mainCategoryRegisterForm.validate({
+    rules: {
+      code: {
+        required: true
+      },
+      name: {
+        required: true
+      }
+    },
+    messages: {
+      code: {
+        required: '대분류 코드가 입력되지 않았습니다.'
+      },
+      name: {
+        required: '대분류 이름이 입력되지 않았습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: 'http://localhost:8080/api/main-category',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          code: $codeInput.val(),
+          name: $nameInput.val()
+        }),
+        success: () => {
+          alert('대분류 등록 성공\n소분류 등록 페이지로 이동합니다.')
+          location.href = '/category/sub/register'
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    }
+  })
+
+  $cancelBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/'
+  })
+  $saveBtn.on('click', (e) => {
+    e.preventDefault()
+    $mainCategoryRegisterForm.submit()
+  })
+</script>

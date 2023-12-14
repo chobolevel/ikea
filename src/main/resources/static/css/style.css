@@ -785,6 +785,10 @@ footer .footer-inner .legal-area .legal-links ul li a {
     border: 0.1rem solid #000;
 }
 
+.form-area form .btn-area button.cancel-btn {
+    background-color: #fff;
+}
+
 .form-area form .btn-area button.save-btn {
     background-color: #000;
     color: #fff;
