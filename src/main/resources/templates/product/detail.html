@@ -80,12 +80,43 @@
       <nav>
         <ul>
           <li>
-            <button>상품평 쓰기</button>
+            <button class="review-write-btn">상품평 쓰기</button>
           </li>
         </ul>
       </nav>
       <section>
         <div class="product-review-list"></div>
+        <button class="review-load-btn">더보기</button>
+      </section>
+    </div>
+  </div>
+
+  <div class="product-review-write-box">
+    <div class="box-left-inner"></div>
+    <div class="box-right-inner">
+      <header>
+        <h2 class="header-title">상품평 쓰기</h2>
+        <button class="close-btn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+      <section>
+        <div class="product-review-write-area">
+          <form class="review-write-form">
+            <div class="input-area">
+              <label for="rating">별점(2.5)</label>
+              <input id="rating" max=5 min=0 name="rating" step=0.5 type="range" value=2.5>
+            </div>
+            <div class="input-area">
+              <label for="content">상품평</label>
+              <textarea id="content" name="content"></textarea>
+            </div>
+            <div class="btn-area">
+              <button class="cancel-btn">취소</button>
+              <button class="save-btn">저장</button>
+            </div>
+          </form>
+        </div>
       </section>
     </div>
   </div>
@@ -111,14 +142,31 @@
   const $quantityAddBtn = $('.quantity-add-btn')
   const $quantityInput = $('input[name=quantity]')
   const $productOrderBtn = $('.product-order-btn')
+
   const $productDescBox = $('.product-desc-box')
   const $productDescBoxLeftInner = $productDescBox.children('.box-left-inner')
   const $productDescBoxCloseBtn = $('.product-desc-box .box-right-inner header .close-btn')
   const $productDescArea = $('.product-desc-area')
+
   const $productReviewBox = $('.product-review-box')
   const $productReviewBoxLeftInner = $productReviewBox.children('.box-left-inner')
   const $productReviewBoxCloseBtn = $('.product-review-box .box-right-inner header .close-btn')
+  const $productReviewWriteBtn = $('.review-write-btn')
   const $productReviewList = $('.product-review-list')
+  const $reviewLoadBtn = $('.review-load-btn')
+
+  const $productReviewWriteBox = $('.product-review-write-box')
+  const $reviewWriteForm = $('.review-write-form')
+  const $ratingInput = $('input[name=rating]')
+  const $contentText = $('textarea[name=content]')
+  const $reviewCancelBtn = $('.product-review-write-box .box-right-inner .cancel-btn')
+  const $reviewSaveBtn = $('.product-review-write-box .box-right-inner .save-btn')
+
+  const productReviewParamObj = {
+    pageNum: 1,
+    limit: 10,
+    productId
+  }
 
   let productOptionList
 
@@ -136,7 +184,7 @@
       $productName.text(product.name)
       $productDescArea.text(product.desc)
       $productSize.text(`${firstOption.width}x${firstOption.depth}x${firstOption.height}(cm)`)
-      $productPrice.text(`￦${firstOption.price}`)
+      $productPrice.text(`￦${firstOption.price.toLocaleString('ko-KR')}`)
       $productReviews.text(`⭐${reviewTotalCnt <= 0 ? 0 : Math.round(reviewTotalRating / reviewTotalCnt)}(${reviewTotalCnt})`)
       $selectedColor.text(`선택된 색상 ${firstOption.color}`)
       product.productOptionList.forEach((option, idx) => {
@@ -154,7 +202,7 @@
         const selectedOption = productOptionList.find((option) => option.id === e.target.value)
         $productImg.attr('src', `/img/${selectedOption.productId}/${selectedOption.id}/${selectedOption.attachmentList[0].name}`)
         $selectedColor.text(`선택된 색상 ${selectedOption.color}`)
-        $productPrice.text(`￦${selectedOption.price}`)
+        $productPrice.text(`￦${selectedOption.price.toLocaleString('ko-KR')}`)
       })
     },
     error: (request) => {
@@ -163,7 +211,7 @@
   })
 
   $.ajax({
-    url: `http://localhost:8080/api/product-review/list?productId=${productId}`,
+    url: `http://localhost:8080/api/product-review/list?${$.param(productReviewParamObj)}`,
     type: 'GET',
     contentType: 'application/json',
     success: (reviewList) => {
@@ -172,7 +220,7 @@
         <div class="product-review-item">
           <div class="review-header">
             <p>⭐ ${review.rating}</p>
-            <p>${review.userId}</p>
+            <p>${review.user.username}</p>
           </div>
           <div class="review-section">${review.content}</div>
         </div>
@@ -181,6 +229,58 @@
     },
     error: (request) => {
       console.log(request)
+    }
+  })
+
+  $reviewWriteForm.validate({
+    rules: {
+      rating: {
+        required: true
+      },
+      content: {
+        required: true
+      }
+    },
+    messages: {
+      rating: {
+        required: '별점이 입력되지 않았습니다.'
+      },
+      content: {
+        required: '상품평이 입력되지 않았습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: 'http://localhost:8080/api/user/me',
+        type: 'GET',
+        contentType: 'application/json',
+        success: (user) => {
+          $.ajax({
+            url: 'http://localhost:8080/api/product-review',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+              userId: user.id,
+              productId,
+              rating: Number($ratingInput.val()),
+              content: $contentText.val()
+            }),
+            success: () => {
+              alert('상품평이 등록되었습니다.')
+              $productReviewWriteBox.css('visibility', 'hidden')
+              $body.css('overflow-y', 'scroll')
+            },
+            error: (request) => {
+              console.log(request)
+            }
+          })
+        },
+        error: (request) => {
+          alert('로그인 이후 상품평을 작성해주시기 바랍니다.')
+          location.href = '/sign/in'
+        }
+      })
     }
   })
 
@@ -208,17 +308,58 @@
     $productReviewBox.css('visibility', 'hidden')
     $body.css('overflow-y', 'scroll')
   })
+  $reviewLoadBtn.on('click', (e) => {
+    ++productReviewParamObj.pageNum
+    console.log(productReviewParamObj)
+    $.ajax({
+      url: `http://localhost:8080/api/product-review/list?${$.param(productReviewParamObj)}`,
+      type: 'GET',
+      contentType: 'application/json',
+      success: (reviewList) => {
+        reviewList.forEach((review) => {
+          $productReviewList.append(`
+            <div class="product-review-item">
+              <div class="review-header">
+                <p>⭐ ${review.rating}</p>
+                <p>${review.user.username}</p>
+              </div>
+              <div class="review-section">${review.content}</div>
+            </div>
+          `)
+        })
+      },
+      error: (request) => {
+        console.log(request)
+      }
+    })
+  })
+  $productReviewWriteBtn.on('click', (e) => {
+    $productReviewBox.css('visibility', 'hidden')
+    $productReviewWriteBox.css('visibility', 'visible')
+  })
+  $ratingInput.on('input', (e) => {
+    $('label[for=rating]').text(`별점(${e.target.value})`)
+  })
+  $reviewCancelBtn.on('click', (e) => {
+    e.preventDefault()
+    $productReviewWriteBox.css('visibility', 'hidden')
+    $body.css('overflow-y', 'scroll')
+  })
+  $reviewSaveBtn.on('click', (e) => {
+    e.preventDefault()
+    $reviewWriteForm.submit()
+  })
   $quantitySubBtn.on('click', (e) => {
     e.preventDefault()
     const curQuantity = Number($quantityInput.val())
-    if(curQuantity > 1) {
+    if (curQuantity > 1) {
       $quantityInput.val(curQuantity - 1)
     }
   })
   $quantityAddBtn.on('click', (e) => {
     e.preventDefault()
     const curQuantity = Number($quantityInput.val())
-    if(curQuantity < 99) {
+    if (curQuantity < 99) {
       $quantityInput.val(curQuantity + 1)
     }
   })
