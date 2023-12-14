@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 소분류 등록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="form-area">
+    <div class="form-title">
+      <h2>소분류 등록</h2>
+    </div>
+    <form class="sub-category-register-form">
+      <div class="input-area">
+        <label for="mainCategoryId">대분류 선택</label>
+        <select id="mainCategoryId" name="mainCategoryId"></select>
+      </div>
+      <div class="input-area">
+        <label for="code">소분류 코드(예: 01)</label>
+        <input id="code" name="code" type="text">
+      </div>
+      <div class="input-area">
+        <label for="name">소분류 이름(예: 책장/선반유닛)</label>
+        <input id="name" name="name" type="text">
+      </div>
+      <div class="btn-area">
+        <button class="cancel-btn">취소</button>
+        <button class="save-btn">등록</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $subCategoryRegisterForm = $('.sub-category-register-form')
+  const $mainCategoryIdSelect = $('select[name=mainCategoryId]')
+  const $codeInput = $('input[name=code]')
+  const $nameInput = $('input[name=name]')
+  const $cancelBtn = $('.cancel-btn')
+  const $saveBtn = $('.save-btn')
+
+  $.ajax({
+    url: 'http://localhost:8080/api/main-category/list',
+    type: 'GET',
+    contentType: 'application/json',
+    success: (mainCategoryList) => {
+      mainCategoryList.forEach((mainCategory) => {
+        $mainCategoryIdSelect.append(`<option value="${mainCategory.id}">${mainCategory.code}(${mainCategory.name})</option>`)
+      })
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+
+  $subCategoryRegisterForm.validate({
+    rules: {
+      mainCategoryId: {
+        required: true
+      },
+      code: {
+        required: true
+      },
+      name: {
+        required: true
+      }
+    },
+    messages: {
+      mainCategoryId: {
+        required: '대분류가 선택되지 않았습니다.'
+      },
+      code: {
+        required: '소분류 코드가 입력되지 않았습니다.'
+      },
+      name: {
+        required: '소분류 이름이 입력되지 않았습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: 'http://localhost:8080/api/sub-category',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          mainCategoryId: $mainCategoryIdSelect.val(),
+          code: $codeInput.val(),
+          name: $nameInput.val()
+        }),
+        success: () => {
+          alert('소분류 등록이 완료되었습니다.\n메인 화면으로 이동합니다.')
+          location.href = '/'
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    }
+  })
+</script>
