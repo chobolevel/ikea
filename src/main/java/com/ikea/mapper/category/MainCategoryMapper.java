@@ -12,6 +12,8 @@ public interface MainCategoryMapper {
 
   List<MainCategory> findAll(MainCategory category);
 
+  MainCategory findOne(MainCategory mainCategory);
+
   void modify(MainCategory category);
 
   void remove(MainCategory category);

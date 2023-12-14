@@ -26,6 +26,10 @@ public class MainCategoryServiceImpl implements MainCategoryService {
     } else if(category.getName().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "name", "String");
     }
+    MainCategory findCategory = categoryMapper.findOne(MainCategory.builder().code(category.getCode().toUpperCase()).build());
+    if(findCategory != null) {
+      throw new ApiException(ApiExceptionType.ALREADY_EXISTS, "MainCategory", "code");
+    }
     category.setId(UUID.randomUUID().toString());
     categoryMapper.create(category);
   }

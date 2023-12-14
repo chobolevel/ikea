@@ -49,6 +49,31 @@
         ORDER BY mc.code, sc.code
     </select>
 
+    <select id="findOne" parameterType="MainCategory" resultMap="RelatedResultMap">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value="mc."/>
+            <property name="prefix" value=""/>
+        </include>
+        ,
+        <include refid="com.ikea.mapper.category.SubCategoryMapper.columns">
+            <property name="alias" value="sc."/>
+            <property name="prefix" value="sc_"/>
+        </include>
+        FROM main_category AS mc
+        LEFT JOIN sub_category AS sc
+        ON mc.id = sc.main_category_id
+        <where>
+            <if test="code != null and code != ''">
+                AND mc.code = #{code}
+            </if>
+            <if test="name != null and name != ''">
+                AND mc.name = #{name}
+            </if>
+        </where>
+        ORDER BY mc.code, sc.code
+    </select>
+
     <update id="modify" parameterType="MainCategory">
         UPDATE main_category
         SET update_date = CURRENT_TIMESTAMP
