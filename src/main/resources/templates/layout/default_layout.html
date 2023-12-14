@@ -9,10 +9,13 @@
   <link rel="stylesheet" th:href="@{/css/style.css}"/>
   <script>
     $(document).ready(() => {
+      const $body = $('body')
       const $leftBox = $('.left-box')
-      const $rightBox = $('.right-box')
+      const $leftBoxRightInner = $leftBox.children('.box-right-inner')
       const $leftBoxOpenBtn = $('.left-box-open-btn')
       const $leftBoxCloseBtn = $('.left-box-close-btn')
+      const $rightBox = $('.right-box')
+      const $rightBoxLeftInner = $rightBox.children('.box-left-inner')
       const $rightBoxOpenBtn = $('.right-box-open-btn')
       const $rightBoxCloseBtn = $('.right-box-close-btn')
       const $mainCategoryUl = $('.main-category-list')
@@ -48,16 +51,28 @@
       })
 
       $leftBoxOpenBtn.on('click', (e) => {
-        $leftBox.removeClass('hidden')
+        $leftBox.css('visibility', 'visible')
+        $body.css('overflow', 'hidden')
       })
       $leftBoxCloseBtn.on('click', (e) => {
-        $leftBox.addClass('hidden')
+        $leftBox.css('visibility', 'hidden')
+        $body.css('overflow-y', 'scroll')
+      })
+      $leftBoxRightInner.on('click', (e) => {
+        $leftBox.css('visibility', 'hidden')
+        $body.css('overflow-y', 'scroll')
       })
       $rightBoxOpenBtn.on('click', (e) => {
-        $rightBox.removeClass('hidden')
+        $rightBox.css('visibility', 'visible')
+        $body.css('overflow', 'hidden')
       })
       $rightBoxCloseBtn.on('click', (e) => {
-        $rightBox.addClass('hidden')
+        $rightBox.css('visibility', 'hidden')
+        $body.css('overflow-y', 'scroll')
+      })
+      $rightBoxLeftInner.on('click', (e) => {
+        $rightBox.css('visibility', 'hidden')
+        $body.css('overflow-y', 'scroll')
       })
     })
   </script>
