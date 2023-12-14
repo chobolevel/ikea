@@ -98,6 +98,9 @@
             <if test="subCategoryCode != null and subCategoryCode != ''">
                 AND p.sub_category_code = #{subCategoryCode}
             </if>
+            <if test="name != null and name != ''">
+                AND p.name LIKE CONCAT('%', #{name}, '%')
+            </if>
         </where>
     </select>
 

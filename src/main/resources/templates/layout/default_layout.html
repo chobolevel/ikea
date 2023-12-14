@@ -10,6 +10,8 @@
   <script>
     $(document).ready(() => {
       const $body = $('body')
+      const $keywordInput = $('input[name=keyword]')
+      const $searchBtn = $('.search-btn')
       const $leftBox = $('.left-box')
       const $leftBoxRightInner = $leftBox.children('.box-right-inner')
       const $leftBoxOpenBtn = $('.left-box-open-btn')
@@ -50,6 +52,15 @@
         }
       })
 
+      $keywordInput.on('keyup', (e) => {
+        if(e.keyCode === 13) {
+          location.href = `/product/list?keyword=${$keywordInput.val()}`
+        }
+      })
+      $searchBtn.on('click', (e) => {
+        e.preventDefault()
+        location.href = `/product/list?keyword=${$keywordInput.val()}`
+      })
       $leftBoxOpenBtn.on('click', (e) => {
         $leftBox.css('visibility', 'visible')
         $body.css('overflow', 'hidden')
