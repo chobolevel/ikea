@@ -12,6 +12,13 @@
         <result column="update_date" property="updateDate"/>
     </resultMap>
 
+    <resultMap id="RelatedResultMap" type="ProductReview" extends="BaseResultMap">
+        <association property="user"
+                     javaType="User"
+                     columnPrefix="u_"
+                     resultMap="com.ikea.mapper.user.UserMapper.BaseResultMap"/>
+    </resultMap>
+
     <sql id="columns">
         ${alias}id AS ${prefix}id
         , ${alias}user_id AS ${prefix}user_id
@@ -27,6 +34,44 @@
         product_review (id, user_id, product_id, rating, content)
         VALUES (#{id}, #{userId}, #{productId}, #{rating}, #{content})
     </insert>
+
+    <select id="findAll" parameterType="ProductReview" resultMap="RelatedResultMap">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value="pr."/>
+            <property name="prefix" value=""/>
+        </include>
+        ,
+        <include refid="com.ikea.mapper.user.UserMapper.columns">
+            <property name="alias" value="u."/>
+            <property name="prefix" value="u_"/>
+        </include>
+        FROM product_review AS pr
+        LEFT JOIN `user` AS u
+        ON pr.user_id = u.id
+        <where>
+            <if test="productId != null and productId != ''">
+                pr.product_id = #{productId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findOne" parameterType="ProductReview" resultMap="RelatedResultMap">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value="pr."/>
+            <property name="prefix" value=""/>
+        </include>
+        ,
+        <include refid="com.ikea.mapper.user.UserMapper.columns">
+            <property name="alias" value="u."/>
+            <property name="prefix" value="u_"/>
+        </include>
+        FROM product_review AS pr
+        LEFT JOIN `user` AS u
+        ON pr.user_id = u.id
+        WHERE pr.id = #{id}
+    </select>
 
     <update id="modify" parameterType="ProductReview">
         UPDATE product_review

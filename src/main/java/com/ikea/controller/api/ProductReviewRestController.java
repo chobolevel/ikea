@@ -16,6 +16,16 @@ public class ProductReviewRestController {
 
   private final ProductReviewService productReviewService;
 
+  @GetMapping("list")
+  public ResponseEntity<?> getProductReviewList(ProductReview productReview) throws ApiException {
+    return new ResponseEntity<>(productReviewService.findAll(productReview), HttpStatus.OK);
+  }
+
+  @GetMapping("{id}")
+  public ResponseEntity<?> getProductReview(@PathVariable("id") String id) throws ApiException {
+    return new ResponseEntity<>(productReviewService.findOne(ProductReview.builder().id(id).build()), HttpStatus.OK);
+  }
+
   @PostMapping("")
   public ResponseEntity<?> createProductReview(@RequestBody ProductReview productReview) throws ApiException {
     productReviewService.create(productReview);

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,6 +32,24 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     }
     productReview.setId(UUID.randomUUID().toString());
     productReviewMapper.create(productReview);
+  }
+
+  @Override
+  public List<ProductReview> findAll(ProductReview productReview) throws ApiException {
+    if(productReview.getProductId().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "productId", "String");
+    }
+    productReview.setOffset((productReview.getPageNum() - 1) * 10);
+    List<ProductReview> productReviewList = productReviewMapper.findAll(productReview);
+    return productReviewList.stream().skip(productReview.getOffset()).limit(productReview.getLimit()).toList();
+  }
+
+  @Override
+  public ProductReview findOne(ProductReview productReview) throws ApiException {
+    if(productReview.getId().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
+    }
+    return productReviewMapper.findOne(productReview);
   }
 
   @Override
