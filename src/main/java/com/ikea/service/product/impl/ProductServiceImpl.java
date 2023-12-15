@@ -23,13 +23,13 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public void create(Product product) throws ApiException {
-    if(product.getName().isEmpty()) {
+    if(product.getName() == null || product.getName().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "name", "String");
-    } else if(product.getDesc().isEmpty()) {
+    } else if(product.getDesc() == null || product.getDesc().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "desc", "String");
-    } else if(product.getMainCategoryCode().isEmpty()) {
+    } else if(product.getMainCategory() == null || product.getMainCategoryCode().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "mainCategory", "String");
-    } else if(product.getSubCategoryCode().isEmpty()) {
+    } else if(product.getSubCategory() == null || product.getSubCategoryCode().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "subCategory", "String");
     }
     product.setId(UUID.randomUUID().toString());
@@ -38,6 +38,11 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public List<Product> findAll(Product product) throws ApiException {
+    if(product.getPageNum() <= 0) {
+      product.setPageNum(1);
+    } else if(product.getLimit() <= 0) {
+      product.setLimit(10);
+    }
     product.setOffset((product.getPageNum() - 1) * 10);
     List<Product> productList = productMapper.findAll(product);
     return productList.stream().skip(product.getOffset()).limit(product.getLimit()).toList();
@@ -50,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public void modify(Product product) throws ApiException {
-    if(product.getId().isEmpty()) {
+    if(product.getId() == null || product.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     productMapper.modify(product);
@@ -58,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public void remove(Product product) throws ApiException {
-    if(product.getId().isEmpty()) {
+    if(product.getId() == null || product.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     productMapper.remove(product);

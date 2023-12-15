@@ -21,9 +21,9 @@ public class MainCategoryServiceImpl implements MainCategoryService {
 
   @Override
   public void create(MainCategory category) throws ApiException {
-    if(category.getCode().isEmpty()) {
+    if(category.getCode() == null || category.getCode().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "code", "String");
-    } else if(category.getName().isEmpty()) {
+    } else if(category.getName() == null || category.getName().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "name", "String");
     }
     MainCategory findCategory = categoryMapper.findOne(MainCategory.builder().code(category.getCode().toUpperCase()).build());
@@ -41,7 +41,7 @@ public class MainCategoryServiceImpl implements MainCategoryService {
 
   @Override
   public void modify(MainCategory category) throws ApiException {
-    if(category.getId().isEmpty()) {
+    if(category.getId() == null || category.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     categoryMapper.modify(category);
@@ -49,7 +49,7 @@ public class MainCategoryServiceImpl implements MainCategoryService {
 
   @Override
   public void remove(MainCategory category) throws ApiException {
-    if(category.getId().isEmpty()) {
+    if(category.getId() == null || category.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     categoryMapper.remove(category);

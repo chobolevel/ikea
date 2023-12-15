@@ -21,13 +21,13 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
   @Override
   public void create(ProductReview productReview) throws ApiException {
-    if(productReview.getUserId().isEmpty()) {
+    if(productReview.getUser() == null || productReview.getUserId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "userId", "String");
-    } else if(productReview.getProductId().isEmpty()) {
+    } else if(productReview.getProductId() == null || productReview.getProductId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "productId", "String");
-    } else if(productReview.getRating() == 0 || productReview.getRating() < 0) {
+    } else if(productReview.getRating() <= 0) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "rating", "double");
-    } else if(productReview.getContent().isEmpty()) {
+    } else if(productReview.getContent() == null || productReview.getContent().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "content", "String");
     }
     productReview.setId(UUID.randomUUID().toString());
@@ -36,8 +36,12 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
   @Override
   public List<ProductReview> findAll(ProductReview productReview) throws ApiException {
-    if(productReview.getProductId().isEmpty()) {
+    if(productReview.getProductId() == null || productReview.getProductId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "productId", "String");
+    } else if(productReview.getPageNum() <= 0) {
+      productReview.setPageNum(1);
+    } else if(productReview.getLimit() <= 0) {
+      productReview.setLimit(10);
     }
     productReview.setOffset((productReview.getPageNum() - 1) * 10);
     List<ProductReview> productReviewList = productReviewMapper.findAll(productReview);
@@ -46,7 +50,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
   @Override
   public ProductReview findOne(ProductReview productReview) throws ApiException {
-    if(productReview.getId().isEmpty()) {
+    if(productReview.getId() == null || productReview.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     return productReviewMapper.findOne(productReview);
@@ -54,7 +58,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
   @Override
   public void modify(ProductReview productReview) throws ApiException {
-    if(productReview.getId().isEmpty()) {
+    if(productReview.getId() == null || productReview.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     productReviewMapper.modify(productReview);
@@ -62,7 +66,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
   @Override
   public void remove(ProductReview productReview) throws ApiException {
-    if(productReview.getId().isEmpty()) {
+    if(productReview.getId() == null || productReview.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     productReviewMapper.remove(productReview);

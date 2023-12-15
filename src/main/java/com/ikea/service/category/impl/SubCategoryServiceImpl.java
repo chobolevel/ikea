@@ -21,11 +21,11 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
   @Override
   public void create(SubCategory subCategory) throws ApiException {
-    if(subCategory.getMainCategoryId().isEmpty()) {
+    if(subCategory.getMainCategoryId() == null || subCategory.getMainCategoryId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "mainCategoryId", "String");
-    } else if(subCategory.getCode().isEmpty()) {
+    } else if(subCategory.getCode() == null || subCategory.getCode().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "code", "String");
-    } else if(subCategory.getName().isEmpty()) {
+    } else if(subCategory.getName() == null || subCategory.getName().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "name", "String");
     }
     SubCategory findSubCategory = subCategoryMapper.findOne(SubCategory
@@ -47,7 +47,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
   @Override
   public void modify(SubCategory subCategory) throws ApiException {
-    if(subCategory.getId().isEmpty()) {
+    if(subCategory.getId() == null || subCategory.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     subCategoryMapper.modify(subCategory);
@@ -55,7 +55,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
   @Override
   public void remove(SubCategory subCategory) throws ApiException {
-    if(subCategory.getId().isEmpty()) {
+    if(subCategory.getId() == null || subCategory.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     subCategoryMapper.remove(subCategory);

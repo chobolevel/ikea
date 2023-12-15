@@ -22,9 +22,9 @@ public class AttachmentServiceImpl implements AttachmentService {
   @Override
   public void create(List<Attachment> attachmentList) throws ApiException {
     for(Attachment attachment : attachmentList) {
-      if(attachment.getProductOptionId().isEmpty()) {
+      if(attachment.getProductOptionId() == null || attachment.getProductOptionId().isEmpty()) {
         throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "productOptionId", "String");
-      } else if(attachment.getName().isEmpty()) {
+      } else if(attachment.getName() == null || attachment.getName().isEmpty()) {
         throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "name", "String");
       }
       attachment.setId(UUID.randomUUID().toString());
@@ -34,7 +34,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
   @Override
   public void modify(Attachment attachment) throws ApiException {
-    if(attachment.getId().isEmpty()) {
+    if(attachment.getId() == null || attachment.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     attachmentMapper.modify(attachment);
@@ -42,7 +42,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
   @Override
   public void remove(Attachment attachment) throws ApiException {
-    if(attachment.getId().isEmpty()) {
+    if(attachment.getId() == null || attachment.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
     attachmentMapper.remove(attachment);

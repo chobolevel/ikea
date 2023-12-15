@@ -28,17 +28,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void create(User user) throws ApiException {
-    if(user.getUsername().isEmpty()) {
+    if(user.getUsername() == null || user.getUsername().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "username");
-    } else if(user.getPassword().isEmpty()) {
+    } else if(user.getPassword() == null || user.getPassword().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "password");
-    } else if(user.getName().isEmpty()) {
+    } else if(user.getName() == null || user.getName().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "name");
-    } else if(user.getEmail().isEmpty()) {
+    } else if(user.getEmail() == null || user.getEmail().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "email");
-    } else if(user.getAddress().isEmpty()) {
+    } else if(user.getAddress() == null || user.getAddress().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "address");
-    } else if(user.getMobile().isEmpty()) {
+    } else if(user.getMobile() == null || user.getMobile().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "mobile");
     }
     user.setId(UUID.randomUUID().toString());
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void modify(User user) throws ApiException {
-    if(user.getId().isEmpty()) {
+    if(user.getId() == null || user.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "id");
     }
     userMapper.modify(user);
@@ -62,11 +62,11 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void changePassword(User user) throws ApiException {
-    if(user.getId().isEmpty()) {
+    if(user.getId() == null || user.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
-    } else if(user.getCurPassword().isEmpty()) {
+    } else if(user.getCurPassword() == null || user.getCurPassword().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "curPassword", "String");
-    } else if(user.getPassword().isEmpty()) {
+    } else if(user.getPassword() == null || user.getPassword().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "password", "String");
     }
     User findUser = userMapper.findOne(User.builder().id(user.getId()).build());
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void remove(User user) throws ApiException {
-    if(user.getId().isEmpty()) {
+    if(user.getId() == null || user.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "id");
     }
     userMapper.remove(user);
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void findUsername(User user) throws ApiException, MessagingException {
-    if(user.getEmail().isEmpty()) {
+    if(user.getEmail() == null || user.getEmail().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "email", "String");
     }
     User findUser = userMapper.findOne(user);
@@ -106,9 +106,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void findPassword(User user) throws ApiException, MessagingException {
-    if(user.getUsername().isEmpty()) {
+    if(user.getUsername() == null || user.getUsername().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "username", "String");
-    } else if(user.getEmail().isEmpty()) {
+    } else if(user.getEmail() == null || user.getEmail().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "email", "String");
     }
     User findUser = userMapper.findOne(user);
