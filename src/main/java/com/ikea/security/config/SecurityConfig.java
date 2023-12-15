@@ -26,6 +26,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()
         .cors().disable()
         .authorizeRequests()
+        // 페이지 인가
+        .antMatchers(
+            "/sign/in",
+            "/sign/up",
+            "/user/find-username",
+            "/user/find-password").anonymous()
+        .antMatchers("/user/profile").authenticated()
+        .antMatchers(
+            "/category/main/register",
+            "/category/sub/register",
+            "/product/register",
+            "/product-option/register").hasRole("ADMIN")
+        // API 인가
+        .antMatchers(
+            "/api/sign/up",
+            "/api/user/find-username",
+            "/api/user/find-password").anonymous()
+        .antMatchers(
+            "/api/user/me",
+            "/api/user/{id}").authenticated()
+        .antMatchers(
+            "/api/main-category/register",
+            "/api/main-category/{id}",
+            "/api/sub-category/register",
+            "/api/sub-category/{id}",
+            "/api/product",
+            "/api/product/{id}",
+            "/api/product-option",
+            "/api/product-option/{id}").hasRole("ADMIN")
         .anyRequest().permitAll()
         .and()
         .formLogin()
