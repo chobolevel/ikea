@@ -20,5 +20,8 @@
 ## DB 테이블 구조
 > ![image](https://github.com/chobolevel/ikea/assets/104749958/496c4b31-6e9a-4b5e-bb94-7142e0a39566)
 
+## API_DOCS
+> ![IKEA_API_DOCS](https://github.com/chobolevel/ikea/assets/104749958/95eb7efc-c2b5-4230-b955-5d235fc32230)
+
 ## 초기 화면
 > ![localhost_8080_](https://github.com/chobolevel/ikea/assets/104749958/f2c12eaa-43d5-497b-ab96-c120a3217b80)
