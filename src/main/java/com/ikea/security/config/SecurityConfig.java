@@ -3,6 +3,7 @@ package com.ikea.security.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -41,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/category/sub/register",
             "/product/register",
             "/product-option/register").hasRole("ADMIN")
+        // 모두 사용가능한 API
+        .antMatchers(HttpMethod.GET, "/api/product/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}").permitAll()
         // 익명 사용자만 접근 가능한 API
         .antMatchers(
             "/api/sign/up",
