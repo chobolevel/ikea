@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko"
       layout:decorate="~{layout/default_layout.html}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <title>IKEA - 상품 상세</title>
 </head>
@@ -23,6 +24,10 @@
             </li>
             <li class="product-review-item">
               <p>상품평</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </li>
+            <li class="product-option-register-item" sec:authorize="hasRole('ADMIN')">
+              <p>상품 옵션 등록</p>
               <i class="fa-solid fa-angles-right"></i>
             </li>
           </ul>
@@ -132,6 +137,7 @@
   const $productImg = $('.product-img')
   const $productDescItem = $('.product-desc-item')
   const $productReviewItem = $('.product-review-item')
+  const $productOptionRegisterItem = $('.product-option-register-item')
   const $productName = $('.product-name')
   const $productSize = $('.product-size')
   const $productPrice = $('.product-price')
@@ -348,6 +354,10 @@
   $reviewSaveBtn.on('click', (e) => {
     e.preventDefault()
     $reviewWriteForm.submit()
+  })
+  $productOptionRegisterItem.on('click', (e) => {
+    e.preventDefault()
+    location.href = `/product-option/register?productId=${productId}`
   })
   $quantitySubBtn.on('click', (e) => {
     e.preventDefault()
