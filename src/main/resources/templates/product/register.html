@@ -56,7 +56,7 @@
   let categoryList
 
   $.ajax({
-    url: 'http://localhost:8080/api/main-category/list',
+    url: '/api/main-category/list',
     type: 'GET',
     contentType: 'application/json',
     success: (mainCategoryList) => {
@@ -102,7 +102,7 @@
     },
     submitHandler: () => {
       $.ajax({
-        url: 'http://localhost:8080/api/product',
+        url: '/api/product',
         type: 'POST',
         contentType: 'application/json',
         dataType: 'json',

@@ -171,7 +171,7 @@
   let productOptionList
 
   $.ajax({
-    url: `http://localhost:8080/api/product/${productId}`,
+    url: `/api/product/${productId}`,
     type: 'GET',
     contentType: 'application/json',
     success: (product) => {
@@ -211,7 +211,7 @@
   })
 
   $.ajax({
-    url: `http://localhost:8080/api/product-review/list?${$.param(productReviewParamObj)}`,
+    url: `/api/product-review/list?${$.param(productReviewParamObj)}`,
     type: 'GET',
     contentType: 'application/json',
     success: (reviewList) => {
@@ -251,12 +251,12 @@
     },
     submitHandler: () => {
       $.ajax({
-        url: 'http://localhost:8080/api/user/me',
+        url: '/api/user/me',
         type: 'GET',
         contentType: 'application/json',
         success: (user) => {
           $.ajax({
-            url: 'http://localhost:8080/api/product-review',
+            url: '/api/product-review',
             type: 'POST',
             contentType: 'application/json',
             dataType: 'json',
@@ -312,7 +312,7 @@
     ++productReviewParamObj.pageNum
     console.log(productReviewParamObj)
     $.ajax({
-      url: `http://localhost:8080/api/product-review/list?${$.param(productReviewParamObj)}`,
+      url: `/api/product-review/list?${$.param(productReviewParamObj)}`,
       type: 'GET',
       contentType: 'application/json',
       success: (reviewList) => {

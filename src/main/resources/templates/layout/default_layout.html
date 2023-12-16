@@ -24,7 +24,7 @@
       const $subCategoryUl = $('.sub-category-list')
 
       $.ajax({
-        url: 'http://localhost:8080/api/main-category/list',
+        url: '/api/main-category/list',
         type: 'GET',
         contentType: 'application/json',
         success: (list) => {

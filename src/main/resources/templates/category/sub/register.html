@@ -45,7 +45,7 @@
   const $saveBtn = $('.save-btn')
 
   $.ajax({
-    url: 'http://localhost:8080/api/main-category/list',
+    url: '/api/main-category/list',
     type: 'GET',
     contentType: 'application/json',
     success: (mainCategoryList) => {
@@ -101,5 +101,13 @@
         }
       })
     }
+  })
+  $cancelBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/'
+  })
+  $saveBtn.on('click', (e) => {
+    e.preventDefault()
+    $subCategoryRegisterForm.submit()
   })
 </script>

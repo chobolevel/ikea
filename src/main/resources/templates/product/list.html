@@ -33,7 +33,7 @@
   }
 
   $.ajax({
-    url: `http://localhost:8080/api/product/list?${$.param(paramObj)}`,
+    url: `/api/product/list?${$.param(paramObj)}`,
     type: 'GET',
     contentType: 'application/json',
     success: (productList) => {
@@ -48,7 +48,7 @@
     e.preventDefault()
     paramObj.pageNum += 1
     $.ajax({
-      url: `http://localhost:8080/api/product/list?${$.param(paramObj)}`,
+      url: `/api/product/list?${$.param(paramObj)}`,
       type: 'GET',
       contentType: 'application/json',
       success: (productList) => {
