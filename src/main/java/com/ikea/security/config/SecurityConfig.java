@@ -26,35 +26,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()
         .cors().disable()
         .authorizeRequests()
-        // 페이지 인가
+        // 익명 사용자만 접근 가능한 페이지
         .antMatchers(
             "/sign/in",
             "/sign/up",
             "/user/find-username",
             "/user/find-password").anonymous()
-        .antMatchers("/user/profile").authenticated()
+        // 인증된 사용자만 접근 가능한 페이지
+        .antMatchers(
+            "/user/profile").authenticated()
+        // 관리자만 접근 가능한 페이지
         .antMatchers(
             "/category/main/register",
             "/category/sub/register",
             "/product/register",
             "/product-option/register").hasRole("ADMIN")
-        // API 인가
+        // 익명 사용자만 접근 가능한 API
         .antMatchers(
             "/api/sign/up",
             "/api/user/find-username",
             "/api/user/find-password").anonymous()
+        // 인증된 사용자만 접근 가능한 API
         .antMatchers(
             "/api/user/me",
-            "/api/user/{id}").authenticated()
+            "/api/user/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}",
+            "/api/user/change-password",
+            "/api/product-review",
+            "/api/product-review/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}").authenticated()
+        // 관리자만 접근 가능한 API
         .antMatchers(
-            "/api/main-category/register",
-            "/api/main-category/{id}",
-            "/api/sub-category/register",
-            "/api/sub-category/{id}",
+            "/api/main-category",
+            "/api/main-category/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}",
+            "/api/sub-category",
+            "/api/sub-category/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}",
             "/api/product",
-            "/api/product/{id}",
+            "/api/product/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}",
             "/api/product-option",
-            "/api/product-option/{id}").hasRole("ADMIN")
+            "/api/product-option/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}").hasRole("ADMIN")
         .anyRequest().permitAll()
         .and()
         .formLogin()
