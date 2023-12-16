@@ -8,7 +8,7 @@
         </button>
         <p class="right-box-title" sec:authorize="isAnonymous()">Hej</p>
         <p class="right-box-title" sec:authorize="isAuthenticated()">
-          Hej <span sec:authentication="principal.user.name"></span>
+          Hej <span sec:authorize="hasRole('ADMIN')">관리자</span> <span sec:authentication="principal.user.name"></span>
         </p>
       </header>
       <nav>
@@ -34,6 +34,30 @@
           <li sec:authorize="isAuthenticated()">
             <a href="/logout">
               <p>로그아웃</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </li>
+          <li sec:authorize="hasRole('ADMIN')">
+            <a href="/category/main/register">
+              <p>대분류 등록</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </li>
+          <li sec:authorize="hasRole('ADMIN')">
+            <a href="/category/sub/register">
+              <p>소분류 등록</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </li>
+          <li sec:authorize="hasRole('ADMIN')">
+            <a href="/product/register">
+              <p>상품 등록</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </li>
+          <li sec:authorize="hasRole('ADMIN')">
+            <a href="/product/option/register">
+              <p>상품 상제 정보 등록</p>
               <i class="fa-solid fa-angles-right"></i>
             </a>
           </li>
