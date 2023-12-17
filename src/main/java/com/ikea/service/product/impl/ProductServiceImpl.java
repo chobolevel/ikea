@@ -1,15 +1,18 @@
 package com.ikea.service.product.impl;
 
 import com.ikea.entity.product.Product;
+import com.ikea.entity.product.ProductOption;
 import com.ikea.enums.ApiExceptionType;
 import com.ikea.exception.ApiException;
 import com.ikea.mapper.product.ProductMapper;
-import com.ikea.mapper.product.ProductOptionMapper;
+import com.ikea.service.product.ProductOptionService;
 import com.ikea.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,10 +22,10 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
   private final ProductMapper productMapper;
-  private final ProductOptionMapper productOptionMapper;
+  private final ProductOptionService productOptionService;
 
   @Override
-  public void create(Product product) throws ApiException {
+  public void create(Product product, List<MultipartFile> uploadFiles) throws ApiException, IOException {
     if(product.getName() == null || product.getName().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "name", "String");
     } else if(product.getDesc() == null || product.getDesc().isEmpty()) {
@@ -32,8 +35,13 @@ public class ProductServiceImpl implements ProductService {
     } else if(product.getSubCategoryCode() == null || product.getSubCategoryCode().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "subCategory", "String");
     }
-    product.setId(UUID.randomUUID().toString());
+    String productId = UUID.randomUUID().toString();
+    product.setId(productId);
+
+    ProductOption productOption = product.getProductOption();
+    productOption.setProductId(productId);
     productMapper.create(product);
+    productOptionService.create(productOption, uploadFiles);
   }
 
   @Override

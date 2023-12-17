@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/product")
@@ -27,8 +31,8 @@ public class ProductRestController {
   }
 
   @PostMapping("")
-  public ResponseEntity<?> createProduct(@RequestBody Product product) throws ApiException {
-    productService.create(product);
+  public ResponseEntity<?> createProduct(@RequestPart Product product, @RequestPart List<MultipartFile> uploadFiles) throws ApiException, IOException {
+    productService.create(product, uploadFiles);
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.CREATED), HttpStatus.CREATED);
   }
 

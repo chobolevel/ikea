@@ -33,6 +33,34 @@
           <option>소분류를 선택해주세요.</option>
         </select>
       </div>
+      <div class="input-area">
+        <label for="color">기본 옵션 상품 색상</label>
+        <input id="color" name="color" type="text">
+      </div>
+      <div class="input-area">
+        <label for="width">기본 옵션 상품 가로 길이</label>
+        <input id="width" name="width" type="text">
+      </div>
+      <div class="input-area">
+        <label for="depth">기본 옵션 상품 세로 길이</label>
+        <input id="depth" name="depth" type="text">
+      </div>
+      <div class="input-area">
+        <label for="height">기본 옵션 상품 높이</label>
+        <input id="height" name="height" type="text">
+      </div>
+      <div class="input-area">
+        <label for="stock">기본 옵션 상품 재고 수량</label>
+        <input id="stock" name="stock" type="text">
+      </div>
+      <div class="input-area">
+        <label for="price">기본 옵션 상품 가격</label>
+        <input id="price" name="price" type="text">
+      </div>
+      <div class="upload-area">
+        <label for="uploadFiles">기본 옵션 상품 이미지</label>
+        <input accept="image/png" id="uploadFiles" name="uploadFiles" type="file">
+      </div>
       <div class="btn-area">
         <button class="cancel-btn">취소</button>
         <button class="save-btn">등록</button>
@@ -50,6 +78,13 @@
   const $descTextArea = $('textarea[name=desc]')
   const $mainCategorySelect = $('select[name=mainCategoryCode]')
   const $subCategorySelect = $('select[name=subCategoryCode]')
+  const $colorInput = $('input[name=color]')
+  const $widthInput = $('input[name=width]')
+  const $depthInput = $('input[name=depth]')
+  const $heightInput = $('input[name=height]')
+  const $stockInput = $('input[name=stock]')
+  const $priceInput = $('input[name=price]')
+  const $uploadFilesInput = $('input[name=uploadFiles]')
   const $cancelBtn = $('.cancel-btn')
   const $saveBtn = $('.save-btn')
 
@@ -84,6 +119,29 @@
       },
       subCategoryCode: {
         required: true
+      },
+      color: {
+        required: true
+      },
+      width: {
+        required: true,
+        number: true
+      },
+      depth: {
+        required: true,
+        number: true
+      },
+      height: {
+        required: true,
+        number: true
+      },
+      stock: {
+        required: true,
+        number: true
+      },
+      price: {
+        required: true,
+        number: true
       }
     },
     messages: {
@@ -98,20 +156,60 @@
       },
       subCategoryCode: {
         required: '소분류가 선택되지 않았습니다.'
+      },
+      color: {
+        required: '기본 옵션 상품 색상이 입력되지 않았습니다.'
+      },
+      width: {
+        required: '기본 옵션 상품 가로 길이가 입력되지 않았습니다.',
+        number: '숫자만 입력 가능합니다.'
+      },
+      depth: {
+        required: '기본 옵션 상품 세로 길이가 입력되지 않았습니다.',
+        number: '숫자만 입력 가능합니다.'
+      },
+      height: {
+        required: '기본 옵션 상품 높이가 입력되지 않았습니다.',
+        number: '숫자만 입력 가능합니다.'
+      },
+      stock: {
+        required: '기본 옵션 상품 재고 수량이 입력되지 않았습니다.',
+        number: '숫자만 입력 가능합니다.'
+      },
+      price: {
+        required: '기본 옵션 상품 가격이 입력되지 않았습니다.',
+        number: '숫자만 입력 가능합니다.'
       }
     },
     submitHandler: () => {
+      const formData = new FormData()
+      const dataObj = {
+        name: $nameInput.val(),
+        desc: $descTextArea.val(),
+        mainCategoryCode: $mainCategorySelect.val(),
+        subCategoryCode: $subCategorySelect.val(),
+        productOption: {
+          color: $colorInput.val(),
+          width: $widthInput.val(),
+          depth: $depthInput.val(),
+          height: $heightInput.val(),
+          stock: $stockInput.val(),
+          price: $priceInput.val()
+        }
+      }
+      formData.append('product', new Blob([JSON.stringify(dataObj)], { type: 'application/json' }))
+      Array.from($uploadFilesInput[0].files).forEach((file) => {
+        formData.append('uploadFiles', file)
+      })
       $.ajax({
         url: '/api/product',
         type: 'POST',
-        contentType: 'application/json',
+        contentType: false,
+        processData: false,
+        cache: false,
+        encType: 'multipart/form-data',
         dataType: 'json',
-        data: JSON.stringify({
-          name: $nameInput.val(),
-          desc: $descTextArea.val(),
-          mainCategoryCode: $mainCategorySelect.val(),
-          subCategoryCode: $subCategorySelect.val()
-        }),
+        data: formData,
         success: () => {
           alert('상품 등록이 완료되었습니다.')
           location.href = '/product/list'
