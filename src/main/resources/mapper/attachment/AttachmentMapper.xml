@@ -43,4 +43,8 @@
         DELETE FROM attachment WHERE id = #{id}
     </delete>
 
+    <delete id="deleteByProductOptionId" parameterType="Attachment">
+        DELETE FROM attachment WHERE product_option_id = #{productOptionId}
+    </delete>
+
 </mapper>

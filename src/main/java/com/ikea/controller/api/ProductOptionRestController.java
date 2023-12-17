@@ -27,9 +27,9 @@ public class ProductOptionRestController {
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<?> modifyProductOption(@PathVariable("id") String id, @RequestBody ProductOption productOption) throws ApiException {
+  public ResponseEntity<?> modifyProductOption(@PathVariable("id") String id, @RequestPart ProductOption productOption, @RequestPart List<MultipartFile> uploadFiles) throws ApiException, IOException {
     productOption.setId(id);
-    productOptionService.modify(productOption);
+    productOptionService.modify(productOption, uploadFiles);
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
 

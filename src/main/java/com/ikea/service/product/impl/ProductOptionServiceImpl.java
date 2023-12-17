@@ -70,9 +70,30 @@ public class ProductOptionServiceImpl implements ProductOptionService {
   }
 
   @Override
-  public void modify(ProductOption productOption) throws ApiException {
+  public void modify(ProductOption productOption, List<MultipartFile> uploadFiles) throws ApiException, IOException {
     if(productOption.getId() == null || productOption.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
+    }
+    File folder = new File(String.format("%s\\%s\\%s", basePath, productOption.getProductId(), productOption.getId()));
+    if(folder.exists()) {
+      // 해당 패키지 존재하는 경우
+      // 1. attachment 레코드 삭제 productOptionId 기반
+      if(folder.listFiles() != null) {
+        for(File file : folder.listFiles()) {
+          file.delete();
+        }
+      }
+      folder.delete();
+      // 모두 삭제한 후 새롭게 생성
+      attachmentMapper.deleteByProductOptionId(Attachment.builder().productOptionId(productOption.getId()).build());
+    }
+    if(uploadFiles != null && !uploadFiles.isEmpty()) {
+      folder.mkdir();
+      for(MultipartFile file : uploadFiles) {
+        file.transferTo(new File(String.format("%s\\%s\\%s", productOption.getProductId(), productOption.getId(), file.getOriginalFilename())));
+      }
+      List<Attachment> attachmentList = uploadFiles.stream().map((file) -> new Attachment(UUID.randomUUID().toString(), productOption.getId(), file.getOriginalFilename())).toList();
+      attachmentMapper.creates(attachmentList);
     }
     productOptionMapper.modify(productOption);
   }

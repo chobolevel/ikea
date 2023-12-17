@@ -14,4 +14,6 @@ public interface AttachmentMapper {
 
   void remove(Attachment attachment);
 
+  void deleteByProductOptionId(Attachment attachment);
+
 }
