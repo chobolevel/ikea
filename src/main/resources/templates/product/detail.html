@@ -30,6 +30,14 @@
               <p>상품 옵션 등록</p>
               <i class="fa-solid fa-angles-right"></i>
             </li>
+            <li class="product-modify-item" sec:authorize="hasRole('ADMIN')">
+              <p>상품 정보 수정</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </li>
+            <li class="product-delete-item" sec:authorize="hasRole('ADMIN')">
+              <p>상품 삭제</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </li>
           </ul>
         </div>
       </div>
@@ -138,6 +146,8 @@
   const $productDescItem = $('.product-desc-item')
   const $productReviewItem = $('.product-review-item')
   const $productOptionRegisterItem = $('.product-option-register-item')
+  const $productModifyItem = $('.product-modify-item')
+  const $productDeleteItem = $('.product-delete-item')
   const $productName = $('.product-name')
   const $productSize = $('.product-size')
   const $productPrice = $('.product-price')
@@ -358,6 +368,26 @@
   $productOptionRegisterItem.on('click', (e) => {
     e.preventDefault()
     location.href = `/product-option/register?productId=${productId}`
+  })
+  $productModifyItem.on('click', (e) => {
+    e.preventDefault()
+    location.href = `/product/modify/${productId}`
+  })
+  $productDeleteItem.on('click', (e) => {
+    if(confirm('정말 삭제하시겠습니까?')) {
+     $.ajax({
+       url: `/api/product/${productId}`,
+       type: 'DELETE',
+       contentType: 'application/jon',
+       success: () => {
+         alert('상품 삭제 성공\n상품 목록 페이지로 이동합니다.')
+         location.href = '/product/list'
+       },
+       error: (request) => {
+         console.log(request)
+       }
+     })
+    }
   })
   $quantitySubBtn.on('click', (e) => {
     e.preventDefault()
