@@ -27,9 +27,9 @@ public class ProductServiceImpl implements ProductService {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "name", "String");
     } else if(product.getDesc() == null || product.getDesc().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "desc", "String");
-    } else if(product.getMainCategory() == null || product.getMainCategoryCode().isEmpty()) {
+    } else if(product.getMainCategoryCode() == null || product.getMainCategoryCode().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "mainCategory", "String");
-    } else if(product.getSubCategory() == null || product.getSubCategoryCode().isEmpty()) {
+    } else if(product.getSubCategoryCode() == null || product.getSubCategoryCode().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "subCategory", "String");
     }
     product.setId(UUID.randomUUID().toString());
