@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 상품 수정</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="form-area">
+    <div class="form-title">
+      <h2>상품 수정</h2>
+    </div>
+    <form class="product-modify-form">
+      <div class="input-area">
+        <label for="name">상품 이름</label>
+        <input id="name" name="name" type="text">
+      </div>
+      <div class="input-area">
+        <label for="desc">상품 상세</label>
+        <textarea id="desc" name="desc"></textarea>
+      </div>
+      <div class="input-area">
+        <label for="mainCategoryCode">대분류</label>
+        <select id="mainCategoryCode" name="mainCategoryCode">
+          <option>대분류를 선택해주세요.</option>
+        </select>
+      </div>
+      <div class="input-area">
+        <label for="subCategoryCode">소분류</label>
+        <select id="subCategoryCode" name="subCategoryCode">
+          <option>소분류를 선택해주세요.</option>
+        </select>
+      </div>
+      <div class="btn-area">
+        <button class="cancel-btn">취소</button>
+        <button class="save-btn">등록</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+  const product = [[${product}]]
+  const mainCategoryList = [[${mainCategoryList}]]
+  const $productModifyForm = $('.product-modify-form')
+  const $nameInput = $('input[name=name]')
+  const $descText = $('textarea[name=desc]')
+  const $mainCategoryCodeSelect = $('select[name=mainCategoryCode]')
+  const $subCategoryCodeSelect = $('select[name=subCategoryCode]')
+  const $cancelBtn = $('.cancel-btn')
+  const $saveBtn = $('.save-btn')
+
+  let selectedMainCategory = mainCategoryList.find((c) => c.code === product.mainCategoryCode)
+  let selectedSubCategory = selectedMainCategory.subCategoryList.find((c) => c.code = product.subCategoryCode)
+
+  mainCategoryList.forEach((mainCategory) => {
+    const $option = $(`<option value="${mainCategory.id}">${mainCategory.name}</option>`)
+    $mainCategoryCodeSelect.append($option)
+  })
+  selectedMainCategory.subCategoryList.forEach((subCategory) => {
+    const $option = $(`<option value="${subCategory.id}">${subCategory.name}</option>`)
+    $subCategoryCodeSelect.append($option)
+  })
+
+  $nameInput.val(product.name)
+  $descText.val(product.desc)
+  $mainCategoryCodeSelect.val(selectedMainCategory.id).prop('selected', true)
+  $subCategoryCodeSelect.val(selectedSubCategory.id).prop('selected', true)
+
+  $productModifyForm.validate({
+    rules: {
+      name: {
+        required: true
+      },
+      desc: {
+        required: true
+      },
+      mainCategoryCode: {
+        required: true
+      },
+      subCategoryCode: {
+        required: true
+      }
+    },
+    messages: {
+      name: {
+        required: '상품명이 입력되지 않았습니다.'
+      },
+      desc: {
+        required: '상품 상세가 입력되지 않았습니다.'
+      },
+      mainCategoryCode: {
+        required: '상품 대분류가 선택되지 않았습니다.'
+      },
+      subCategoryCode: {
+        required: '상품 소분류가 선택되지 않았습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: `http://localhost:8080/api/product/${product.id}`,
+        type: 'PUT',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          name: $nameInput.val(),
+          desc: $descText.val(),
+          mainCategoryCode: selectedMainCategory.code,
+          subCategoryCode: selectedSubCategory.code
+        }),
+        success: () => {
+          alert('상품 정보 수정이 완료되었습니다.')
+          location.href = `/product/${product.id}`
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    }
+  })
+
+  $mainCategoryCodeSelect.on('change', (e) => {
+    const selectedOne = mainCategoryList.find((c) => c.id === $mainCategoryCodeSelect.val())
+    selectedMainCategory = selectedOne ? selectedOne : null
+    selectedSubCategory = null
+    $subCategoryCodeSelect.children().remove()
+    $subCategoryCodeSelect.append('<option>소분류를 선택해주세요.</option>')
+    if(selectedMainCategory !== null) {
+      selectedMainCategory.subCategoryList.forEach((subCategory) => {
+        const $option = $(`<option value="${subCategory.id}">${subCategory.name}</option>`)
+        $subCategoryCodeSelect.append($option)
+      })
+    }
+  })
+  $subCategoryCodeSelect.on('change', (e) => {
+    const selectedOne = selectedMainCategory.subCategoryList.find((c) => c.id === $subCategoryCodeSelect.val())
+    selectedSubCategory = selectedOne ? selectedOne : null
+  })
+  $cancelBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = `/product/${product.id}`
+  })
+  $saveBtn.on('click', (e) => {
+    e.preventDefault()
+    $productModifyForm.submit()
+  })
+</script>

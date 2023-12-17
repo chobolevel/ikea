@@ -156,19 +156,13 @@
             , name = #{name}
         </if>
         <if test="desc != null and desc != ''">
-            , desc = #{desc}
+            , `desc` = #{desc}
         </if>
         <if test="mainCategoryCode != null and mainCategoryCode != ''">
             , main_category_code = #{mainCategoryCode}
         </if>
-        <if test="subCategoryCode !+ null and subCategoryCode = !''">
+        <if test="subCategoryCode != null and subCategoryCode != ''">
             , sub_category_code = #{subCategoryCode}
-        </if>
-        <if test="price != null">
-            , price = #{price}
-        </if>
-        <if test="stock != null">
-            , stock = #{stock}
         </if>
         WHERE id = #{id}
     </update>

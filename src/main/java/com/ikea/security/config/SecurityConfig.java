@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/category/main/register",
             "/category/sub/register",
             "/product/register",
+            "/product/modify/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}",
             "/product-option/register").hasRole("ADMIN")
         // 모두 사용가능한 API
         .antMatchers(HttpMethod.GET, "/api/product/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}").permitAll()
