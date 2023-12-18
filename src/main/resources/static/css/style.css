@@ -1340,3 +1340,28 @@ footer .footer-inner .legal-area .legal-links ul li a {
     background-color: #000;
     color: #fff;
 }
+
+/*error page style*/
+.error-area {
+    width: 100%;
+    padding: 3.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+}
+
+.error-area video {
+    width: 32rem;
+    height: 32rem;
+}
+
+.error-area .error-title {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.error-area .error-desc {
+    font-size: 1.4rem;
+}
