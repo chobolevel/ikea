@@ -26,16 +26,20 @@
               <p>상품평</p>
               <i class="fa-solid fa-angles-right"></i>
             </li>
-            <li class="product-option-register-item" sec:authorize="hasRole('ADMIN')">
-              <p>상품 옵션 등록</p>
-              <i class="fa-solid fa-angles-right"></i>
-            </li>
             <li class="product-modify-item" sec:authorize="hasRole('ADMIN')">
               <p>상품 정보 수정</p>
               <i class="fa-solid fa-angles-right"></i>
             </li>
             <li class="product-delete-item" sec:authorize="hasRole('ADMIN')">
               <p>상품 삭제</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </li>
+            <li class="product-option-register-item" sec:authorize="hasRole('ADMIN')">
+              <p>상품 옵션 추가</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </li>
+            <li class="product-option-modify-item" sec:authorize="hasRole('ADMIN')">
+              <p>선택된 상품 옵션 수정</p>
               <i class="fa-solid fa-angles-right"></i>
             </li>
           </ul>
@@ -145,9 +149,10 @@
   const $productImg = $('.product-img')
   const $productDescItem = $('.product-desc-item')
   const $productReviewItem = $('.product-review-item')
-  const $productOptionRegisterItem = $('.product-option-register-item')
   const $productModifyItem = $('.product-modify-item')
   const $productDeleteItem = $('.product-delete-item')
+  const $productOptionRegisterItem = $('.product-option-register-item')
+  const $productOptionModifyItem = $('.product-option-modify-item')
   const $productName = $('.product-name')
   const $productSize = $('.product-size')
   const $productPrice = $('.product-price')
@@ -185,6 +190,7 @@
   }
 
   let productOptionList
+  let selectedProductOption
 
   $.ajax({
     url: `/api/product/${productId}`,
@@ -193,6 +199,7 @@
     success: (product) => {
       productOptionList = product.productOptionList
       const firstOption = product.productOptionList[0]
+      selectedProductOption = firstOption
       const firstAtt = firstOption.attachmentList[0]
       const reviewTotalRating = product.productReviewList.map((p) => p.rating).reduce((acc, cur) => acc + cur, 0)
       const reviewTotalCnt = product.productReviewList.length
@@ -215,10 +222,10 @@
       })
       $('input[name=id]').on('change', (e) => {
         e.preventDefault()
-        const selectedOption = productOptionList.find((option) => option.id === e.target.value)
-        $productImg.attr('src', `/img/${selectedOption.productId}/${selectedOption.id}/${selectedOption.attachmentList[0].name}`)
-        $selectedColor.text(`선택된 색상 ${selectedOption.color}`)
-        $productPrice.text(`￦${selectedOption.price.toLocaleString('ko-KR')}`)
+        selectedProductOption = productOptionList.find((option) => option.id === e.target.value)
+        $productImg.attr('src', `/img/${selectedProductOption.productId}/${selectedProductOption.id}/${selectedProductOption.attachmentList[0].name}`)
+        $selectedColor.text(`선택된 색상 ${selectedProductOption.color}`)
+        $productPrice.text(`￦${selectedProductOption.price.toLocaleString('ko-KR')}`)
       })
     },
     error: (request) => {
@@ -365,10 +372,6 @@
     e.preventDefault()
     $reviewWriteForm.submit()
   })
-  $productOptionRegisterItem.on('click', (e) => {
-    e.preventDefault()
-    location.href = `/product-option/register?productId=${productId}`
-  })
   $productModifyItem.on('click', (e) => {
     e.preventDefault()
     location.href = `/product/modify/${productId}`
@@ -388,6 +391,14 @@
        }
      })
     }
+  })
+  $productOptionRegisterItem.on('click', (e) => {
+    e.preventDefault()
+    location.href = `/product-option/register/${productId}`
+  })
+  $productOptionModifyItem.on('click', (e) => {
+    e.preventDefault()
+    location.href = `/product-option/modify/${selectedProductOption.id}`
   })
   $quantitySubBtn.on('click', (e) => {
     e.preventDefault()
