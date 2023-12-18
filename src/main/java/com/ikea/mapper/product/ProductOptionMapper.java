@@ -8,6 +8,8 @@ public interface ProductOptionMapper {
 
   void create(ProductOption productOption);
 
+  ProductOption findOne(ProductOption productOption);
+
   void modify(ProductOption productOption);
 
   void remove(ProductOption productOption);

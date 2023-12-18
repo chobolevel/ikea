@@ -23,11 +23,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductOptionServiceImpl implements ProductOptionService {
 
-  private final AttachmentMapper attachmentMapper;
-
-  private final ProductOptionMapper productOptionMapper;
   @Value("${spring.servlet.multipart.location}")
   private String basePath;
+  private final AttachmentMapper attachmentMapper;
+  private final ProductOptionMapper productOptionMapper;
 
   @Override
   public void create(ProductOption productOption, List<MultipartFile> uploadFiles) throws ApiException, IOException {
@@ -67,6 +66,11 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     } else {
         throw new ApiException(ApiExceptionType.FAIL_TO_CREATE_DIRECTORY);
     }
+  }
+
+  @Override
+  public ProductOption findOne(ProductOption productOption) throws ApiException {
+    return productOptionMapper.findOne(productOption);
   }
 
   @Override

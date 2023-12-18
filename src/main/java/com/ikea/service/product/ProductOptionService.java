@@ -11,6 +11,8 @@ public interface ProductOptionService {
 
   void create(ProductOption productOption, List<MultipartFile> uploadFiles) throws ApiException, IOException;
 
+  ProductOption findOne(ProductOption productOption) throws ApiException;
+
   void modify(ProductOption productOption, List<MultipartFile> uploadFiles) throws ApiException, IOException;
 
   void remove(ProductOption productOption) throws ApiException;
