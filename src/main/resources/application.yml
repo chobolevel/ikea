@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ikea
+    url: ikea-database.cnukdrbce1d7.ap-northeast-2.rds.amazonaws.com/ikea
     username: root
-    password: 1234
+    password: 12345678
   mvc:
     hiddenmethod:
       filter:
@@ -31,3 +31,38 @@ spring:
 mybatis:
   type-aliases-package: com.ikea.entity
   mapper-locations: classpath:mapper/**/*.xml
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ikea
+    username: root
+    password: 1234
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  servlet:
+    multipart:
+      location: C:\dev\project\ikea\src\main\resources\static\img
+      max-file-size: 200MB
+      max-request-size: 100MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail:
+        smtp:
+          # 사용자 인증 시도 여부(default = false)
+          auth: true
+          # Socket read timeout 5000ms(default = 무한)
+          timeout: 5000
+          # startTLS 활성화 여부(default = false)
+          starttls:
+            enable: true
