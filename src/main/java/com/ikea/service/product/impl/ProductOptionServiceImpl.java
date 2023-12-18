@@ -44,13 +44,13 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     productOption.setId(productOptionId);
     // List for attachmentMapper creates
     List<Attachment> attachmentList = uploadFiles.stream().map((file) -> new Attachment(UUID.randomUUID().toString(), productOptionId, file.getOriginalFilename())).toList();
-    File mainFolder = new File(String.format("%s\\%s", basePath, productId));
+    File mainFolder = new File(String.format("%s/%s", basePath, productId));
     boolean isMainFolderExists = mainFolder.exists();
     boolean isMainFolderCreate = false;
     if(!isMainFolderExists) {
        isMainFolderCreate = mainFolder.mkdir();
     }
-    File subFolder = new File(String.format("%s\\%s\\%s", basePath, productId, productOptionId));
+    File subFolder = new File(String.format("%s/%s/%s", basePath, productId, productOptionId));
     boolean isSubFolderExists = subFolder.exists();
     boolean isSubFolderCreate = false;
     if(!isSubFolderExists) {
@@ -59,7 +59,7 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     boolean isFolderCreate = (isMainFolderCreate || isMainFolderExists) && (isSubFolderCreate || isSubFolderExists);
     if(isFolderCreate) {
       for(MultipartFile file : uploadFiles) {
-        file.transferTo(new File(String.format("%s\\%s\\%s", productId, productOptionId, file.getOriginalFilename())));
+        file.transferTo(new File(String.format("%s/%s/%s", productId, productOptionId, file.getOriginalFilename())));
       }
       productOptionMapper.create(productOption);
       attachmentMapper.creates(attachmentList);
@@ -78,7 +78,7 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     if(productOption.getId() == null || productOption.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
-    File folder = new File(String.format("%s\\%s\\%s", basePath, productOption.getProductId(), productOption.getId()));
+    File folder = new File(String.format("%s/%s/%s", basePath, productOption.getProductId(), productOption.getId()));
     if(folder.exists()) {
       // 해당 패키지 존재하는 경우
       // 1. attachment 레코드 삭제 productOptionId 기반
@@ -94,7 +94,7 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     if(uploadFiles != null && !uploadFiles.isEmpty()) {
       folder.mkdir();
       for(MultipartFile file : uploadFiles) {
-        file.transferTo(new File(String.format("%s\\%s\\%s", productOption.getProductId(), productOption.getId(), file.getOriginalFilename())));
+        file.transferTo(new File(String.format("%s/%s/%s", productOption.getProductId(), productOption.getId(), file.getOriginalFilename())));
       }
       List<Attachment> attachmentList = uploadFiles.stream().map((file) -> new Attachment(UUID.randomUUID().toString(), productOption.getId(), file.getOriginalFilename())).toList();
       attachmentMapper.creates(attachmentList);
