@@ -42,6 +42,10 @@
               <p>선택된 상품 옵션 수정</p>
               <i class="fa-solid fa-angles-right"></i>
             </li>
+            <li class="product-option-delete-item" sec:authorize="hasRole('ADMIN')">
+              <p>선택된 상품 옵션 삭제</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </li>
           </ul>
         </div>
       </div>
@@ -153,6 +157,7 @@
   const $productDeleteItem = $('.product-delete-item')
   const $productOptionRegisterItem = $('.product-option-register-item')
   const $productOptionModifyItem = $('.product-option-modify-item')
+  const $productOptionDeleteItem = $('.product-option-delete-item')
   const $productName = $('.product-name')
   const $productSize = $('.product-size')
   const $productPrice = $('.product-price')
@@ -377,7 +382,7 @@
     location.href = `/product/modify/${productId}`
   })
   $productDeleteItem.on('click', (e) => {
-    if(confirm('정말 삭제하시겠습니까?')) {
+    if(confirm('정말 해당 상품을 삭제하시겠습니까?')) {
      $.ajax({
        url: `/api/product/${productId}`,
        type: 'DELETE',
@@ -399,6 +404,23 @@
   $productOptionModifyItem.on('click', (e) => {
     e.preventDefault()
     location.href = `/product-option/modify/${selectedProductOption.id}`
+  })
+  $productOptionDeleteItem.on('click', (e) => {
+    e.preventDefault()
+    if(confirm('정말 선택된 옵션을 삭제하시겠습니까?')) {
+      $.ajax({
+        url: `/api/product-option/{id}`,
+        type: 'DELETE',
+        contentType: 'application/json',
+        success: () => {
+          alert('선택된 옵션의 삭제가 완료되었습니다.')
+          location.reload()
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    }
   })
   $quantitySubBtn.on('click', (e) => {
     e.preventDefault()
