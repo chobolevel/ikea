@@ -31,18 +31,18 @@ public class ProductController {
     model.addAttribute("mainCategoryCode", mainCategoryCode);
     model.addAttribute("subCategoryCode", subCategoryCode);
     model.addAttribute("keyword", keyword);
-    return "/product/list";
+    return "product/list";
   }
 
   @GetMapping("{id}")
   public String productDetail(@PathVariable("id") String productId, Model model) {
     model.addAttribute("productId", productId);
-    return "/product/detail";
+    return "product/detail";
   }
 
   @GetMapping("register")
   public String registerProduct() {
-    return "/product/register";
+    return "product/register";
   }
 
   @GetMapping("/modify/{id}")
@@ -51,7 +51,7 @@ public class ProductController {
     List<MainCategory> mainCategoryList = mainCategoryService.findAll(MainCategory.builder().build());
     model.addAttribute("product", findProduct);
     model.addAttribute("mainCategoryList", mainCategoryList);
-    return "/product/modify";
+    return "product/modify";
   }
 
 }

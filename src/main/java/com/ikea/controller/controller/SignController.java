@@ -10,12 +10,12 @@ public class SignController {
 
   @GetMapping("up")
   public String signUp() {
-    return "/sign/up";
+    return "sign/up";
   }
 
   @GetMapping("in")
   public String signIn() {
-    return "/sign/in";
+    return "sign/in";
   }
 
 }

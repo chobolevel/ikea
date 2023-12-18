@@ -20,14 +20,14 @@ public class ProductOptionController {
   @GetMapping("/register/{id}")
   public String registerProductOption(@PathVariable("id") String productId, Model model) {
     model.addAttribute("productId", productId);
-    return "/product/option/register";
+    return "product/option/register";
   }
 
   @GetMapping("/modify/{id}")
   public String modifyProductOption(@PathVariable("id") String id, Model model) throws ApiException {
     ProductOption findProductOption = productOptionService.findOne(ProductOption.builder().id(id).build());
     model.addAttribute("productOption", findProductOption);
-    return "/product/option/modify";
+    return "product/option/modify";
   }
 
 }

@@ -10,17 +10,17 @@ public class UserController {
 
   @GetMapping("profile")
   public String profile() {
-    return "/user/profile";
+    return "user/profile";
   }
 
   @GetMapping("find-username")
   public String findUsername() {
-    return "/user/find-username";
+    return "user/find-username";
   }
 
   @GetMapping("find-password")
   public String findPassword() {
-    return "/user/find-password";
+    return "user/find-password";
   }
 
 }
