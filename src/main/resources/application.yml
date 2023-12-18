@@ -10,7 +10,7 @@ spring:
         enabled: true
   servlet:
     multipart:
-      location: C:\dev\project\ikea\src\main\resources\static\img
+      location: /home/ubuntu/ikea/src/main/resources/static/img
       max-file-size: 200MB
       max-request-size: 100MB
   mail:
