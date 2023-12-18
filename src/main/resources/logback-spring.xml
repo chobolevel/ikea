@@ -5,7 +5,7 @@
     <property name="LOG_PATH" value="/dev/log"/>
 
     <!-- 로그 파일 이름 -->
-    <property name="LOG_FILE_NAME" value="diaryLog"/>
+    <property name="LOG_FILE_NAME" value="ikeaLog"/>
 
     <!-- 로그 출력 패턴 -->
     <property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
