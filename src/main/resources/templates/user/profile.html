@@ -163,6 +163,9 @@
         }),
         success: () => {
           alert('개인 정보 수정 완료')
+          $popupTitle.text()
+          $popupInputArea.children().remove()
+          $editProfilePopup.css('display', 'none')
         },
         error: (request) => {
           console.log(request)
@@ -206,6 +209,9 @@
         }),
         success: () => {
           alert('비밀번호 변경 완료')
+          $popupTitle.text()
+          $popupInputArea.children().remove()
+          $editProfilePopup.css('display', 'none')
         },
         error: (request) => {
           console.log(request)
