@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ikea-database.cnukdrbce1d7.ap-northeast-2.rds.amazonaws.com/ikea
+    url: jdbc:mysql://ikea-database.cnukdrbce1d7.ap-northeast-2.rds.amazonaws.com:3306/ikea
     username: root
     password: 12345678
   mvc:
