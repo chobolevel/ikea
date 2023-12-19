@@ -44,8 +44,13 @@
           <input id="name" name="name" type="text">
         </div>
         <div class="input-area">
-          <label for="email">이메일</label>
-          <input id="email" name="email" type="text">
+          <label for="email">
+            이메일&nbsp;
+            <span class="email-auth-box-open-btn">이메일 인증
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+          </label>
+          <input disabled id="email" name="email" type="text">
         </div>
         <div class="input-area">
           <label for="address">주 소</label>
@@ -60,10 +65,39 @@
         </div>
         <div class="white-btn-area">
           <button class="sign-in-btn">로그인</button>
-          <button class="find-username-btn">아이디 찾기</button>
-          <button class="find-password-btn">비밀번호 찾기</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div class="email-auth-box">
+    <div class="box-left-inner"></div>
+    <div class="box-right-inner">
+      <header>
+        <h2 class="header-title">이메일 인증</h2>
+        <button class="auth-close-btn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+      <section>
+        <div class="email-auth-area">
+          <form class="email-auth-form">
+            <div class="input-area">
+              <label for="emailToAuth">이메일</label>
+              <input id="emailToAuth" name="emailToAuth" type="text">
+              <button class="send-auth-num-btn">인증번호 전송</button>
+            </div>
+            <div class="input-area">
+              <label for="authNumber">인증번호</label>
+              <input id="authNumber" name="authNumber" type="text">
+            </div>
+            <div class="btn-area">
+              <button class="auth-cancel-btn">취소</button>
+              <button class="auth-save-btn">인증</button>
+            </div>
+          </form>
+        </div>
+      </section>
     </div>
   </div>
 </section>
@@ -82,8 +116,16 @@
   const $mobileInput = $('input[name=mobile]')
   const $signUpBtn = $('.sign-up-btn')
   const $signInBtn = $('.sign-in-btn')
-  const $findUsernameBtn = $('.find-username-btn')
-  const $findPasswordBtn = $('.find-password-btn')
+
+  const $emailAuthBoxOpenBtn = $('.email-auth-box-open-btn')
+  const $emailAuthBox = $('.email-auth-box')
+  const $emailAuthForm = $('.email-auth-form')
+  const $authCloseBtn = $('.auth-close-btn')
+  const $sendAuthNumBtn = $('.send-auth-num-btn')
+  const $emailToAuthInput = $('input[name=emailToAuth]')
+  const $authNumberInput = $('input[name=authNumber]')
+  const $authCancelBtn = $('.auth-cancel-btn')
+  const $authSaveBtn = $('.auth-save-btn')
 
   $signUpForm.validate({
     rules: {
@@ -156,12 +198,61 @@
           alert('[회원 가입 성공]\n로그인 페이지로 이동합니다.')
           location.href = '/sign/in'
         },
-        error: (request) => {
-          console.log(request)
+        error: ({ responseJSON }) => {
+          const { statusCode } = responseJSON
+          const { message } = responseJSON
+          if(statusCode === 400) {
+            if(message === '[Type: User] username이/가 이미 존재합니다.') {
+              alert('아이디가 이미 존재합니다.\n다른 아이디를 사용해 주시기 바랍니다.')
+              $usernameInput.val('')
+            }
+          }
         }
       })
     }
   })
+  $emailAuthForm.validate({
+    rules: {
+      emailToAuth: {
+        required: true,
+        email: true
+      },
+      authNumber: {
+        required: true,
+        number: true
+      }
+    },
+    messages: {
+      emailToAuth: {
+        required: '이메일이 입력되지 않았습니다.',
+        email: '이메일 형식이 올바르지 않습니다.'
+      },
+      authNumber: {
+        required: '인증번호가 입력되지 않았습니다.',
+        number: '인증번호는 숫자만 입력가능합니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: '/api/user/certificate-auth-num',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          email: $emailToAuthInput.val(),
+          authNum: $authNumberInput.val()
+        }),
+        success: () => {
+          alert('이메일 인증에 성공하였습니다.')
+          $emailInput.val($emailToAuthInput.val())
+        },
+        error: (res) => {
+          console.log(res)
+        }
+      })
+    }
+  })
+
   $goBackBtn.on('click', (e) => {
     e.preventDefault()
     location.href = '/'
@@ -174,12 +265,38 @@
     e.preventDefault()
     location.href = '/sign/in'
   })
-  $findUsernameBtn.on('click', (e) => {
+  $emailAuthBoxOpenBtn.on('click', (e) => {
     e.preventDefault()
-    location.href = '/user/find-username'
+    $emailAuthBox.css('visibility', 'visible')
   })
-  $findPasswordBtn.on('click', (e) => {
+  $authCloseBtn.on('click', (e) => {
     e.preventDefault()
-    location.href = '/user/find-password'
+    $emailAuthBox.css('visibility', 'hidden')
+  })
+  $sendAuthNumBtn.on('click', (e) => {
+    e.preventDefault()
+    $.ajax({
+      url: '/api/user/send-auth-num',
+      type: 'POST',
+      contentType: 'application/json',
+      dataType: 'json',
+      data: JSON.stringify({
+        email: $emailToAuthInput.val()
+      }),
+      success: () => {
+        alert('해당 이메일로 인증번호를 전송하였습니다.')
+      },
+      error: (res) => {
+        console.log(res)
+      }
+    })
+  })
+  $authCancelBtn.on('click', (e) => {
+    e.preventDefault()
+    $emailAuthBox.css('visibility', 'hidden')
+  })
+  $authSaveBtn.on('click', (e) => {
+    e.preventDefault()
+    $emailAuthForm.submit()
   })
 </script>
