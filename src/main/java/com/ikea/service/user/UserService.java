@@ -21,4 +21,8 @@ public interface UserService {
 
   void findPassword(User user) throws ApiException, MessagingException;
 
+  void sendEmailAuthNum(User user) throws ApiException, MessagingException;
+
+  void authenticateEmailAuthNum(User user) throws ApiException;
+
 }

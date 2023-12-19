@@ -29,4 +29,14 @@ public class MailUtil {
     mailSender.send(mimeMessage);
   }
 
+  public static void sendEmailAuthNum(JavaMailSender mailSender, MailEntity mailEntity) throws MessagingException {
+    MimeMessage mimeMessage = mailSender.createMimeMessage();
+    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+    mimeMessageHelper.setTo(mailEntity.getTo());
+    mimeMessageHelper.setSubject("[IKEA] 이메일 인증번호 메일입니다.");
+    // 첫번째 파라미터 = 내용 두번쨰 파라미터 html 여부
+    mimeMessageHelper.setText(String.format("발급된 인증번호는 [%s]입니다.\n3분이내 인증번호를 입력해주세요.", mailEntity.getAuthNum()), false);
+    mailSender.send(mimeMessage);
+  }
+
 }

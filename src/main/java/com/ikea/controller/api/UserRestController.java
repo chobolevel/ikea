@@ -39,6 +39,18 @@ public class UserRestController {
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
 
+  @PostMapping("send-auth-num")
+  public ResponseEntity<?> sendAuthNum(@RequestBody User user) throws ApiException, MessagingException {
+    userService.sendEmailAuthNum(user);
+    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
+  }
+
+  @PostMapping("certificate-auth-num")
+  public ResponseEntity<?> certificateAuthNum(@RequestBody User user) throws ApiException {
+    userService.authenticateEmailAuthNum(user);
+    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
+  }
+
   @PutMapping("{id}")
   public ResponseEntity<?> modifyUser(@PathVariable("id") String id, @RequestBody User user) throws ApiException {
     user.setId(id);

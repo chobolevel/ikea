@@ -12,5 +12,6 @@ public class MailEntity {
   private String to;
   private String username;
   private String password;
+  private String authNum;
 
 }

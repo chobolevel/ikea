@@ -7,8 +7,10 @@ import com.ikea.enums.UserRoleType;
 import com.ikea.exception.ApiException;
 import com.ikea.mapper.user.UserMapper;
 import com.ikea.service.user.UserService;
+import com.ikea.util.CommonUtil;
 import com.ikea.util.MailUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
@@ -25,6 +28,7 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
   private final BCryptPasswordEncoder passwordEncoder;
   private final JavaMailSender mailSender;
+  private final RedisTemplate<String, String> redisTemplate;
 
   @Override
   public void create(User user) throws ApiException {
@@ -40,6 +44,10 @@ public class UserServiceImpl implements UserService {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "address");
     } else if(user.getMobile() == null || user.getMobile().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "mobile");
+    }
+    User findUserByUsername = userMapper.findOne(User.builder().username(user.getUsername()).build());
+    if(findUserByUsername != null) {
+      throw new ApiException(ApiExceptionType.ALREADY_EXISTS, "User", "username");
     }
     user.setId(UUID.randomUUID().toString());
     user.setRole(UserRoleType.ROLE_USER);
@@ -118,6 +126,37 @@ public class UserServiceImpl implements UserService {
     String newPassword = UUID.randomUUID().toString();
     userMapper.modify(User.builder().id(findUser.getId()).password(passwordEncoder.encode(newPassword)).build());
     MailUtil.sendPassword(mailSender, MailEntity.builder().to(findUser.getEmail()).password(newPassword).build());
+  }
+
+  @Override
+  public void sendEmailAuthNum(User user) throws ApiException, MessagingException {
+    if(user.getEmail() == null || user.getEmail().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "email", "String");
+    }
+    User findUser = userMapper.findOne(User.builder().email(user.getEmail()).build());
+//    if(findUser != null) {
+//      throw new ApiException(ApiExceptionType.ALREADY_EXISTS, "String", "email");
+//    }
+    String authNum = CommonUtil.generateAuthNum(6);
+    redisTemplate.opsForValue().set(user.getEmail(), authNum, 3, TimeUnit.MINUTES);
+    MailUtil.sendEmailAuthNum(mailSender, MailEntity.builder().to(user.getEmail()).authNum(authNum).build());
+  }
+
+  @Override
+  public void authenticateEmailAuthNum(User user) throws ApiException {
+    if(user.getEmail() == null || user.getEmail().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "email", "String");
+    } else if(user.getAuthNum() == null || user.getAuthNum().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "authNum", "String");
+    }
+    String authNum = user.getAuthNum();
+    String savedAuthNum = redisTemplate.opsForValue().get(user.getEmail());
+    if(savedAuthNum == null) {
+      throw new ApiException(ApiExceptionType.AUTHENTICATION_NUMBER_EXPIRATION);
+    }
+    if(!authNum.equals(savedAuthNum)) {
+      throw new ApiException(ApiExceptionType.DEOS_NOT_MATCH_AUTHENTICATION_NUMBER);
+    }
   }
 
 }
