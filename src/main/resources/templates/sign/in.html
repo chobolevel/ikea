@@ -55,8 +55,8 @@
 </body>
 </html>
 
-<script>
-  const urlParams = new URLSearchParams(window.location.search)
+<script th:inline="javascript">
+  const errorMessage = [[${errorMessage}]]
   const $goBackBtn = $('.go-back-btn')
   const $signInForm = $('.sign-in-form')
   const $usernameInput = $('input[name=username]')
@@ -66,8 +66,8 @@
   const $findUsernameBtn = $('.find-username-btn')
   const $findPasswordBtn = $('.find-password-btn')
 
-  if(urlParams.get('errorMessage')) {
-    alert(urlParams.get('errorMessage'))
+  if(errorMessage) {
+    alert(errorMessage)
   }
 
   $signInBtn.on('click', (e) => {
