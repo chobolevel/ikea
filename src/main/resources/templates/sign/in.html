@@ -71,13 +71,16 @@
   }
 
   $signInBtn.on('click', (e) => {
+    const specialChars = new RegExp('^[a-zA-Z0-9]+$')
     e.preventDefault()
+    $usernameInput.parent().children('.error').remove()
+    $passwordInput.parent().children('.error').remove()
     if($usernameInput.val().length <= 0) {
-      alert('아이디가 입력되지 않았습니다.')
-      $usernameInput.focus()
+      $usernameInput.parent().append(`<label id="username-error" class="error" for="username">아이디가 입력되지 않았습니다.</label>`)
+    } else if(!specialChars.test($usernameInput.val())) {
+      $usernameInput.parent().append(`<label id="username-error" class="error" for="username">특수문자는 입력할 수 없습니다.</label>`)
     } else if($passwordInput.val().length <= 0) {
-      alert('비밀번호가 입력되지 않았습니다.')
-      $passwordInput.focus()
+      $passwordInput.parent().append(`<label id="password-error" class="error" for="password">비밀번호가 입력되지 않았습니다.</label>`)
     } else {
       $signInForm.submit()
     }
