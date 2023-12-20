@@ -70,6 +70,7 @@
       }
     },
     submitHandler: () => {
+      $findUsernameBtn.text('메일 전송 중...')
       $.ajax({
         url: '/api/user/find-username',
         type: 'POST',
@@ -79,11 +80,16 @@
           email: $emailInput.val()
         }),
         success: () => {
+          $findUsernameBtn.text('아이디 찾기')
+          $emailInput.val('')
           alert('해당 이메일로 메일을 발솧하였습니다.')
-          location.href = '/sign/in'
         },
-        error: (request) => {
-          console.log(request)
+        error: ({ responseJSON }) => {
+          const { statusCode } = responseJSON
+          const { message } = responseJSON
+          if(statusCode === 400) {
+            alert(message)
+          }
         }
       })
     }
