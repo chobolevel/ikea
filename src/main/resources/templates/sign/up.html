@@ -206,10 +206,7 @@
           const { statusCode } = responseJSON
           const { message } = responseJSON
           if(statusCode === 400) {
-            if(message === '[Type: User] username이/가 이미 존재합니다.') {
-              alert('아이디가 이미 존재합니다.\n다른 아이디를 사용해 주시기 바랍니다.')
-              $usernameInput.val('')
-            }
+            alert(message)
           }
         }
       })
@@ -250,8 +247,12 @@
           alert('이메일 인증에 성공하였습니다.')
           $emailInput.val($emailToAuthInput.val())
         },
-        error: (res) => {
-          console.log(res)
+        error: ({ responseJSON }) => {
+          const { statusCode } = responseJSON
+          const { message } = responseJSON
+          if(statusCode === 400) {
+            alert(message)
+          }
         }
       })
     }
@@ -288,10 +289,14 @@
         email: $emailToAuthInput.val()
       }),
       success: () => {
-        alert('해당 이메일로 인증번호를 전송하였습니다.')
+        alert('해당 이메일로 인증번호를 전송하였습니다.\n3분 이내에 입력해주시기 바랍니다.')
       },
-      error: (res) => {
-        console.log(res)
+      error: ({ responseJSON }) => {
+        const { statusCode } = responseJSON
+        const { message } = responseJSON
+        if(statusCode === 400) {
+          alert(message)
+        }
       }
     })
   })
