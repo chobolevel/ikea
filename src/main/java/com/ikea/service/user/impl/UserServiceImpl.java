@@ -134,9 +134,9 @@ public class UserServiceImpl implements UserService {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "email", "String");
     }
     User findUser = userMapper.findOne(User.builder().email(user.getEmail()).build());
-//    if(findUser != null) {
-//      throw new ApiException(ApiExceptionType.ALREADY_EXISTS, "String", "email");
-//    }
+    if(findUser != null) {
+      throw new ApiException(ApiExceptionType.ALREADY_EXISTS, "String", "email");
+    }
     String authNum = CommonUtil.generateAuthNum(6);
     redisTemplate.opsForValue().set(user.getEmail(), authNum, 3, TimeUnit.MINUTES);
     MailUtil.sendEmailAuthNum(mailSender, MailEntity.builder().to(user.getEmail()).authNum(authNum).build());
