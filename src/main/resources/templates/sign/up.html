@@ -130,7 +130,8 @@
   $signUpForm.validate({
     rules: {
       username: {
-        required: true
+        required: true,
+        specialChars: true
       },
       password: {
         required: true
@@ -140,14 +141,15 @@
         equalTo: '[name=password]'
       },
       name: {
-        required: true
+        required: true,
+        korean: true
       },
       email: {
         required: true,
         email: true
       },
       address: {
-        required: true
+        required: true,
       },
       mobile: {
         required: true,
@@ -156,7 +158,8 @@
     },
     messages: {
       username: {
-        required: '아이디가 입력되지 않았습니다.'
+        required: '아이디가 입력되지 않았습니다.',
+        specialChars: '특수문자는 입력할 수 없습니다.'
       },
       password: {
         required: '비밀번호가 입력되지 않았습니다.'
@@ -166,7 +169,8 @@
         equalTo: '비밀번호가 일치하지 않습니다.'
       },
       name: {
-        required: '이름이 입력되지 않았습니다.'
+        required: '이름이 입력되지 않았습니다.',
+        korean: '이름은 한국어로만 입력 가능합니다.'
       },
       email: {
         required: '이메일이 입력되지 않았습니다.',
