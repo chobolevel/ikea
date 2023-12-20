@@ -15,8 +15,6 @@ public interface UserService {
 
   void changePassword(User user) throws ApiException;
 
-  void remove(User user) throws ApiException;
-
   void findUsername(User user) throws ApiException, MessagingException;
 
   void findPassword(User user) throws ApiException, MessagingException;
@@ -24,5 +22,7 @@ public interface UserService {
   void sendEmailAuthNum(User user) throws ApiException, MessagingException;
 
   void authenticateEmailAuthNum(User user) throws ApiException;
+
+  void resignUser(User user) throws ApiException;
 
 }

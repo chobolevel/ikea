@@ -12,6 +12,6 @@ public interface UserMapper {
 
   void modify(User user);
 
-  void remove(User user);
+  void updateResignYnById(User user);
 
 }

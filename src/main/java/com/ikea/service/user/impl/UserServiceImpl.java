@@ -93,14 +93,6 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void remove(User user) throws ApiException {
-    if(user.getId() == null || user.getId().isEmpty()) {
-      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "String", "id");
-    }
-    userMapper.remove(user);
-  }
-
-  @Override
   public void findUsername(User user) throws ApiException, MessagingException {
     if(user.getEmail() == null || user.getEmail().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "email", "String");
@@ -157,6 +149,14 @@ public class UserServiceImpl implements UserService {
     if(!authNum.equals(savedAuthNum)) {
       throw new ApiException(ApiExceptionType.DEOS_NOT_MATCH_AUTHENTICATION_NUMBER);
     }
+  }
+
+  @Override
+  public void resignUser(User user) throws ApiException {
+    if(user.getId() == null || user.getId().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
+    }
+    userMapper.updateResignYnById(user);
   }
 
 }

@@ -81,8 +81,11 @@
         WHERE id = #{id}
     </update>
 
-    <delete id="remove" parameterType="User">
-        DELETE FROM user WHERE id = #{id}
-    </delete>
+    <update id="updateResignYnById" parameterType="User">
+        UPDATE user
+        SET update_date = CURRENT_TIMESTAMP
+        , resign_yn = 'y'
+        WHERE id = #{id}
+    </update>
 
 </mapper>

@@ -65,8 +65,8 @@ public class UserRestController {
   }
 
   @DeleteMapping("{id}")
-  public ResponseEntity<?> removeUser(@PathVariable("id") String id) throws ApiException {
-    userService.remove(User.builder().id(id).build());
+  public ResponseEntity<?> resignUser(@PathVariable("id") String id) throws ApiException {
+    userService.resignUser(User.builder().id(id).build());
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
 
