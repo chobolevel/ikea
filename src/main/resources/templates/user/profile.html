@@ -247,22 +247,24 @@
   })
   $resignBtn.on('click', (e) => {
     e.preventDefault()
-    $.ajax({
-      url: `/api/user/${myUser.id}`,
-      type: 'DELETE',
-      contentType: 'application/json',
-      success: () => {
-        alert('회원 탈퇴 처리가 완료되었습니다.\n메인 페이지로 이동합니다.')
-        location.href = '/logout'
-      },
-      error: ({ responseJSON }) => {
-        const { statusCode } = responseJSON
-        const { message } = responseJSON
-        if(statusCode === 400) {
-          alert(message)
+    if(confirm('정말 회원 탈퇴하시겠습니까?')) {
+      $.ajax({
+        url: `/api/user/${myUser.id}`,
+        type: 'DELETE',
+        contentType: 'application/json',
+        success: () => {
+          alert('회원 탈퇴 처리가 완료되었습니다.\n메인 페이지로 이동합니다.')
+          location.href = '/logout'
+        },
+        error: ({ responseJSON }) => {
+          const { statusCode } = responseJSON
+          const { message } = responseJSON
+          if(statusCode === 400) {
+            alert(message)
+          }
         }
-      }
-    })
+      })
+    }
   })
   $popupCancelBtn.on('click', (e) => {
     e.preventDefault()
