@@ -13,3 +13,11 @@ jQuery.validator.addMethod('korean', (value, element) => {
     }
     return true
 }, '한글만 입력 가능합니다.')
+
+jQuery.validator.addMethod('engUpperCase', (value, element) => {
+    const regex = new RegExp("^[A-Z]+$")
+    if(!regex.test(value)) {
+        return false
+    }
+    return true
+}, 'engUpperCase')
