@@ -13,6 +13,11 @@ public class CategoryController {
     return "category/main/register";
   }
 
+  @GetMapping("/main/list")
+  public String mainCategoryList() {
+    return "category/main/list";
+  }
+
   @GetMapping("/sub/register")
   public String subCategoryRegister() {
     return "category/sub/register";

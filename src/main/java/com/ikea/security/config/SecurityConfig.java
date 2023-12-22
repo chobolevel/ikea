@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 관리자만 접근 가능한 페이지
         .antMatchers(
             "/category/main/register",
+            "/category/main/list",
             "/category/sub/register",
             "/product/register",
             "/product/modify/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}",
@@ -68,23 +69,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/product-option",
             "/api/product-option/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}").hasRole("ADMIN")
         .anyRequest().permitAll()
-        .and()
+      .and()
+        // form login config
         .formLogin()
         .loginPage("/sign/in")
         .loginProcessingUrl("/sign/in")
         .successHandler(successHandler)
         .failureHandler(failureHandler)
-        .and()
+      .and()
+        // logout config
         .logout()
         .logoutUrl("/logout")
         .logoutSuccessUrl("/")
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID")
-        .and()
+      .and()
+        // session config
         .sessionManagement()
         .maximumSessions(1)
         .maxSessionsPreventsLogin(true);
     http
+        // remember me config
         .rememberMe()
         .rememberMeParameter("remember")
         .tokenValiditySeconds(60*60)

@@ -1365,3 +1365,43 @@ footer .footer-inner .legal-area .legal-links ul li a {
 .error-area .error-desc {
     font-size: 1.4rem;
 }
+
+.main-category-list-area {
+    width: 100%;
+    height: 100%;
+    padding: 3.2rem;
+}
+
+.main-category-list-area .main-category-item {
+    width: 100%;
+    height: 5rem;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main-category-list-area .main-category-item:hover {
+    background-color: #ddd;
+}
+
+.main-category-list-area .main-category-item .main-category-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.main-category-list-area .main-category-item .btn-area {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.main-category-list-area .main-category-item .btn-area button {
+    height: 4rem;
+    padding: 0 2rem;
+    background-color: #000;
+    color: #fff;
+    border-radius: 2rem;
+    cursor: pointer;
+}

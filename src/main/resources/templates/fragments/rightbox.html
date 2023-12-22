@@ -44,6 +44,12 @@
             </a>
           </li>
           <li sec:authorize="hasRole('ADMIN')">
+            <a href="/category/main/list">
+              <p>대분류 목록</p>
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </li>
+          <li sec:authorize="hasRole('ADMIN')">
             <a href="/category/sub/register">
               <p>소분류 등록</p>
               <i class="fa-solid fa-angles-right"></i>
