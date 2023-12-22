@@ -8,7 +8,7 @@
 <body>
 
 <section layout:fragment="container">
-  <div class="main-category-list-area">
+  <div class="category-list-area">
 
   </div>
 </section>
@@ -17,7 +17,7 @@
 </html>
 
 <script>
-  const $mainCategoryListArea = $('.main-category-list-area')
+  const $mainCategoryListArea = $('.category-list-area')
 
   $.ajax({
     url: '/api/main-category/list',
@@ -26,8 +26,8 @@
     success: (mainCategoryList) => {
       mainCategoryList.forEach((mainCategory) => {
         const $mainCategoryItem = $(`
-          <div class="main-category-item">
-            <h2 class="main-category-title">${mainCategory.code}(${mainCategory.name})</h2>
+          <div class="category-item">
+            <h2 class="category-title">${mainCategory.code}(${mainCategory.name})</h2>
           </div>
         `)
         const $mainCategoryBtnArea = $(`<div class="btn-area"></div>`)
