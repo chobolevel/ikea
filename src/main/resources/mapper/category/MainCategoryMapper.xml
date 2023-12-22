@@ -64,6 +64,9 @@
         LEFT JOIN sub_category AS sc
         ON mc.id = sc.main_category_id
         <where>
+            <if test="id != null and id != ''">
+                AND mc.id = #{id}
+            </if>
             <if test="code != null and code != ''">
                 AND mc.code = #{code}
             </if>

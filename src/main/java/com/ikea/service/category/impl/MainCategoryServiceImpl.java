@@ -40,6 +40,11 @@ public class MainCategoryServiceImpl implements MainCategoryService {
   }
 
   @Override
+  public MainCategory findOne(MainCategory category) throws ApiException {
+    return categoryMapper.findOne(category);
+  }
+
+  @Override
   public void modify(MainCategory category) throws ApiException {
     if(category.getId() == null || category.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");

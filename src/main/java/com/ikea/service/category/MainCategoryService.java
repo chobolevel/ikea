@@ -11,6 +11,8 @@ public interface MainCategoryService {
 
   List<MainCategory> findAll(MainCategory category) throws ApiException;
 
+  MainCategory findOne(MainCategory category) throws ApiException;
+
   void modify(MainCategory category) throws ApiException;
 
   void remove(MainCategory category) throws ApiException;
