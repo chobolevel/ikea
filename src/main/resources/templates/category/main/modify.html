@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 대분류 수정</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="form-area">
+    <div class="form-title">
+      <h2>대분류 수정</h2>
+    </div>
+    <form class="main-category-modify-form">
+      <div class="input-area">
+        <label for="code">대분류 코드(예: A)</label>
+        <input id="code" name="code" type="text">
+      </div>
+      <div class="input-area">
+        <label for="name">대분류 이름(예:수납/정리)</label>
+        <input id="name" name="name" type="text">
+      </div>
+      <div class="btn-area">
+        <button class="cancel-btn">취소</button>
+        <button class="save-btn">수정</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+  const mainCategory = [[${mainCategory}]]
+  const $mainCategoryModifyForm = $('.main-category-modify-form')
+  const $codeInput = $('input[name=code]')
+  const $nameInput = $('input[name=name]')
+  const $cancelBtn = $('.cancel-btn')
+  const $saveBtn = $('.save-btn')
+
+  $codeInput.val(mainCategory.code)
+  $nameInput.val(mainCategory.name)
+
+  $mainCategoryModifyForm.validate({
+    rules: {
+      code: {
+        required: true,
+        specialChars: true,
+        engUpperCase: true
+      },
+      name: {
+        required: true
+      }
+    },
+    messages: {
+      code: {
+        required: '대분류 코드가 입력되지 않았습니다.',
+        specialChars: '특수문자는 입력할 수 없습니다.',
+        engUpperCase: '대분류 코드는 영어(대문자)만 입력 가능합니다.'
+      },
+      name: {
+        required: '대분류 이름이 입력되지 않았습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: `/api/main-category/${mainCategory.id}`,
+        type: 'PUT',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          code: $codeInput.val(),
+          name: $nameInput.val()
+        }),
+        success: () => {
+          alert('대분류 수정이 완료되었습니다.\n대분류 목록으로 이동합니다.')
+          location.href = '/category/main/list'
+        },
+        error: ({ responseJSON }) => {
+          const { statusCode } = responseJSON
+          const { message } = responseJSON
+          if(statusCode === 400) {
+            alert(message)
+          }
+        }
+      })
+    }
+  })
+
+  $cancelBtn.on('click', (e) => {
+    e.preventDefault()
+    location.href = '/category/main/list'
+  })
+  $saveBtn.on('click', (e) => {
+    e.preventDefault()
+    $mainCategoryModifyForm.submit()
+  })
+</script>
