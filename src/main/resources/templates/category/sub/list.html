@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 소분류 목록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="category-list-area"></div>
+</section>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+  const subCategoryList = [[${subCategoryList}]]
+  const $subCategoryListArea = $('.category-list-area')
+
+  subCategoryList.forEach((subCategory) => {
+    const $subCategoryItem = $(`
+        <div class="category-item">
+          <h2 class="category-title">${subCategory.code}(${subCategory.name})</h2>
+        </div>
+    `)
+    const $subCategoryBtnArea = $(`<div class="btn-area"></div>`)
+    const $subCategoryModifyBtn = $(`<button class="modify-btn">수정</button>`)
+    $subCategoryModifyBtn.on('click', (e) => {
+      e.preventDefault()
+      location.href = `/category/sub/modify/${subCategory.id}`
+    })
+    const $subCategoryDeleteBtn = $(`<button class="delete-btn">삭제</button>`)
+    $subCategoryDeleteBtn.on('click', (e) => {
+      e.preventDefault()
+      if(confirm('정말 삭제하시겠습니까?')) {
+        $.ajax({
+          url: `/api/sub-category/${subCategory.id}`,
+          type: 'DELETE',
+          contentType: 'application/json',
+          success: () => {
+            alert('소분류 삭제가 완료되었습니다.')
+            $subCategoryModifyBtn.parent().parent().remove()
+          },
+          error: ({ responseJSON }) => {
+            const { statusCode } = responseJSON
+            const { message } = responseJSON
+            if(statusCode === 400) {
+              alert(message)
+            }
+          }
+        })
+      }
+    })
+    $subCategoryBtnArea.append($subCategoryModifyBtn)
+    $subCategoryBtnArea.append($subCategoryDeleteBtn)
+    $subCategoryItem.append($subCategoryBtnArea)
+    $subCategoryListArea.append($subCategoryItem)
+  })
+</script>
