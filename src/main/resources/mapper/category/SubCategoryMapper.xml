@@ -11,6 +11,13 @@
         <result column="update_date" property="updateDate"/>
     </resultMap>
 
+    <resultMap id="RelatedResultMap" type="SubCategory" extends="BaseResultMap">
+        <association property="mainCategory"
+                     javaType="MainCategory"
+                     columnPrefix="mc_"
+                     resultMap="com.ikea.mapper.category.MainCategoryMapper.BaseResultMap"/>
+    </resultMap>
+
     <sql id="columns">
         ${alias}id AS ${prefix}id
         , ${alias}main_category_id AS ${prefix}main_category_id
@@ -26,37 +33,54 @@
         VALUES (#{id}, #{mainCategoryId}, #{code}, #{name})
     </insert>
 
-    <select id="findAll" parameterType="SubCategory" resultMap="BaseResultMap">
+    <select id="findAll" parameterType="SubCategory" resultMap="RelatedResultMap">
         SELECT
         <include refid="columns">
-            <property name="alias" value=""/>
+            <property name="alias" value="sc."/>
             <property name="prefix" value=""/>
         </include>
-        FROM sub_category
+        ,
+        <include refid="com.ikea.mapper.category.MainCategoryMapper.columns">
+            <property name="alias" value="mc."/>
+            <property name="prefix" value="mc_"/>
+        </include>
+        FROM sub_category AS sc
+        LEFT JOIN main_category AS mc
+        ON sc.main_category_id = mc.id
         <where>
             <if test="mainCategoryId != null and mainCategoryId != ''">
-                AND main_category_id = #{mainCategoryId}
+                AND sc.main_category_id = #{mainCategoryId}
             </if>
         </where>
         ORDER BY code
     </select>
 
-    <select id="findOne" parameterType="SubCategory" resultMap="BaseResultMap">
+    <select id="findOne" parameterType="SubCategory" resultMap="RelatedResultMap">
         SELECT
         <include refid="columns">
-            <property name="alias" value=""/>
+            <property name="alias" value="sc."/>
             <property name="prefix" value=""/>
         </include>
-        FROM sub_category
+        ,
+        <include refid="com.ikea.mapper.category.MainCategoryMapper.columns">
+            <property name="alias" value="mc."/>
+            <property name="prefix" value="mc_"/>
+        </include>
+        FROM sub_category AS sc
+        LEFT JOIN main_category AS mc
+        ON sc.main_category_id = mc.id
         <where>
+            <if test="id != null and id != ''">
+                AND sc.id = #{id}
+            </if>
             <if test="mainCategoryId != null and mainCategoryId != ''">
-                AND main_category_id = #{mainCategoryId}
+                AND sc.main_category_id = #{mainCategoryId}
             </if>
             <if test="code != null and code != ''">
-                AND code = #{code}
+                AND sc.code = #{code}
             </if>
             <if test="name != null and name != ''">
-                AND `name` = #{name}
+                AND sc.`name` = #{name}
             </if>
         </where>
         ORDER BY code

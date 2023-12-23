@@ -11,6 +11,8 @@ public interface SubCategoryService {
 
   List<SubCategory> findAll(SubCategory subCategory) throws ApiException;
 
+  SubCategory findOne(SubCategory subCategory) throws ApiException;
+
   void modify(SubCategory subCategory) throws ApiException;
 
   void remove(SubCategory subCategory) throws ApiException;

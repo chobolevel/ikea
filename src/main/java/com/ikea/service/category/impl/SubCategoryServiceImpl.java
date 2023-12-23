@@ -46,6 +46,11 @@ public class SubCategoryServiceImpl implements SubCategoryService {
   }
 
   @Override
+  public SubCategory findOne(SubCategory subCategory) throws ApiException {
+    return subCategoryMapper.findOne(subCategory);
+  }
+
+  @Override
   public void modify(SubCategory subCategory) throws ApiException {
     if(subCategory.getId() == null || subCategory.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");

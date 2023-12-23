@@ -15,4 +15,6 @@ public class SubCategory extends BaseEntity {
   private String code;
   private String name;
 
+  private MainCategory mainCategory;
+
 }
