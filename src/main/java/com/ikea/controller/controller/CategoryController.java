@@ -51,4 +51,13 @@ public class CategoryController {
     return "category/sub/list";
   }
 
+  @GetMapping("/sub/modify/{id}")
+  public String modifySubCategory(@PathVariable("id") String id, Model model) throws ApiException {
+    List<MainCategory> mainCategoryList = mainCategoryService.findAll(MainCategory.builder().build());
+    SubCategory subCategory = subCategoryService.findOne(SubCategory.builder().id(id).build());
+    model.addAttribute("mainCategoryList", mainCategoryList);
+    model.addAttribute("subCategory", subCategory);
+    return "category/sub/modify";
+  }
+
 }
