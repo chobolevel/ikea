@@ -29,7 +29,9 @@ public class CategoryController {
   }
 
   @GetMapping("/main/list")
-  public String mainCategoryList() {
+  public String mainCategoryList(Model model) throws ApiException {
+    List<MainCategory> mainCategoryList = mainCategoryService.findAll(MainCategory.builder().build());
+    model.addAttribute("mainCategoryList", mainCategoryList);
     return "category/main/list";
   }
 
