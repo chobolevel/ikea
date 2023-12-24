@@ -10,15 +10,14 @@
 <section layout:fragment="container">
   <div class="profile-area">
     <div class="select-area">
-      <input checked id="personal" name="area" type="radio" value="personal">
+      <input checked id="personal" name="info" type="radio" value="personal">
       <label for="personal">개인 정보</label>
-      <input id="login" name="area" type="radio" value="login">
+      <input id="login" name="info" type="radio" value="login">
       <label for="login">로그인</label>
-      <input id="resign" name="area" type="radio" value="resign">
+      <input id="resign" name="info" type="radio" value="resign">
       <label for="resign">회원 탈퇴</label>
     </div>
     <div class="info-area">
-
       <div class="personal-info selected">
         <div class="info-inner">
           <div class="info-title">
@@ -27,9 +26,26 @@
               <i class="fa-solid fa-pen"></i>
             </button>
           </div>
+          <div class="info-content">
+            <div>
+              <p class="info-label">이름</p>
+              <p class="info-text" th:text="${user.name}"></p>
+            </div>
+            <div>
+              <p class="info-label">이메일</p>
+              <p class="info-text" th:text="${user.email}"></p>
+            </div>
+            <div>
+              <p class="info-label">주소</p>
+              <p class="info-text" th:text="${user.address}"></p>
+            </div>
+            <div>
+              <p class="info-label">전화번호</p>
+              <p class="info-text" th:text="${user.mobile}"></p>
+            </div>
+          </div>
         </div>
       </div>
-
       <div class="login-info">
         <div class="info-inner">
           <div class="info-title">
@@ -38,9 +54,18 @@
               <i class="fa-solid fa-pen"></i>
             </button>
           </div>
+          <div class="info-content">
+            <div>
+              <p class="info-label">아이디</p>
+              <p class="info-text" th:text="${user.username}"></p>
+            </div>
+            <div>
+              <p class="info-label">비밀번호</p>
+              <p>********</p>
+            </div>
+          </div>
         </div>
       </div>
-
       <div class="resign-info">
         <div class="info-inner">
           <div class="info-title">
@@ -49,134 +74,155 @@
               <i class="fa-solid fa-door-open"></i>
             </button>
           </div>
-          <div>
-            <p>IKEA Family 계정은 언제든지 삭제할 수 있습니다. 계정, 구매 내역 및 계정에 연결된 모든 정보가 삭제됩니다.</p>
+          <div class="info-content">
+            <div>
+              <p class="info-text">IKEA Family 계정은 언제든지 삭제할 수 있습니다. 계정, 구매 내역 및 계정에 연결된 모든 정보가 삭제됩니다.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div aria-hidden="true" class="edit-profile-popup">
-    <div class="popup-inner">
-      <h2 class="popup-title"></h2>
-      <div class="popup-input-area">
-
-      </div>
-      <div class="popup-btn-area">
-        <button class="popup-cancel-btn">취소</button>
-        <button class="popup-save-btn">저장</button>
-      </div>
+  <div class="personal-info-box global-right-box">
+    <div class="box-left-inner"></div>
+    <div class="box-right-inner">
+      <header>
+        <h2 class="header-title">개인 정보 수정</h2>
+        <button class="personal-info-close-btn close-btn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+      <section>
+        <div class="edit-personal-info-area">
+          <form class="personal-info-edit-form">
+            <div class="input-area">
+              <label for="name">이름</label>
+              <input id="name" name="name" type="text">
+            </div>
+            <div class="input-area">
+              <label for="email">이메일</label>
+              <input id="email" name="email" type="text">
+            </div>
+            <div class="input-area">
+              <label for="address">주소</label>
+              <input id="address" name="address" type="text">
+            </div>
+            <div class="input-area">
+              <label for="mobile">전화번호</label>
+              <input id="mobile" name="mobile" type="text">
+            </div>
+            <div class="btn-area">
+              <button class="cancel-btn">취소</button>
+              <button class="save-btn">수정</button>
+            </div>
+          </form>
+        </div>
+      </section>
     </div>
   </div>
 
+  <div class="login-info-box global-right-box">
+    <div class="box-left-inner"></div>
+    <div class="box-right-inner">
+      <header>
+        <h2 class="header-title">비밀번호 변경</h2>
+        <button class="login-info-close-btn close-btn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+      <section>
+        <div class="edit-login-info-area">
+          <form class="login-info-edit-form">
+            <div class="input-area">
+              <label for="curPassword">현재 비밀번호</label>
+              <input id="curPassword" name="curPassword" type="password">
+            </div>
+            <div class="input-area">
+              <label for="password">변경할 비밀번호</label>
+              <input id="password" name="password" type="password">
+            </div>
+            <div class="input-area">
+              <label for="checkPassword">변경할 비밀번호 확인</label>
+              <input id="checkPassword" name="checkPassword" type="password">
+            </div>
+            <div class="btn-area">
+              <button class="cancel-btn">취소</button>
+              <button class="save-btn">수정</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
 </section>
 
 </body>
 </html>
 
-<script>
+<script th:inline="javascript">
+  const user = [[${user}]]
+  const $body = $('.body')
+  const $infoInput = $('input[name=info]')
   const $infoArea = $('.info-area')
-  const $personalInfo = $('.personal-info')
-  const $loginInfo = $('.login-info')
-  const $resignInfo = $('.resign-info')
-  const $areaInput = $('input[name=area]')
+  const $personalInfoBox = $('.personal-info-box')
+  const $personalInfoEditForm = $('.personal-info-edit-form')
+  const $nameInput = $('input[name=name]')
+  const $emailInput = $('input[name=email]')
+  const $addressInput = $('input[name=address]')
+  const $mobileInput = $('input[name=mobile]')
   const $personalInfoEditBtn = $('.personal-info-edit-btn')
+  const $personalInfoCloseBtn = $('.personal-info-close-btn')
+  const $personalInfoCancelBtn = $personalInfoBox.find('.cancel-btn')
+  const $personalInfoSaveBtn = $personalInfoBox.find('.save-btn')
+  const $loginInfoBox = $('.login-info-box')
+  const $loginInfoEditForm = $('.login-info-edit-form')
+  const $curPasswordInput = $('input[name=curPassword]')
+  const $passwordInput = $('input[name=password]')
   const $loginInfoEditBtn = $('.login-info-edit-btn')
+  const $loginInfoCloseBtn = $('.login-info-close-btn')
+  const $loginInfoCancelBtn = $loginInfoBox.find('.cancel-btn')
+  const $loginInfoSaveBtn = $loginInfoBox.find('.save-btn')
   const $resignBtn = $('.resign-btn')
-  const $editProfilePopup = $('.edit-profile-popup')
-  const $popupTitle = $('.popup-title')
-  const $popupInputArea = $('.popup-input-area')
-  const $popupCancelBtn = $('.popup-cancel-btn')
-  const $popupSaveBtn = $('.popup-save-btn')
 
-  let myUser
-
-  $.ajax({
-    url: '/api/user/me',
-    type: 'GET',
-    contentType: 'application/json',
-    success: (user) => {
-      myUser = user
-      $personalInfo.children().append(`
-        <div>
-          <p>이름</p>
-          <p>${user.name}</p>
-        </div>
-        <div>
-          <p>이메일</p>
-          <p>${user.email}</p>
-        </div>
-        <div>
-          <p>주소</p>
-          <p>${user.address}</p>
-        </div>
-        <div>
-          <p>전화번호</p>
-          <p>${user.mobile}</p>
-        </div>
-      `)
-      $loginInfo.children().append(`
-        <div>
-          <p>아이디</p>
-          <p>${user.username}</p>
-        </div>
-        <div>
-          <p>비밀번호</p>
-          <p>********</p>
-        </div>
-      `)
+  $personalInfoEditForm.validate({
+    rules: {
+      name: {
+        required: true,
+        korean: true
+      },
+      email: {
+        required: true,
+        email: true
+      },
+      address: {
+        required: true
+      },
+      mobile: {
+        required: true,
+        number: true
+      }
     },
-    error: (request) => {
-      console.log(request)
-    }
-  })
-
-  $areaInput.on('input', (e) => {
-    const area = e.target.value
-    $infoArea.children().removeClass('selected')
-    switch (area) {
-      case 'personal':
-        $personalInfo.addClass('selected')
-        break
-      case 'login':
-        $loginInfo.addClass('selected')
-        break
-      case 'resign':
-        $resignInfo.addClass('selected')
-        break
-    }
-  })
-  $personalInfoEditBtn.on('click', (e) => {
-    $popupTitle.text('개인 정보 수정')
-    $popupInputArea.append(`
-      <div>
-        <label for="name">이름</label>
-        <input type="text" name="name" id="name" value="${myUser.name}">
-      </div>
-      <div>
-        <label for="email">이메일</label>
-        <input type="text" name="email" id="email" value="${myUser.email}">
-      </div>
-      <div>
-         <label for="address">주소</label>
-         <input type="text" name="address" id="address" value="${myUser.address}">
-      </div>
-      <div>
-        <label for="mobile">전화번호(하이픈(-) 없이 입력해주세요.)</label>
-        <input type="text" name="mobile" id="mobile" value="${myUser.mobile}">
-      </div>
-    `)
-    $popupSaveBtn.off('click')
-    $popupSaveBtn.on('click', (e) => {
-      e.preventDefault()
-      const $nameInput = $('input[name=name]')
-      const $emailInput = $('input[name=email]')
-      const $addressInput = $('input[name=address]')
-      const $mobileInput = $('input[name=mobile]')
-
+    messages: {
+      name: {
+        required: '이름이 입력되지 않았습니다.',
+        korean: '이름은 한글로만 입력 가능합니다.'
+      },
+      email: {
+        required: '이메일이 입력되지 않았습니다.',
+        email: '이메일 형식이 올바르지 않습니다.'
+      },
+      address: {
+        required: '주소가 입력되지 않았습니다.'
+      },
+      mobile: {
+        required: '전화번호가 입력되지 않았습니다.',
+        number: '전화번호는 숫자만 입력할 수 있습니다.'
+      }
+    },
+    submitHandler: () => {
       $.ajax({
-        url: `/api/user/${myUser.id}`,
+        url: `/api/user/${user.id}`,
         type: 'PUT',
         contentType: 'application/json',
         dataType: 'json',
@@ -187,74 +233,9 @@
           mobile: $mobileInput.val()
         }),
         success: () => {
-          alert('개인 정보 수정 완료')
-          $popupTitle.text()
-          $popupInputArea.children().remove()
-          $editProfilePopup.css('display', 'none')
-        },
-        error: (request) => {
-          console.log(request)
-        }
-      })
-    })
-    $editProfilePopup.css('display', 'block')
-  })
-  $loginInfoEditBtn.on('click', (e) => {
-    $popupTitle.text('로그인 정보 수정')
-    $popupInputArea.append(`
-      <div>
-        <label for="curPassword">현재 비밀번호</label>
-        <input type="password" name="curPassword" id="curPassword">
-      </div>
-      <div>
-        <label for="password">변경할 비밀번호</label>
-        <input type="password" name="password" id="password">
-      </div>
-      <div>
-        <label for="checkPassword">확인 비밀번호</label>
-        <input type="password" name="checkPassword" id="checkPassword">
-      </div>
-    `)
-    $popupSaveBtn.off('click')
-    $popupSaveBtn.on('click', (e) => {
-      e.preventDefault()
-      const $curPasswordInput = $('input[name=curPassword]')
-      const $passwordInput = $('input[name=password]')
-      const $checkPasswordInput = $('input[name=checkPassword]')
-
-      $.ajax({
-        url: '/api/user/change-password',
-        type: 'PUT',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify({
-          id: myUser.id,
-          curPassword: $curPasswordInput.val(),
-          password: $passwordInput.val()
-        }),
-        success: () => {
-          alert('비밀번호 변경 완료')
-          $popupTitle.text()
-          $popupInputArea.children().remove()
-          $editProfilePopup.css('display', 'none')
-        },
-        error: (request) => {
-          console.log(request)
-        }
-      })
-    })
-    $editProfilePopup.css('display', 'block')
-  })
-  $resignBtn.on('click', (e) => {
-    e.preventDefault()
-    if(confirm('정말 회원 탈퇴하시겠습니까?')) {
-      $.ajax({
-        url: `/api/user/${myUser.id}`,
-        type: 'DELETE',
-        contentType: 'application/json',
-        success: () => {
-          alert('회원 탈퇴 처리가 완료되었습니다.\n메인 페이지로 이동합니다.')
-          location.href = '/logout'
+          alert('개인 정보 수정이 완료되었습니다.')
+          $body.css('y-overflow', 'scroll')
+          $personalInfoBox.css('visibility', 'hidden')
         },
         error: ({ responseJSON }) => {
           const { statusCode } = responseJSON
@@ -266,10 +247,120 @@
       })
     }
   })
-  $popupCancelBtn.on('click', (e) => {
+  $loginInfoEditForm.validate({
+    rules: {
+      curPassword: {
+        required: true
+      },
+      password: {
+        required: true
+      },
+      checkPassword: {
+        required: true,
+        equalTo: '[name=password]'
+      }
+    },
+    messages: {
+      curPassword: {
+        required: '현재 비밀번호가 입력되지 않았습니다.'
+      },
+      password: {
+        required: '변경할 비밀번호가 입력되지 않았습니다.'
+      },
+      checkPassword: {
+        required: '확인 비밀번호가 입력되지 않았습니다.',
+        equalTo: '변경할 비밀번호가 일치하지 않습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: '/api/user/change-password',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          curPassword: $curPasswordInput.val(),
+          password: $passwordInput.val()
+        }),
+        success: () => {
+          alert('비밀번호가 변경되었습니다.')
+          $body.css('y-overflow', 'scroll')
+          $loginInfoBox.css('visibility', 'hidden')
+        },
+        error: ({ responseJSON }) => {
+          const { statusCode } = responseJSON
+          const { message } = responseJSON
+          if(statusCode === 400) {
+            alert(message)
+          }
+        }
+      })
+    }
+  })
+
+  $infoInput.on('change', (e) => {
     e.preventDefault()
-    $popupTitle.text()
-    $popupInputArea.children().remove()
-    $editProfilePopup.css('display', 'none')
+    $infoArea.children().removeClass('selected')
+    const { target: { value } } = e
+    $(`.${value}-info`).addClass('selected')
+  })
+  $personalInfoEditBtn.on('click', (e) => {
+    e.preventDefault()
+    $body.css('y-overflow', 'hidden')
+    $personalInfoBox.css('visibility', 'visible')
+  })
+  $personalInfoCloseBtn.on('click', (e) => {
+    e.preventDefault()
+    $body.css('y-overflow', 'scroll')
+    $personalInfoBox.css('visibility', 'hidden')
+  })
+  $personalInfoCancelBtn.on('click', (e) => {
+    e.preventDefault()
+    $body.css('y-overflow', 'scroll')
+    $personalInfoBox.css('visibility', 'hidden')
+  })
+  $personalInfoSaveBtn.on('click', (e) => {
+    e.preventDefault()
+    $personalInfoEditForm.submit()
+  })
+  $loginInfoEditBtn.on('click', (e) => {
+    e.preventDefault()
+    $body.css('y-overflow', 'hidden')
+    $loginInfoBox.css('visibility', 'visible')
+  })
+  $loginInfoCloseBtn.on('click', (e) => {
+    e.preventDefault()
+    $body.css('y-overflow', 'scroll')
+    $loginInfoBox.css('visibility', 'hidden')
+  })
+  $loginInfoCancelBtn.on('click', (e) => {
+    e.preventDefault()
+    $body.css('y-overflow', 'scroll')
+    $loginInfoBox.css('visibility', 'hidden')
+  })
+  $loginInfoSaveBtn.on('click', (e) => {
+    e.preventDefault()
+    $loginInfoEditForm.submit()
+  })
+  $resignBtn.on('click', (e) => {
+    e.preventDefault()
+    if(confirm('정말 회원탈퇴를 하시겠습니까?')) {
+      $.ajax({
+        url: `/api/user/${user.id}`,
+        type: 'DELETE',
+        contentType: 'application/json',
+        success: () => {
+          alert('회원 탈퇴가 완료되었습니다.')
+          location.href = '/logout'
+        },
+        error: ({ responseJSON }) => {
+          const { statusCode } = responseJSON
+          const { message } = responseJSON
+          if(statusCode === 400) {
+            alert(message)
+          }
+        }
+      })
+    }
   })
 </script>
