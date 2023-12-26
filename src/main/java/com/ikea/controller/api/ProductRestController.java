@@ -2,6 +2,7 @@ package com.ikea.controller.api;
 
 import com.ikea.common.BaseResponse;
 import com.ikea.entity.product.Product;
+import com.ikea.enums.ApiExceptionType;
 import com.ikea.exception.ApiException;
 import com.ikea.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/product")
@@ -40,18 +39,41 @@ public class ProductRestController {
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.CREATED), HttpStatus.CREATED);
   }
 
+  @PostMapping("add-dibs")
+  public ResponseEntity<?> addDibs(HttpServletResponse res, @CookieValue(value = "dibs", required = false) String dibs, @RequestBody Product product) throws ApiException {
+    if(product.getId() == null || product.getId().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
+    }
+    if(dibs == null) {
+      Cookie cookie = new Cookie("dibs", product.getId());
+      cookie.setPath("/");
+      cookie.setMaxAge(60 * 60 * 24);
+      res.addCookie(cookie);
+    } else {
+      Cookie cookie = new Cookie("dibs", dibs + "/" + product.getId());
+      cookie.setMaxAge(60 * 60 * 24);
+      cookie.setPath("/");
+      res.addCookie(cookie);
+    }
+    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
+  }
+
   @PostMapping("add-cart")
   public ResponseEntity<?> addCart(HttpServletResponse res, @CookieValue(value = "cart", required = false) String cart, @RequestBody Product product) throws ApiException {
+    if(product.getId() == null || product.getId().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
+    }
     if(cart == null) {
       Cookie cookie = new Cookie("cart", product.getId());
+      cookie.setPath("/");
+      cookie.setMaxAge(60 * 60 * 24);
+      res.addCookie(cookie);
+    } else {
+      Cookie cookie = new Cookie("cart", cart + "/" + product.getId());
+      cookie.setPath("/");
       cookie.setMaxAge(60 * 60 * 24);
       res.addCookie(cookie);
     }
-    List<String> cartList = Arrays.asList(cart.split("/"));
-    cartList.add(product.getId());
-    Cookie cookie = new Cookie("cart", cartList.stream().collect(Collectors.joining("/")));
-    cookie.setMaxAge(60 * 60 * 24);
-    res.addCookie(cookie);
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
 
