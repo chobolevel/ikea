@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 찜 목록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="product-list-area"></div>
+  <div class="load-btn-area">
+    <button class="load-btn">더보기</button>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+  const productList = [[${productList}]]
+  const $ProductListArea = $('.product-list-area')
+
+  productList.forEach((product) => {
+    const firstOption = product.productOptionList[0]
+    const firstAtt = firstOption.attachmentList[0]
+    const reviewTotalRating = product.productReviewList.map((p) => p.rating).reduce((acc, cur) => acc + cur, 0)
+    const reviewTotalCnt = product.productReviewList.length
+    const $ProductListItem = $(`
+      <div class="product-list-item">
+        <div class="product-img">
+          <img src="/img/${product.id}/${firstAtt.productOptionId}/${firstAtt.name}" alt="제품 이미지">
+        </div>
+        <a href="/product/${product.id}" class="product-name">${product.name}</a>
+        <p class="product-size">${firstOption.width}x${firstOption.depth}x${firstOption.height}(cm)</p>
+        <p class="product-price">￦${firstOption.price.toLocaleString("ko-KR")}</p>
+        <p class="product-review">⭐${reviewTotalCnt <= 0 ? 0 : Math.round(reviewTotalRating / reviewTotalCnt)}(${reviewTotalCnt})</p>
+        <div class="product-btn-area">
+          <button class="add-cart-btn"><i class="fa-solid fa-basket-shopping"></i></button>
+        </div>
+      </div>
+    `)
+    const $productImg = $ProductListItem.find('.product-img')
+    $productImg.on('click', (e) => {
+      e.preventDefault()
+      location.href = `/product/${product.id}`
+    })
+    const $productName = $ProductListItem.find('.product-name')
+    $productName.on('click', (e) => {
+      e.preventDefault()
+      location.href = `/product/${product.id}`
+    })
+    const $addCartBtn = $ProductListItem.find('.add-cart-btn')
+    $addCartBtn.on('click', (e) => {
+      e.preventDefault()
+      $.ajax({
+        url: '/api/product/add-cart',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          id: product.id
+        }),
+        success: () => {
+          alert('해당 상품을 장바구니에 추가하였습니다.')
+        },
+        error: ({ responseJSON }) => {
+          const { statusCode } = responseJSON
+          const { message } = responseJSON
+          if(statusCode === 400) {
+            alert(message)
+          }
+        }
+      })
+    })
+    $ProductListArea.append($ProductListItem)
+  })
+</script>

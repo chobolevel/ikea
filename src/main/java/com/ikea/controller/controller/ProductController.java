@@ -8,11 +8,9 @@ import com.ikea.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -52,6 +50,14 @@ public class ProductController {
     model.addAttribute("product", findProduct);
     model.addAttribute("mainCategoryList", mainCategoryList);
     return "product/modify";
+  }
+
+  @GetMapping("dibs")
+  public String dibs(@CookieValue(value = "dibs", required = false) String dibs, Model model) throws ApiException {
+    List<String> dibsIdList = Arrays.asList(dibs.split("/"));
+    List<Product> productList = productService.findAll(Product.builder().productIdList(dibsIdList).build());
+    model.addAttribute("productList", productList);
+    return "product/dibs";
   }
 
 }
