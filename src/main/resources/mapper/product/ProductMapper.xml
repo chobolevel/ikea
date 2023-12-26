@@ -101,6 +101,12 @@
             <if test="name != null and name != ''">
                 AND p.name LIKE CONCAT('%', #{name}, '%')
             </if>
+            <if test="productIdList != null">
+                AND p.id IN
+                <foreach collection="productIdList" item="productId" open="(" separator=", " close=")">
+                    #{productId}
+                </foreach>
+            </if>
         </where>
     </select>
 

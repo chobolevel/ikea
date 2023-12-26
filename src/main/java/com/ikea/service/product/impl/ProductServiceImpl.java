@@ -8,6 +8,7 @@ import com.ikea.mapper.product.ProductMapper;
 import com.ikea.service.product.ProductOptionService;
 import com.ikea.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -48,7 +50,8 @@ public class ProductServiceImpl implements ProductService {
   public List<Product> findAll(Product product) throws ApiException {
     if(product.getPageNum() <= 0) {
       product.setPageNum(1);
-    } else if(product.getLimit() <= 0) {
+    }
+    if(product.getLimit() <= 0) {
       product.setLimit(10);
     }
     product.setOffset((product.getPageNum() - 1) * 10);
