@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>IKEA - 장바구니 목록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div class="cart-product-list-area">
+    <div class="product-list-module"></div>
+    <div class="product-order-module">
+      <div class="order-history-list-area">
+        <h2 class="order-history-title">주문 내역</h2>
+        <div class="order-product-price-list"></div>
+        <div class="order-product-total-price">
+          <p>결제 금액</p>
+          <p class="total-price"></p>
+        </div>
+      </div>
+      <div class="order-btn-area">
+        <button class="payment-btn">결제하기</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+  const productList = [[${productList}]]
+  const $productListModule = $('.product-list-module')
+  const $orderProductPriceList = $('.order-product-price-list')
+  const $orderProductTotalPrice = $('.order-product-total-price')
+
+  let totalPrice = 0
+
+  productList.forEach((product) => {
+    const selectedOption = product.productOptionList.find((po) => po.id === product.selectedOptionId)
+    totalPrice += selectedOption.price
+    const $orderHistoryListAreaItem = $(`
+      <div class="order-history-list-item">
+        <p class="order-history-name">${product.name}</p>
+        <p class="order-history-price">₩ ${selectedOption.price.toLocaleString("ko-KR")}</p>
+      </div>
+    `)
+    $orderProductPriceList.append($orderHistoryListAreaItem)
+    const $productListItem = $(`
+      <div class="product-list-item">
+        <div class="product-img">
+          <img src="/img/${product.id}/${selectedOption.id}/${selectedOption.attachmentList[0].name}" alt="${product.name}">
+        </div>
+        <div class="product-info">
+          <h2 class="product-title">
+            <p>${product.name}</p>
+            <p>₩ ${selectedOption.price.toLocaleString("ko-KR")}</p>
+          </h2>
+          <p class="product-color">선택된 색상 ${selectedOption.color}</p>
+          <p class="product-size">${selectedOption.width}x${selectedOption.depth}x${selectedOption.height}(cm)</p>
+          <p class="product-quantity">수량 ${product.quantity}개</p>
+        </div>
+      </div>
+    `)
+    $productListModule.append($productListItem)
+  })
+
+  $orderProductTotalPrice.find('.total-price').text(`₩ ${totalPrice.toLocaleString("ko-KR")}`)
+</script>

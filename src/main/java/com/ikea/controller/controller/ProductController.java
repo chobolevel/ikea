@@ -6,6 +6,7 @@ import com.ikea.exception.ApiException;
 import com.ikea.service.category.MainCategoryService;
 import com.ikea.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("product")
 @RequiredArgsConstructor
@@ -58,6 +60,30 @@ public class ProductController {
     List<Product> productList = productService.findAll(Product.builder().productIdList(dibsIdList).build());
     model.addAttribute("productList", productList);
     return "product/dibs";
+  }
+
+  @GetMapping("cart")
+  public String cart(@CookieValue(value = "cart", required = false) String cart, Model model) throws ApiException {
+    if(cart == null) {
+      model.addAttribute("productList", null);
+    } else {
+      List<String> cartSplitList = Arrays.asList(cart.split("/"));
+      List<List<String>> cartList = cartSplitList.stream().map((c) -> Arrays.asList(c.split("&"))).toList();
+      List<String> productIdList = cartList.stream().map((c) -> c.get(0)).toList();
+      List<Product> findProductList = productService.findAll(Product.builder().productIdList(productIdList).build());
+      List<Product> productList = findProductList.stream().map((p) -> {
+        String productId = p.getId();
+        List<String> matchedStringList = cartList.stream().filter((c) -> c.get(0).equals(productId)).findFirst().orElseThrow();
+        p.setSelectedOptionId(matchedStringList.get(1));
+        p.setQuantity(Integer.parseInt(matchedStringList.get(2)));
+        return p;
+      }).toList();
+      log.debug("cartSplitList: {}", cartSplitList);
+      log.debug("cartList: {}", cartList);
+      log.debug("findProductList: {}", findProductList);
+      model.addAttribute("productList", productList);
+    }
+    return "product/cart";
   }
 
 }
