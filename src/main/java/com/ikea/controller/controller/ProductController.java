@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,16 +57,20 @@ public class ProductController {
 
   @GetMapping("dibs")
   public String dibs(@CookieValue(value = "dibs", required = false) String dibs, Model model) throws ApiException {
-    List<String> dibsIdList = Arrays.asList(dibs.split("/"));
-    List<Product> productList = productService.findAll(Product.builder().productIdList(dibsIdList).build());
-    model.addAttribute("productList", productList);
+    if(dibs == null) {
+      model.addAttribute("productList", new ArrayList<>());
+    } else {
+      List<String> dibsIdList = Arrays.asList(dibs.split("/"));
+      List<Product> productList = productService.findAll(Product.builder().productIdList(dibsIdList).build());
+      model.addAttribute("productList", productList);
+    }
     return "product/dibs";
   }
 
   @GetMapping("cart")
   public String cart(@CookieValue(value = "cart", required = false) String cart, Model model) throws ApiException {
     if(cart == null) {
-      model.addAttribute("productList", null);
+      model.addAttribute("productList", new ArrayList<>());
     } else {
       List<String> cartSplitList = Arrays.asList(cart.split("/"));
       List<List<String>> cartList = cartSplitList.stream().map((c) -> Arrays.asList(c.split("&"))).toList();
