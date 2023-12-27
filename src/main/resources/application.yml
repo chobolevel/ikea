@@ -20,9 +20,9 @@ spring:
         max-active: 10
         max-idle: 10
         min-idle: 2
-    host: localhost
+    host: ec2-3-34-125-99.ap-northeast-2.compute.amazonaws.com
     port: 6379
-    password: ""
+    password: "1234"
   mail:
     host: smtp.gmail.com
     port: 587
