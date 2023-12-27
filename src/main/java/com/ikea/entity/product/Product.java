@@ -1,6 +1,5 @@
 package com.ikea.entity.product;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ikea.entity.base.BasePagingEntity;
 import com.ikea.entity.category.MainCategory;
 import com.ikea.entity.category.SubCategory;
@@ -21,10 +20,11 @@ public class Product extends BasePagingEntity {
   private String mainCategoryCode;
   private String subCategoryCode;
 
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private List<String> productIdList;
-
   private ProductOption productOption;
+  private List<String> productIdList;
+  private String selectedOptionId;
+  private int quantity;
+
   private MainCategory mainCategory;
   private SubCategory subCategory;
   private List<ProductOption> productOptionList;
