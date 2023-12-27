@@ -63,13 +63,19 @@ public class ProductRestController {
     if(product.getId() == null || product.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
+    if(product.getSelectedOptionId() == null || product.getSelectedOptionId().isEmpty()) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "selectedOptionId", "String");
+    }
+    if(product.getQuantity() <= 0) {
+      throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "quantity", "int");
+    }
     if(cart == null) {
-      Cookie cookie = new Cookie("cart", product.getId());
+      Cookie cookie = new Cookie("cart", product.getId() + "&" + product.getSelectedOptionId() + "&" + product.getQuantity());
       cookie.setPath("/");
       cookie.setMaxAge(60 * 60 * 24);
       res.addCookie(cookie);
     } else {
-      Cookie cookie = new Cookie("cart", cart + "/" + product.getId());
+      Cookie cookie = new Cookie("cart", cart + "/" + product.getId() + "&" + product.getSelectedOptionId() + "&" + product.getQuantity());
       cookie.setPath("/");
       cookie.setMaxAge(60 * 60 * 24);
       res.addCookie(cookie);
