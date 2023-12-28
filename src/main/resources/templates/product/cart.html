@@ -39,11 +39,11 @@
 
   productList.forEach((product) => {
     const selectedOption = product.productOptionList.find((po) => po.id === product.selectedOptionId)
-    totalPrice += selectedOption.price
+    totalPrice += (selectedOption.price * product.quantity)
     const $orderHistoryListAreaItem = $(`
       <div class="order-history-list-item">
         <p class="order-history-name">${product.name}</p>
-        <p class="order-history-price">₩ ${selectedOption.price.toLocaleString("ko-KR")}</p>
+        <p class="order-history-price">₩ ${(selectedOption.price * product.quantity).toLocaleString("ko-KR")}</p>
       </div>
     `)
     $orderProductPriceList.append($orderHistoryListAreaItem)
@@ -55,7 +55,7 @@
         <div class="product-info">
           <h2 class="product-title">
             <p>${product.name}</p>
-            <p>₩ ${selectedOption.price.toLocaleString("ko-KR")}</p>
+            <p>₩ ${(selectedOption.price * product.quantity).toLocaleString("ko-KR")}</p>
           </h2>
           <p class="product-color">선택된 색상 ${selectedOption.color}</p>
           <p class="product-size">${selectedOption.width}x${selectedOption.depth}x${selectedOption.height}(cm)</p>
