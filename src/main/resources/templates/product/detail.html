@@ -438,5 +438,26 @@
   })
   $productOrderBtn.on('click', (e) => {
     e.preventDefault()
+    $.ajax({
+      url: '/api/product/add-cart',
+      type: 'POST',
+      contentType: 'application/json',
+      dataType: 'json',
+      data: JSON.stringify({
+        id: productId,
+        selectedOptionId: selectedProductOption.id,
+        quantity: $quantityInput.val()
+      }),
+      success: () => {
+        alert('해당 상품이 장바구니에 추가되었습니다.')
+      },
+      error: ({ responseJSON }) => {
+        const { statusCode } = responseJSON
+        const { message } = responseJSON
+        if(statusCode === 400) {
+          alert(message)
+        }
+      }
+    })
   })
 </script>
