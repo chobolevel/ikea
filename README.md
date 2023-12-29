@@ -1,7 +1,7 @@
 # IKEA Clone Project(단독 프로젝트) - 개발진행중
 
 ## 프로젝트 서비스 링크
-> [IKEA-CLONE](http://ec2-3-34-125-99.ap-northeast-2.compute.amazonaws.com:8080/)
+> [IKEA-CLONE](https://www.ikea-clone.shop/)
 > + AWS EC2 인스턴스를 이용하여 프로젝트를 배포하였습니다.
 > + DB는 AWS의 RDS 서비스를 이용해서 사용할 수 있도록 하였습니다.
 > + 테스트용 사용자 계정(아이디 비밀번호): user 1234
