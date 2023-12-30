@@ -166,6 +166,7 @@
   const $infoInput = $('input[name=info]')
   const $infoArea = $('.info-area')
   const $personalInfoBox = $('.personal-info-box')
+  const $personalInfoBoxLeftInner = $personalInfoBox.find('.box-left-inner')
   const $personalInfoEditForm = $('.personal-info-edit-form')
   const $nameInput = $('input[name=name]')
   const $emailInput = $('input[name=email]')
@@ -176,6 +177,7 @@
   const $personalInfoCancelBtn = $personalInfoBox.find('.cancel-btn')
   const $personalInfoSaveBtn = $personalInfoBox.find('.save-btn')
   const $loginInfoBox = $('.login-info-box')
+  const $loginInfoBoxLeftInner = $loginInfoBox.find('.box-left-inner')
   const $loginInfoEditForm = $('.login-info-edit-form')
   const $curPasswordInput = $('input[name=curPassword]')
   const $passwordInput = $('input[name=password]')
@@ -306,8 +308,17 @@
   })
   $personalInfoEditBtn.on('click', (e) => {
     e.preventDefault()
+    $nameInput.val(user.name)
+    $emailInput.val(user.email)
+    $addressInput.val(user.address)
+    $mobileInput.val(user.mobile)
     $body.css('y-overflow', 'hidden')
     $personalInfoBox.css('visibility', 'visible')
+  })
+  $personalInfoBoxLeftInner.on('click', (e) => {
+    e.preventDefault()
+    $body.css('y-overflow', 'scroll')
+    $personalInfoBox.css('visibility', 'hidden')
   })
   $personalInfoCloseBtn.on('click', (e) => {
     e.preventDefault()
@@ -327,6 +338,11 @@
     e.preventDefault()
     $body.css('y-overflow', 'hidden')
     $loginInfoBox.css('visibility', 'visible')
+  })
+  $loginInfoBoxLeftInner.on('click', (e) => {
+    e.preventDefault()
+    $body.css('y-overflow', 'scroll')
+    $loginInfoBox.css('visibility', 'hidden')
   })
   $loginInfoCloseBtn.on('click', (e) => {
     e.preventDefault()
