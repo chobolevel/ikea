@@ -23,7 +23,7 @@
 >+ Thymeleaf
 >+ JQuery 3.7.1
 >+ JQuery-validation
->+ AWS EC2, RDS
+>+ AWS EC2, RDS, NGINX
 
 ## DB 테이블 구조
 > ![image](https://github.com/chobolevel/ikea/assets/104749958/496c4b31-6e9a-4b5e-bb94-7142e0a39566)
