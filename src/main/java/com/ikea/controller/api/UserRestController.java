@@ -2,6 +2,7 @@ package com.ikea.controller.api;
 
 import com.ikea.common.BaseResponse;
 import com.ikea.entity.user.User;
+import com.ikea.enums.ApiExceptionType;
 import com.ikea.exception.ApiException;
 import com.ikea.security.user.CustomUserDetails;
 import com.ikea.service.user.UserService;
@@ -22,6 +23,9 @@ public class UserRestController {
 
   @GetMapping("me")
   public ResponseEntity<?> getMyUser(@AuthenticationPrincipal CustomUserDetails userDetails) throws ApiException {
+    if(userDetails == null) {
+      throw new ApiException(ApiExceptionType.FAIL_TO_FETCH, "User");
+    }
     String id = userDetails.getUser().getId();
     User findUser = userService.findOne(User.builder().id(id).build());
     return new ResponseEntity<>(findUser, HttpStatus.OK);

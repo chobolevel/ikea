@@ -55,7 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/user/find-password").anonymous()
         // 인증된 사용자만 접근 가능한 API
         .antMatchers(
-            "/api/user/me",
             "/api/user/{id:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}}",
             "/api/user/change-password",
             "/api/product-review",

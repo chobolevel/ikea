@@ -21,7 +21,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
   @Override
   public void create(ProductReview productReview) throws ApiException {
-    if(productReview.getUser() == null || productReview.getUserId().isEmpty()) {
+    if(productReview.getUserId() == null || productReview.getUserId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "userId", "String");
     } else if(productReview.getProductId() == null || productReview.getProductId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "productId", "String");
