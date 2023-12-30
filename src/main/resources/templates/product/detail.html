@@ -185,8 +185,8 @@
   const $reviewWriteForm = $('.review-write-form')
   const $ratingInput = $('input[name=rating]')
   const $contentText = $('textarea[name=content]')
-  const $reviewCancelBtn = $('.product-review-write-box .box-right-inner .cancel-btn')
-  const $reviewSaveBtn = $('.product-review-write-box .box-right-inner .save-btn')
+  const $reviewCancelBtn = $productReviewWriteBox.find('.cancel-btn')
+  const $reviewSaveBtn = $productReviewWriteBox.find('.save-btn')
 
   const productReviewParamObj = {
     pageNum: 1,
@@ -243,8 +243,15 @@
     type: 'GET',
     contentType: 'application/json',
     success: (reviewList) => {
-      reviewList.forEach((review) => {
+      if(reviewList.length === 0) {
         $productReviewList.append(`
+            <div class="product-review-item">
+              <div class="review-section">아직 상품평이 작성되지 않았습니다.</div>
+            </div>
+        `)
+      } else {
+        reviewList.forEach((review) => {
+          $productReviewList.append(`
         <div class="product-review-item">
           <div class="review-header">
             <p>⭐ ${review.rating}</p>
@@ -253,10 +260,15 @@
           <div class="review-section">${review.content}</div>
         </div>
       `)
-      })
+        })
+      }
     },
     error: (request) => {
-      console.log(request)
+      $productReviewList.append(`
+            <div class="product-review-item">
+              <div class="review-section">아직 상품평이 작성되지 않았습니다.</div>
+            </div>
+        `)
     }
   })
 
@@ -296,11 +308,14 @@
             }),
             success: () => {
               alert('상품평이 등록되었습니다.')
-              $productReviewWriteBox.css('visibility', 'hidden')
-              $body.css('overflow-y', 'scroll')
+              location.reload()
             },
-            error: (request) => {
-              console.log(request)
+            error: ({ responseJSON }) => {
+              const { statusCode } = responseJSON
+              const { message } = responseJSON
+              if(statusCode === 400) {
+                alert(message)
+              }
             }
           })
         },
@@ -338,7 +353,6 @@
   })
   $reviewLoadBtn.on('click', (e) => {
     ++productReviewParamObj.pageNum
-    console.log(productReviewParamObj)
     $.ajax({
       url: `/api/product-review/list?${$.param(productReviewParamObj)}`,
       type: 'GET',
@@ -362,6 +376,7 @@
     })
   })
   $productReviewWriteBtn.on('click', (e) => {
+    e.preventDefault()
     $productReviewBox.css('visibility', 'hidden')
     $productReviewWriteBox.css('visibility', 'visible')
   })
