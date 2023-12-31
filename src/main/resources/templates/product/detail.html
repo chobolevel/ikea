@@ -254,8 +254,8 @@
           $productReviewList.append(`
         <div class="product-review-item">
           <div class="review-header">
-            <p>⭐ ${review.rating}</p>
-            <p>${review.user.username}</p>
+            <p>⭐ ${review.rating}(${review.user.username})</p>
+            <p>${moment(review.createDate).format('YYYY-MM-DD')}</p>
           </div>
           <div class="review-section">${review.content}</div>
         </div>
