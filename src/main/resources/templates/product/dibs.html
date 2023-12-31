@@ -18,12 +18,16 @@
   const productList = [[${productList}]]
   const $ProductListArea = $('.product-list-area')
 
-  productList.forEach((product) => {
-    const firstOption = product.productOptionList[0]
-    const firstAtt = firstOption.attachmentList[0]
-    const reviewTotalRating = product.productReviewList.map((p) => p.rating).reduce((acc, cur) => acc + cur, 0)
-    const reviewTotalCnt = product.productReviewList.length
-    const $ProductListItem = $(`
+  if (productList.length <= 0) {
+    alert('찜 목록에 상품이 존재하지 않습니다.\n상품 목록으로 이동합니다.')
+    location.href = '/product/list'
+  } else {
+    productList.forEach((product) => {
+      const firstOption = product.productOptionList[0]
+      const firstAtt = firstOption.attachmentList[0]
+      const reviewTotalRating = product.productReviewList.map((p) => p.rating).reduce((acc, cur) => acc + cur, 0)
+      const reviewTotalCnt = product.productReviewList.length
+      const $ProductListItem = $(`
       <div class="product-list-item">
         <div class="product-img">
           <img src="/img/${product.id}/${firstAtt.productOptionId}/${firstAtt.name}" alt="제품 이미지">
@@ -37,39 +41,40 @@
         </div>
       </div>
     `)
-    const $productImg = $ProductListItem.find('.product-img')
-    $productImg.on('click', (e) => {
-      e.preventDefault()
-      location.href = `/product/${product.id}`
-    })
-    const $productName = $ProductListItem.find('.product-name')
-    $productName.on('click', (e) => {
-      e.preventDefault()
-      location.href = `/product/${product.id}`
-    })
-    const $addCartBtn = $ProductListItem.find('.add-cart-btn')
-    $addCartBtn.on('click', (e) => {
-      e.preventDefault()
-      $.ajax({
-        url: '/api/product/add-cart',
-        type: 'POST',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify({
-          id: product.id
-        }),
-        success: () => {
-          alert('해당 상품을 장바구니에 추가하였습니다.')
-        },
-        error: ({ responseJSON }) => {
-          const { statusCode } = responseJSON
-          const { message } = responseJSON
-          if(statusCode === 400) {
-            alert(message)
-          }
-        }
+      const $productImg = $ProductListItem.find('.product-img')
+      $productImg.on('click', (e) => {
+        e.preventDefault()
+        location.href = `/product/${product.id}`
       })
+      const $productName = $ProductListItem.find('.product-name')
+      $productName.on('click', (e) => {
+        e.preventDefault()
+        location.href = `/product/${product.id}`
+      })
+      const $addCartBtn = $ProductListItem.find('.add-cart-btn')
+      $addCartBtn.on('click', (e) => {
+        e.preventDefault()
+        $.ajax({
+          url: '/api/product/add-cart',
+          type: 'POST',
+          contentType: 'application/json',
+          dataType: 'json',
+          data: JSON.stringify({
+            id: product.id
+          }),
+          success: () => {
+            alert('해당 상품을 장바구니에 추가하였습니다.')
+          },
+          error: ({ responseJSON }) => {
+            const { statusCode } = responseJSON
+            const { message } = responseJSON
+            if(statusCode === 400) {
+              alert(message)
+            }
+          }
+        })
+      })
+      $ProductListArea.append($ProductListItem)
     })
-    $ProductListArea.append($ProductListItem)
-  })
+  }
 </script>

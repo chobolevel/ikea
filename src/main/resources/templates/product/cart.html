@@ -37,17 +37,21 @@
 
   let totalPrice = 0
 
-  productList.forEach((product) => {
-    const selectedOption = product.productOptionList.find((po) => po.id === product.selectedOptionId)
-    totalPrice += (selectedOption.price * product.quantity)
-    const $orderHistoryListAreaItem = $(`
+  if(productList.length <= 0) {
+    alert('장바구니 목록에 상품이 존재하지 않습니다.\n상품 목록으로 이동합니다.')
+    location.href = '/product/list'
+  } else {
+    productList.forEach((product) => {
+      const selectedOption = product.productOptionList.find((po) => po.id === product.selectedOptionId)
+      totalPrice += (selectedOption.price * product.quantity)
+      const $orderHistoryListAreaItem = $(`
       <div class="order-history-list-item">
         <p class="order-history-name">${product.name}</p>
         <p class="order-history-price">₩ ${(selectedOption.price * product.quantity).toLocaleString("ko-KR")}</p>
       </div>
     `)
-    $orderProductPriceList.append($orderHistoryListAreaItem)
-    const $productListItem = $(`
+      $orderProductPriceList.append($orderHistoryListAreaItem)
+      const $productListItem = $(`
       <div class="product-list-item">
         <div class="product-img">
           <img src="/img/${product.id}/${selectedOption.id}/${selectedOption.attachmentList[0].name}" alt="${product.name}">
@@ -63,8 +67,9 @@
         </div>
       </div>
     `)
-    $productListModule.append($productListItem)
-  })
+      $productListModule.append($productListItem)
+    })
+  }
 
   $orderProductTotalPrice.find('.total-price').text(`₩ ${totalPrice.toLocaleString("ko-KR")}`)
 </script>
