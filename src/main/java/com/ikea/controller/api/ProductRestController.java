@@ -14,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/product")
@@ -44,17 +46,24 @@ public class ProductRestController {
     if(product.getId() == null || product.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
+    Cookie cookie;
     if(dibs == null) {
-      Cookie cookie = new Cookie("dibs", product.getId());
+      cookie = new Cookie("dibs", product.getId());
       cookie.setPath("/");
       cookie.setMaxAge(60 * 60 * 24);
       res.addCookie(cookie);
     } else {
-      Cookie cookie = new Cookie("dibs", dibs + "/" + product.getId());
-      cookie.setMaxAge(60 * 60 * 24);
-      cookie.setPath("/");
-      res.addCookie(cookie);
+      String[] splitArr = dibs.split("/");
+      if(splitArr.length >= 10) {
+        String collect = Arrays.stream(splitArr).limit(9).collect(Collectors.joining("/"));
+        cookie = new Cookie("dibs", product.getId() + "/" + collect);
+      } else {
+        cookie = new Cookie("dibs", product.getId() + "/" + dibs);
+      }
     }
+    cookie.setMaxAge(60 * 60 * 24);
+    cookie.setPath("/");
+    res.addCookie(cookie);
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
 
@@ -69,17 +78,21 @@ public class ProductRestController {
     if(product.getQuantity() <= 0) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "quantity", "int");
     }
+    Cookie cookie;
     if(cart == null) {
-      Cookie cookie = new Cookie("cart", product.getId() + "&" + product.getSelectedOptionId() + "&" + product.getQuantity());
-      cookie.setPath("/");
-      cookie.setMaxAge(60 * 60 * 24);
-      res.addCookie(cookie);
+      cookie = new Cookie("cart", product.getId() + "&" + product.getSelectedOptionId() + "&" + product.getQuantity());
     } else {
-      Cookie cookie = new Cookie("cart", cart + "/" + product.getId() + "&" + product.getSelectedOptionId() + "&" + product.getQuantity());
-      cookie.setPath("/");
-      cookie.setMaxAge(60 * 60 * 24);
-      res.addCookie(cookie);
+      String[] splitArr = cart.split("/");
+      if(splitArr.length >= 10) {
+        String collect = Arrays.stream(splitArr).limit(9).collect(Collectors.joining("/"));
+        cookie = new Cookie("cart", product.getId() + "&" + product.getSelectedOptionId() + "&" + product.getQuantity() + "/" + collect);
+      } else {
+        cookie = new Cookie("cart", product.getId() + "&" + product.getSelectedOptionId() + "&" + product.getQuantity() + "/" + cart);
+      }
     }
+    cookie.setPath("/");
+    cookie.setMaxAge(60 * 60 * 24);
+    res.addCookie(cookie);
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
 
