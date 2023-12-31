@@ -108,6 +108,7 @@
                 </foreach>
             </if>
         </where>
+        ORDER BY po.create_date
     </select>
 
     <select id="findOne" resultMap="RelatedResultMap" parameterType="Product">
