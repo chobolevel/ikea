@@ -1,8 +1,7 @@
 # IKEA Clone Project(단독 프로젝트) - 개발진행중
 
 ## 프로젝트 서비스 링크
-> [IKEA-CLONE](https://ikea-clone.shop/)
-> + 🚨현재 저작권 관련 이슈로 프로젝트 중지한 상태이며 로고, 도메인 등 변경 후 재업로드 예정입니다.🚨
+> [IKEA-CLONE](https://chobolevel.site)
 > + AWS EC2 인스턴스를 이용하여 프로젝트를 배포하였습니다.
 > + DB는 AWS의 RDS 서비스를 이용해서 사용할 수 있도록 하였습니다.
 > + 테스트용 사용자 계정(아이디 비밀번호): user 1234
