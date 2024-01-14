@@ -32,7 +32,7 @@
 > ![IKEA_API_DOCS](https://github.com/chobolevel/ikea/assets/104749958/95eb7efc-c2b5-4230-b955-5d235fc32230)
 
 ## 초기 화면
-> ![localhost_8080_](https://github.com/chobolevel/ikea/assets/104749958/f2c12eaa-43d5-497b-ab96-c120a3217b80)
+> ![localhost_8080_](https://github.com/chobolevel/ikea/assets/104749958/007ed815-9011-4822-932b-d5aa9c8f338b)
 
 
 ## 주요 기능
@@ -43,7 +43,7 @@
 > 2. 인가 <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/f55addb5-1761-4006-afa0-f3306ca13d0e) <br/> 
 >   사용자 권한별 허가된 페이지만 이동할 수 있도록 인가 처리를 통해 구분 없이 무분별한 이동을 방지하였습니다.
 
-> 3. 아이디/비밀번호 찾기 기능 <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/51f0761d-3234-4c1c-a4ed-1ec27031c818) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/c11718d0-30c3-4def-b7aa-a9636dd56936) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/47771269-9bd3-4124-949c-63d8264475f7) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/4e945926-76df-4f14-ad03-2bc9351a8592) <br/>
+> 3. 아이디/비밀번호 찾기 기능 <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/a6a48af9-8376-46b9-9f1a-6edb316c623c) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/9df02c09-4a5a-461b-b90a-d66432200d30) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/47771269-9bd3-4124-949c-63d8264475f7) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/4e945926-76df-4f14-ad03-2bc9351a8592) <br/>
 >    MailUtil의 코드 중 일부로 아이디/비밀번호 찾기 기능을 활용하는 경우 smtp 사용을 설정한 이메일을 환경 변수로 입력받아 메일 전송을 해당 이메일로 처리하도록 하였습니다.
 
 > 4. 상품/상품 상세 정보 등록 기능 <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/77d19051-1180-4897-bd11-ec8721da6278) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/3fda756a-759d-4efd-8f82-a2843e2552d7) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/3b1a0ec2-d54e-451a-80ca-61237f0c0ea5) <br/>
