@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://ikea-database.cnukdrbce1d7.ap-northeast-2.rds.amazonaws.com:3306/ikea
-    username: root
-    password: 12345678
+    url: ENC(qlIiXA3PqcOTfrmuvbVIccobtXiOXhjNY8F+xfzLQn1zMK3/UJVrf1KfB/h0lv3p7TRmoNkXNXFxr0nRXcdRqnCALO9MLtaTKCk9dcpdb+L4IhQ6LOnBkymdDddz4IQo4k9koTQOPH4gz22NS5EIjuFtMQbyJnfhk6CK0Top6lc=)
+    username: ENC(sHwg2YIi5lZfXnr17kaLMnmgWTBu6lHjYdxAfWsvVpQ918xbsgHYE02tvFb+apgi)
+    password: ENC(kjDNIzHnf4DqdREzWVQDGULLdg8bSF+TUJoHJUrIxZQSUnGjEx68g4k6C/Jtl//i)
   mvc:
     hiddenmethod:
       filter:
@@ -20,9 +20,9 @@ spring:
         max-active: 10
         max-idle: 10
         min-idle: 2
-    host: ec2-3-39-25-140.ap-northeast-2.compute.amazonaws.com
+    host: ENC(Ql17VU5b6K6BHk0K56BvY76JrLmSg0sEUdBDYzfaQYw+Er1wUZz/HEpaWp193OaYmCKGUwnQ9pAU5V+csr8Hitudvar4GwNaCGE1LN80ShoiZxiPd6JFgKtUGl+QI9NJ)
     port: 6379
-    password: "1234"
+    password: ENC(8E555TXmBpINgoNr/HgDXphukeFMmQeJ3EnvwefTYmTqQ3fEgKIpy74QIkisNFZQ)
   mail:
     host: smtp.gmail.com
     port: 587
