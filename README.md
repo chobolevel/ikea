@@ -45,7 +45,7 @@
 >   사용자 권한별 허가된 페이지만 이동할 수 있도록 인가 처리를 통해 구분 없이 무분별한 이동을 방지하였습니다.
 
 > 3. 아이디/비밀번호 찾기 기능 <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/a6a48af9-8376-46b9-9f1a-6edb316c623c) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/9df02c09-4a5a-461b-b90a-d66432200d30) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/47771269-9bd3-4124-949c-63d8264475f7) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/4e945926-76df-4f14-ad03-2bc9351a8592) <br/>
->    MailUtil의 코드 중 일부로 아이디/비밀번호 찾기 기능을 활용하는 경우 smtp 사용을 설정한 이메일을 환경 변수로 입력받아 메일 전송을 해당 이메일로 처리하도록 하였습니다.
+>    MailUtil의 코드 중 일부로 아이디/비밀번호 찾기 기능을 활용하는 경우 smtp 사용을 설정한 이메일을 환경 변수로 입력받아 메일 전송을 해당 이메일로 처리하도록 하였습니다. <br/> 인증번호의 경우 redis를 활용하여 3분동안 저장되도록 하여 인증하도록 처리하였습니다.
 
 > 4. 상품/상품 상세 정보 등록 기능 <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/77d19051-1180-4897-bd11-ec8721da6278) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/3fda756a-759d-4efd-8f82-a2843e2552d7) <br/> ![image](https://github.com/chobolevel/ikea/assets/104749958/3b1a0ec2-d54e-451a-80ca-61237f0c0ea5) <br/>
 >    상품 선택 옵션을 생성하는 코드 중 파일을 저장하는 로직으로 먼저 상품 아이디로 구분하고 선택 옵션 아이디로 구분하여 이미지를 저장하여 활용할 수 있도록 하였습니다.
