@@ -20,6 +20,7 @@
 >+ spring-boot-starter-mail
 >+ MySQL 8.0
 >+ MyBatis 2.3.1
+>+ Redis 6.0.16 
 >+ Thymeleaf
 >+ JQuery 3.7.1
 >+ JQuery-validation
