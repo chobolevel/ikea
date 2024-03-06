@@ -60,7 +60,9 @@
           contentType: 'application/json',
           dataType: 'json',
           data: JSON.stringify({
-            id: product.id
+            id: product.id,
+            selectedOptionId: firstOption,
+            quantity: 1
           }),
           success: () => {
             alert('해당 상품을 장바구니에 추가하였습니다.')
