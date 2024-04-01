@@ -1,5 +1,8 @@
 # IKEA Clone Project(단독 프로젝트)
 
+## 배포 환경
+> ![image](https://github.com/chobolevel/ikea/assets/104749958/dc31569c-bcca-4797-9fc4-9e17bccec390)
+
 ## 프로젝트 서비스 링크(🚨2024.03.06 시점 RDS 문제 해결하여 정상 작동중입니다.🚨)
 > [IKEA-CLONE](https://chobolevel.site)
 > + AWS EC2 인스턴스와 NGINX를 이용하여 프로젝트를 배포하였습니다.
