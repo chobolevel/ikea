@@ -3,8 +3,7 @@
 ## 배포 환경
 > ![image](https://github.com/chobolevel/ikea/assets/104749958/dc31569c-bcca-4797-9fc4-9e17bccec390)
 
-## 프로젝트 서비스 링크(🚨2024.03.06 시점 RDS 문제 해결하여 정상 작동중입니다.🚨)
-> [IKEA-CLONE](https://chobolevel.site)
+## 프로젝트 서비스 링크(🚨2024.08.21 시점 프로젝트 배포 중단(리뉴얼 후 찾아뵙겠습니다!)🚨)
 > + AWS EC2 인스턴스와 NGINX를 이용하여 프로젝트를 배포하였습니다.
 > + DB는 AWS의 RDS 서비스를 이용해서 사용할 수 있도록 하였습니다.
 > + 테스트용 사용자 계정(아이디 비밀번호): user 1234
