@@ -1,5 +1,14 @@
 # IKEA Clone Project(2023.12.01~2024.01.31)
 
+## 목차
+> + [프로젝트 사용기술](#프로젝트-사용기술)
+> + [배포 환경](#배포-환경)
+> + [프로젝트를 진행한 이유](#프로젝트를-진행한-이유)
+> + [DB 테이블 구조](#DB-테이블-구조)
+> + [API DOCS](#API_DOCS)
+> + [초기 화면](#초기-화면)
+> + [주요 기능](#주요-기능)
+
 ## 프로젝트 사용기술
 
 > <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=openjdk&logoColor=white">
