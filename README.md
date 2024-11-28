@@ -1,30 +1,27 @@
-# IKEA Clone Project(단독 프로젝트)
+# IKEA Clone Project(2023.12.01~2024.01.31)
+
+## 프로젝트 사용기술
+
+> <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=openjdk&logoColor=white">
+> <img src="https://img.shields.io/badge/spring boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+> <img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
+> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+> <img src="https://img.shields.io/badge/amazon rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
+> <img src="https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white">
+> <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
+> <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white">
+> <img src="https://img.shields.io/badge/aws ec2-ff9900?style=for-the-badge&logo=amazon ec2&logoColor=white">
+> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+> <img src="https://img.shields.io/badge/thymeleaf-005f0f?style=for-the-badge&logo=thymeleaf&logoColor=white">
+> <img src="https://img.shields.io/badge/jquery-0769ad?style=for-the-badge&logo=jquery&logoColor=white">
 
 ## 배포 환경
 > ![image](https://github.com/chobolevel/ikea/assets/104749958/dc31569c-bcca-4797-9fc4-9e17bccec390)
 
-## 프로젝트 서비스 링크(🚨2024.08.21 시점 프로젝트 배포 중단(리뉴얼 후 찾아뵙겠습니다!)🚨)
-> + AWS EC2 인스턴스와 NGINX를 이용하여 프로젝트를 배포하였습니다.
-> + DB는 AWS의 RDS 서비스를 이용해서 사용할 수 있도록 하였습니다.
-> + 테스트용 사용자 계정(아이디 비밀번호): user 1234
-> + 테스트용 관리자 계정(아이디 비밀번호): admin 1234
-
 ## 프로젝트를 진행한 이유
-> 실제 사용하는 제품과 비슷한 수준의 개발을 혼자 처음부터 끝까지 해보고 싶었습니다. 
-또한 실전에서는 어떤 부분에 대해 고민하고 개발하는지 경험해 보고 싶었으며
-이전까지 배운 내용들을 활용해 보고 중간중간 새로운 부분도 익힐 수 있다고 생각되어 진행하였습니다.
-
-## 프로젝트 사용기술
->+ Java 17
->+ SpringBoot 2.7.X + SpringSecurity
->+ spring-boot-starter-mail
->+ MySQL 8.0
->+ MyBatis 2.3.1
->+ Redis 6.0.16 
->+ Thymeleaf
->+ JQuery 3.7.1
->+ JQuery-validation
->+ AWS EC2, RDS, NGINX
+> + 실제 사용하는 제품과 비슷한 수준의 개발을 혼자 처음부터 끝까지 해보고 싶었습니다. 
+> + 또한 실전에서는 어떤 부분에 대해 고민하고 개발하는지 경험해 보고 싶었으며
+> + 이전까지 배운 내용들을 활용해 보고 중간중간 새로운 부분도 익힐 수 있다고 생각되어 진행하였습니다.
 
 ## DB 테이블 구조
 > ![image](https://github.com/chobolevel/ikea/assets/104749958/496c4b31-6e9a-4b5e-bb94-7142e0a39566)
